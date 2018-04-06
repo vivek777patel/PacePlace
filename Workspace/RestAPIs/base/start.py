@@ -1,0 +1,9 @@
+# https://tutorials.technology/tutorials/59-Start-a-flask-project-from-zero-building-api-rest.html
+from flask_script import Manager
+
+from base.app import app
+
+manager = Manager(app)
+
+if __name__ == "__main__":
+    app.run(debug=True)
