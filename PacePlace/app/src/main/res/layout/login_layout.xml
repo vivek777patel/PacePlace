@@ -49,7 +49,7 @@
                 android:textStyle="bold"
                 android:text="@string/btn_login_txt"
                 android:textColor="@color/colorWhite"
-                android:backgroundTint="@color/colorPaceBlue"
+                android:background="@drawable/rounded_button"
                 android:fontFamily="serif"
 
                 android:textSize="@dimen/btn_txt_size"/>
