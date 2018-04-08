@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="login_edit_hieght">60dp</dimen>
+    <dimen name="login_margin">17dp</dimen>
+    <dimen name="login_logo_height">180dp</dimen>
+    <dimen name="login_button_width">150dp</dimen>
+    <dimen name="login_button_height">60dp</dimen>
+    <dimen name="btn_txt_size">20sp</dimen>
+    <dimen name="login_padding">10dp</dimen>
+    <dimen name="text_signup_size">16sp</dimen>
+</resources>
