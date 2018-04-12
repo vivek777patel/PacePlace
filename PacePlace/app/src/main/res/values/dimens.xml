@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="login_edit_hieght">60dp</dimen>
+    <dimen name="login_edit_height">60dp</dimen>
     <dimen name="login_margin">17dp</dimen>
     <dimen name="login_logo_height">180dp</dimen>
     <dimen name="login_button_width">150dp</dimen>
