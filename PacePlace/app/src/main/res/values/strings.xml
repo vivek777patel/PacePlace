@@ -8,4 +8,7 @@
     <string name="email_pass_required">Email and Password are mandatory fields</string>
 
     <string name="signup">Sign Up</string>
+    <string name="login_success">Login Success</string>
+    <string name="login_failed">Login Failed</string>
+    <string name="please_wait">Please Wait...!!!</string>
 </resources>
