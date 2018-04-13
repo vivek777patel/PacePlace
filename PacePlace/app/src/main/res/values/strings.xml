@@ -11,4 +11,12 @@
     <string name="login_success">Login Success</string>
     <string name="login_failed">Login Failed</string>
     <string name="please_wait">Please Wait...!!!</string>
+
+    <string name="btn_register_txt">Register</string>
+    <string name="btn_clear_txt">CLEAR</string>
+    <string name="enter_firstname">First Name</string>
+    <string name="enter_lastname">Last Name</string>
+    <string name="enter_password_confirm">Confirm Password</string>
+    <string name="enter_contact">Contact (---)--- ----</string>
+    <string name="enter_dob">DOB(MM/DD/YYYY)</string>
 </resources>
