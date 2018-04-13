@@ -95,8 +95,12 @@ public class LoginActivity extends AppCompatActivity {
 
     private void validateUserCredentials(String email, String password) {
         pDialog = new ProgressDialog(this);
+        pDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
         pDialog.setMessage(getResources().getString(R.string.please_wait));
+        pDialog.setIndeterminate(true);
         pDialog.setCancelable(false);
+        // Show Progress Dialog
+        pDialog.show();
 
         RequestParams params = new RequestParams();
         params.put(PacePlaceConstants.EMAIL, email);
@@ -106,8 +110,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void invokeWS(RequestParams params) {
-        // Show Progress Dialog
-        pDialog.show();
+
         // Make RESTful webservice call using AsyncHttpClient object
         AsyncHttpClient client = new AsyncHttpClient();
         Log.e(TAG,"URL : "+PacePlaceConstants.URL_LOGIN);
@@ -122,6 +125,7 @@ public class LoginActivity extends AppCompatActivity {
                 Log.e(TAG,"SSSSSSSSSSSSS");
                 Log.e(TAG,"SSSSSSSSSSSSS : "+jsonObject);
                 generateToastMessage(R.string.login_success);
+                pDialog.hide();
             }
 
             @Override
@@ -133,9 +137,10 @@ public class LoginActivity extends AppCompatActivity {
                 Log.e(TAG,"EEEEEEEE : "+statusCode);
                 Log.e(TAG,"EEEEEEEE : "+errorResponse);
                 throwable.printStackTrace();
+                pDialog.hide();
             }
         });
-        pDialog.hide();
+
     }
 
 

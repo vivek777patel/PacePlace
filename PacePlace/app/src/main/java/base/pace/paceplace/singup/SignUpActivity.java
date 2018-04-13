@@ -24,17 +24,17 @@ public class SignUpActivity extends AppCompatActivity{
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
+        setContentView(R.layout.register_form);
         configureViews();
         configureClickListeners();
     }
 
     private void configureViews(){
-        mEmailEditText = findViewById(R.id.emailEditText);
+        /*mEmailEditText = findViewById(R.id.emailEditText);
         mPasswordEditText = findViewById(R.id.passwordEditText);
         mLoginButton = findViewById(R.id.loginButton);
         mSignupTextView = findViewById(R.id.signupTextView);
-        mEmailEditText.setText("Testing");
+        mEmailEditText.setText("Testing");*/
     }
 
     public void configureClickListeners(){

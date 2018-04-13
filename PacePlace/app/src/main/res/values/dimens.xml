@@ -1,14 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="login_edit_height">60dp</dimen>
-    <dimen name="login_margin">17dp</dimen>
 
-    <dimen name="login_logo_height">180dp</dimen>
+    <dimen name="login_edit_height">40dp</dimen>
+    <dimen name="login_margin">15dp</dimen>
+    <dimen name="login_margin_top">10dp</dimen>
+    <dimen name="logo_ll_margin_top">40dp</dimen>
+
+    <dimen name="padding_drawable">5dp</dimen>
+
+    <dimen name="login_logo_height">200dp</dimen>
+
     <dimen name="login_button_width">150dp</dimen>
-    <dimen name="login_button_height">60dp</dimen>
-    <dimen name="btn_txt_size">20sp</dimen>
+    <dimen name="login_button_height">40dp</dimen>
+
     <dimen name="login_padding">10dp</dimen>
-    <dimen name="text_signup_size">16sp</dimen>
     <dimen name="layout_text_height">60dp</dimen>
     <dimen name="login_margin_image">5dp</dimen>
+
+    <dimen name="btn_txt_size">16sp</dimen>
+    <dimen name="text_size">16sp</dimen>
+
 </resources>

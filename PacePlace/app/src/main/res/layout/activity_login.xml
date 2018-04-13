@@ -1,19 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/colorAccent">
 
     <LinearLayout
         android:id="@+id/loginLogoLL"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:weightSum="4">
+        android:layout_height="@dimen/login_logo_height"
+        android:gravity="center">
 
         <ImageView
             android:id="@+id/loginLogoImageView"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/login_logo_height"
-            android:src="@mipmap/pace_logo" />
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/logo" />
     </LinearLayout>
 
     <LinearLayout
@@ -22,23 +24,35 @@
         android:layout_below="@+id/loginLogoLL"
         android:orientation="vertical">
 
-        <EditText
+        <android.support.v7.widget.AppCompatEditText
             android:id="@+id/emailEditText"
             android:layout_width="match_parent"
             android:layout_height="@dimen/login_edit_height"
-            android:layout_margin="@dimen/login_margin"
+            android:layout_marginLeft="@dimen/login_margin"
+            android:layout_marginRight="@dimen/login_margin"
+            android:layout_marginTop="@dimen/login_margin"
+            android:background="@drawable/rounded_border_edittext"
+            android:drawableLeft="@drawable/ic_mail"
+            android:drawablePadding="@dimen/padding_drawable"
             android:hint="@string/enter_username"
             android:inputType="textEmailAddress"
-            android:padding="@dimen/login_padding" />
+            android:textColor="@color/colorWhite"
+            android:textColorHint="@color/colorWhite" />
 
-        <EditText
+        <android.support.v7.widget.AppCompatEditText
             android:id="@+id/passwordEditText"
             android:layout_width="match_parent"
             android:layout_height="@dimen/login_edit_height"
-            android:layout_margin="@dimen/login_margin"
+            android:layout_marginLeft="@dimen/login_margin"
+            android:layout_marginRight="@dimen/login_margin"
+            android:layout_marginTop="@dimen/login_margin"
+            android:background="@drawable/rounded_border_edittext"
+            android:drawableLeft="@drawable/ic_key"
+            android:drawablePadding="@dimen/padding_drawable"
             android:hint="@string/enter_password"
             android:inputType="textWebPassword"
-            android:padding="@dimen/login_padding" />
+            android:textColor="@color/colorWhite"
+            android:textColorHint="@color/colorWhite" />
 
         <Button
             android:id="@+id/loginButton"
@@ -49,6 +63,7 @@
             android:background="@drawable/rounded_button"
             android:fontFamily="serif"
             android:text="@string/btn_login_txt"
+            android:textAllCaps="false"
             android:textColor="@color/colorWhite"
             android:textSize="@dimen/btn_txt_size"
             android:textStyle="bold" />
@@ -63,7 +78,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/dont_have_accnt"
-                android:textSize="@dimen/text_signup_size" />
+                android:textColor="@color/colorWhite"
+                android:textSize="@dimen/text_size" />
 
             <TextView
                 android:id="@+id/signupTextView"
@@ -71,7 +87,8 @@
                 android:layout_height="wrap_content"
                 android:paddingLeft="@dimen/login_padding"
                 android:text="@string/signup"
-                android:textSize="@dimen/text_signup_size"
+                android:textColor="@color/colorWhite"
+                android:textSize="@dimen/text_size"
                 android:textStyle="bold" />
         </LinearLayout>
     </LinearLayout>
