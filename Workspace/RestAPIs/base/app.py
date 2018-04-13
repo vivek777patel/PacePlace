@@ -3,6 +3,7 @@ from flask_restful import Api
 from flaskext.mysql import MySQL
 from base.paceplace.common import db
 
+
 mysql = MySQL()
 app = Flask(__name__)
 
