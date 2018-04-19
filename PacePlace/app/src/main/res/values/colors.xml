@@ -6,5 +6,7 @@
 
     <color name="colorWhite">#ffffff</color>
     <color name="colorPaceBlue">#FF5353</color>
+    <color name="colorBorderTop">#435672</color>
+    <color name="colorEditTextBackground">#3C4D66</color>
 
 </resources>
