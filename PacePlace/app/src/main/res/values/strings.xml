@@ -6,6 +6,7 @@
     <string name="dont_have_accnt">Don\'t have an account ?</string>
 
     <string name="email_pass_required">Email and Password are mandatory fields</string>
+    <string name="conf_pass_and_pass_required">Password and Confirmation Password are mandatory fields and must be equal</string>
 
     <string name="signup">Sign Up</string>
     <string name="login_success">Login Success</string>

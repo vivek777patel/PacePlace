@@ -1,43 +1,52 @@
 package base.pace.paceplace;
 
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.AppCompatEditText;
 import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.loopj.android.http.*;
-/*
-import com.loopj.android.http.AsyncHttpClient;
-import com.loopj.android.http.AsyncHttpResponseHandler;
-import com.loopj.android.http.RequestParams;
-*/
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.RequestFuture;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
-import base.pace.paceplace.singup.SignUpActivity;
-import base.pace.paceplace.util.PacePlaceConstants;
-import cz.msebera.android.httpclient.Header;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
+
+import base.pace.paceplace.singup.SignUpActivity;
+import base.pace.paceplace.util.CommonWSInvoke;
+import base.pace.paceplace.util.CustomVolleyRequestQueue;
+import base.pace.paceplace.util.PacePlaceConstants;
+import base.pace.paceplace.util.WebServiceResponse;
 
 public class LoginActivity extends AppCompatActivity {
 
     public static final String TAG = "LoginActivity";
 
 
-
-    EditText mEmailEditText, mPasswordEditText;
+    AppCompatEditText mEmailEditText, mPasswordEditText;
     Button mLoginButton;
     TextView mSignupTextView;
-
-    ProgressDialog pDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,55 +103,35 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void validateUserCredentials(String email, String password) {
-        pDialog = new ProgressDialog(this);
-        pDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-        pDialog.setMessage(getResources().getString(R.string.please_wait));
-        pDialog.setIndeterminate(true);
-        pDialog.setCancelable(false);
-        // Show Progress Dialog
-        pDialog.show();
 
-        RequestParams params = new RequestParams();
-        params.put(PacePlaceConstants.EMAIL, email);
-        params.put(PacePlaceConstants.PASSWORD, password);
-        invokeWS(params);
-
+        invokeWS(email, password);
     }
 
-    public void invokeWS(RequestParams params) {
-
-        // Make RESTful webservice call using AsyncHttpClient object
-        AsyncHttpClient client = new AsyncHttpClient();
-        Log.e(TAG,"URL : "+PacePlaceConstants.URL_LOGIN);
-        client.post(PacePlaceConstants.URL_LOGIN, params, new JsonHttpResponseHandler() {
-
-
-            // When the response returned by REST has Http response code '200'
-            @Override
-            //public void onSuccess(int statusCode, Header[] headers, byte[] response) {
-            public void onSuccess(int statusCode, Header[] headers, JSONObject jsonObject) {
-                // called when response HTTP status is "200 OK"
-                Log.e(TAG,"SSSSSSSSSSSSS");
-                Log.e(TAG,"SSSSSSSSSSSSS : "+jsonObject);
-                generateToastMessage(R.string.login_success);
-                pDialog.hide();
+    public void invokeWS(final String email, final String password) {
+        Thread threadA = new Thread() {
+            public void run() {
+                CommonWSInvoke threadB = new CommonWSInvoke(getApplicationContext());
+                WebServiceResponse jsonObject = null;
+                try {
+                    jsonObject = threadB.execute(PacePlaceConstants.LOGIN,email,password).get(10, TimeUnit.SECONDS);
+                } catch (InterruptedException|ExecutionException|TimeoutException e) {
+                    e.printStackTrace();
+                }
+                final WebServiceResponse receivedJSONObject = jsonObject;
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Log.i(TAG,"Response is: " + receivedJSONObject);
+                        if(receivedJSONObject.getmResponse())
+                            generateToastMessage(R.string.login_success);
+                        else
+                            generateToastMessage(R.string.login_failed);
+                    }
+                });
             }
-
-            @Override
-            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
-            //public void onFailure(int statusCode, Header[] headers, byte[] errorResponse, Throwable e) {
-                // called when response HTTP status is "4XX" (eg. 401, 403, 404)
-                generateToastMessage(R.string.login_failed);
-                Log.e(TAG,"EEEEEEEE :: "+ PacePlaceConstants.URL_LOGIN);
-                Log.e(TAG,"EEEEEEEE : "+statusCode);
-                Log.e(TAG,"EEEEEEEE : "+errorResponse);
-                throwable.printStackTrace();
-                pDialog.hide();
-            }
-        });
-
+        };
+        threadA.start();
     }
-
 
     // To generate Toast message
     private void generateToastMessage(int id) {
