@@ -27,4 +27,5 @@
     <string name="enter_password_confirm">Confirm Password</string>
     <string name="enter_contact">Contact (---)--- ----</string>
     <string name="enter_dob">DOB(YYYY-MM-DD)</string>
+    <string name="link_arrow"><![CDATA[>]]></string>
 </resources>

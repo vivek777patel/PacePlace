@@ -21,5 +21,6 @@
     <dimen name="text_size">16sp</dimen>
     <dimen name="home_toolbar_height">55dp</dimen>
     <dimen name="border_width">2dp</dimen>
+    <dimen name="arrow_txt_size">23sp</dimen>
 
 </resources>

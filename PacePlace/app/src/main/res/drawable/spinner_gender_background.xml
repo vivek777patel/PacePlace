@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item>
+        <layer-list android:opacity="transparent">
+            <item android:gravity="left" android:width="50dp"
+                android:end="300dp">
+                <shape>
+                    <solid android:color="@color/colorEditTextBackground">
+
+                    </solid>
+                </shape>
+            </item>
+            <item android:gravity="right" android:width="300dp" android:start="50dp">
+                <shape>
+                    <solid android:color="@color/colorEditTextBackground">
+
+                    </solid>
+                </shape>
+            </item>
+            <!--<item android:width="50dp" >
+                <bitmap android:width="30dp" android:height="30dp" android:src="@drawable/ic_gender" android:gravity="center"/>
+            </item>-->
+            <item android:width="50dp" android:start="300dp">
+                <bitmap android:src="@drawable/ic_select_drop" android:gravity="center"/>
+            </item>
+        </layer-list>
+    </item>
+</selector>

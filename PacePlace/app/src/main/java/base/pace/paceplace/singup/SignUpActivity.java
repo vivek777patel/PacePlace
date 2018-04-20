@@ -6,13 +6,17 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatEditText;
+import android.support.v7.widget.AppCompatSpinner;
 import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
@@ -32,6 +36,7 @@ public class SignUpActivity extends AppCompatActivity {
     Button mRegisterButton, mClearButton;
     TextView mSignupTextView;
     ProgressDialog mProgressDialog;
+    AppCompatSpinner mGenderSelectSpinner,mAccountTypeSpinner, mGraduationTypeSpinner, mSubjectSelectSpinner, mStudentTypeSpinner;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,9 +54,78 @@ public class SignUpActivity extends AppCompatActivity {
         mLastNameEditText = findViewById(R.id.lastNameEditText);
         mContactEditText = findViewById(R.id.contactEditText);
         mDobEditText = findViewById(R.id.dobEditText);
+        mGenderSelectSpinner = findViewById(R.id.genderSpinnerSelect);
+        mGraduationTypeSpinner =findViewById(R.id.graduationTypeSpinnerSelect) ;
+        mAccountTypeSpinner = findViewById(R.id.accountTypeSpinnerSelect);
+        mSubjectSelectSpinner = findViewById(R.id.subjecTypeSpinnerSelect);
+        mStudentTypeSpinner = findViewById(R.id.studentTypeSpinnerSelect);
 
         mRegisterButton = findViewById(R.id.registerButton);
         mClearButton = findViewById(R.id.clearButton);
+
+        configureGenderSpinner(mGenderSelectSpinner);
+        configureGraduationSpinner(mGraduationTypeSpinner);
+        configureAccountTypeSpinner(mAccountTypeSpinner);
+        configureSubjectSelectSpinner(mSubjectSelectSpinner);
+        configureStudentTypeSpinner(mStudentTypeSpinner);
+    }
+
+    public void configureStudentTypeSpinner(AppCompatSpinner studentTypeSpinner) {
+        ArrayList<String> list = new ArrayList<String>();
+        list.add("Student Type");
+        list.add("Local");
+        list.add("International");
+        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this,
+                R.layout.spinner_layout, list);
+        dataAdapter.setDropDownViewResource(R.layout.spinner_layout);
+        studentTypeSpinner.setAdapter(dataAdapter);
+    }
+
+    public void configureSubjectSelectSpinner(AppCompatSpinner subjectSelectSpinner) {
+        ArrayList<String> list = new ArrayList<String>();
+        list.add("Select ");
+        list.add("Computer Science");
+        list.add("Master in Business Adminstration");
+        list.add("Information System");
+        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this,
+                R.layout.spinner_layout, list);
+
+        dataAdapter.setDropDownViewResource(R.layout.spinner_layout);
+        subjectSelectSpinner.setAdapter(dataAdapter);
+    }
+
+    public void configureAccountTypeSpinner(AppCompatSpinner accountTypeSpinner) {
+        ArrayList<String> list = new ArrayList<String>();
+        list.add("Account Type");
+        list.add("Student");
+        list.add("Professor");
+        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this,
+                R.layout.spinner_layout,list);
+        dataAdapter.setDropDownViewResource(R.layout.spinner_layout);
+        accountTypeSpinner.setAdapter(dataAdapter);
+    }
+
+    public void configureGraduationSpinner(AppCompatSpinner graduationTypeSpinner) {
+        ArrayList<String> list = new ArrayList<String>();
+        list.add("Graduate Level");
+        list.add("Bachelors");
+        list.add("Masters");
+        list.add("Doctrate");
+        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this,
+                R.layout.spinner_layout, list);
+        dataAdapter.setDropDownViewResource(R.layout.spinner_layout);
+        graduationTypeSpinner.setAdapter(dataAdapter);
+    }
+
+    public void configureGenderSpinner(AppCompatSpinner genderSelectSpinner) {
+        ArrayList<String> list = new ArrayList<String>();
+        list.add("Select The Gender");
+        list.add("Female");
+        list.add("Male");
+        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this,
+                R.layout.spinner_layout, list);
+        dataAdapter.setDropDownViewResource(R.layout.spinner_layout);
+        genderSelectSpinner.setAdapter(dataAdapter);
     }
 
     public void configureClickListeners() {
