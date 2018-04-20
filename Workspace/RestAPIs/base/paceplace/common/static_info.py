@@ -7,6 +7,8 @@ mysql = app.mysql
 STATIC_INFO = dict()
 STATIC_INFO_DET = dict()
 STATIC_INFO_DETAIL = dict()
+STATIC_INFO_TYPE = dict()
+
 
 def get_static_info(combo_type=''):
 
@@ -31,16 +33,17 @@ def get_static_info(combo_type=''):
         for i in range(len(data)):
             if data[i][1] in STATIC_INFO:
                 STATIC_INFO[data[i][1]].append((data[i][0], data[i][2]))
+                STATIC_INFO_TYPE[data[i][1]].update({data[i][2]: data[i][1]})
             else:
                 STATIC_INFO[data[i][1]] = [(data[i][0], data[i][2])]
-
+                STATIC_INFO_TYPE[data[i][1]] = {data[i][2]: data[i][0]}
             if data[i][0] in STATIC_INFO:
                 STATIC_INFO_DET[data[i][0]].append((data[i][1], data[i][2]))
                 STATIC_INFO_DETAIL[data[i][0]].append(data[i][2])
             else:
                 STATIC_INFO_DET[data[i][0]] = [(data[i][1], data[i][2])]
                 STATIC_INFO_DETAIL[data[i][0]] = data[i][2]
-
+        print(STATIC_INFO_TYPE)
 
 @ap.route('/static_info/')
 @ap.route('/static_info/<string:combo_type>/')
