@@ -1,8 +1,8 @@
 package base.pace.paceplace;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatEditText;
@@ -13,29 +13,17 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.volley.AuthFailureError;
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.RequestFuture;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
-
 import org.json.JSONException;
-import org.json.JSONObject;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
-
+import base.pace.paceplace.course.CourseDetail;
+import base.pace.paceplace.login.UserInfo;
 import base.pace.paceplace.singup.SignUpActivity;
 import base.pace.paceplace.util.CommonWSInvoke;
-import base.pace.paceplace.util.CustomVolleyRequestQueue;
 import base.pace.paceplace.util.PacePlaceConstants;
 import base.pace.paceplace.util.WebServiceResponse;
 
@@ -46,8 +34,9 @@ public class LoginActivity extends AppCompatActivity {
 
     AppCompatEditText mEmailEditText, mPasswordEditText;
     Button mLoginButton;
-    TextView mSignupTextView;
+    TextView mSignupTextView,mEmailPasswordInvalidTextView;
 
+    ProgressDialog mProgressDialog;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,6 +48,7 @@ public class LoginActivity extends AppCompatActivity {
     private void configureViews() {
         mEmailEditText = findViewById(R.id.emailEditText);
         mPasswordEditText = findViewById(R.id.passwordEditText);
+        mEmailPasswordInvalidTextView = findViewById(R.id.emailPasswordInvalidTextView);
         mLoginButton = findViewById(R.id.loginButton);
         mSignupTextView = findViewById(R.id.signupTextView);
     }
@@ -72,14 +62,12 @@ public class LoginActivity extends AppCompatActivity {
                 // Validation of the entered data
                 if (email.isEmpty() || password.isEmpty()) {
                     generateToastMessage(R.string.email_pass_required);
+                    mEmailPasswordInvalidTextView.setText(R.string.email_pass_required);
+                    mEmailPasswordInvalidTextView.setVisibility(View.VISIBLE);
                     return;
                 }
 
                 validateUserCredentials(email, password);
-
-                // To clear the text views
-                mEmailEditText.setText("");
-                mPasswordEditText.setText("");
 
                 // To hide keyboard
                 InputMethodManager imm = (InputMethodManager) getApplication().getSystemService(Context.INPUT_METHOD_SERVICE);
@@ -103,7 +91,11 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void validateUserCredentials(String email, String password) {
-
+        mProgressDialog = new ProgressDialog(this);
+        mProgressDialog.setMessage(getResources().getString(R.string.please_wait));
+        mProgressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        mProgressDialog.setIndeterminate(true);
+        mProgressDialog.show();
         invokeWS(email, password);
     }
 
@@ -113,7 +105,7 @@ public class LoginActivity extends AppCompatActivity {
                 CommonWSInvoke threadB = new CommonWSInvoke(getApplicationContext());
                 WebServiceResponse jsonObject = null;
                 try {
-                    jsonObject = threadB.execute(PacePlaceConstants.LOGIN,email,password).get(10, TimeUnit.SECONDS);
+                    jsonObject = threadB.execute(PacePlaceConstants.URL_LOGIN,PacePlaceConstants.LOGIN,email,password).get(10, TimeUnit.SECONDS);
                 } catch (InterruptedException|ExecutionException|TimeoutException e) {
                     e.printStackTrace();
                 }
@@ -122,10 +114,41 @@ public class LoginActivity extends AppCompatActivity {
                     @Override
                     public void run() {
                         Log.i(TAG,"Response is: " + receivedJSONObject);
-                        if(receivedJSONObject.getmResponse())
-                            generateToastMessage(R.string.login_success);
-                        else
+                        if(null!=receivedJSONObject){
+                            if(receivedJSONObject.getmResponse()) {
+                                generateToastMessage(R.string.login_success);
+                                UserInfo userInfo = setUserInfo(receivedJSONObject);
+                                ArrayList<CourseDetail> mCourseList = new ArrayList<>();
+                                mCourseList.add(new CourseDetail("Algo", "Ratings:-4/4","Suzzana","Ratings:-4/4","Wenesday","6pm - 9pm",
+                                        "163 William Street", "Room:1420","Sept,6 2017","Dec,20 2017"));
+                                mCourseList.add(new CourseDetail("Mobile Web Content","Ratings:-4/4","Haik","Ratings:-4/4","Wenesday","6pm - 9pm",
+                                        "163 William Street", "Room:1420","Sept,6 2017","Dec,20 2017"));
+                                mCourseList.add(new CourseDetail("Project 1","Ratings:-3/4","Yuri","Ratings:-3/4","Wenesday","6pm - 9pm",
+                                        "163 William Street", "Room:1420","Sept,6 2017","Dec,20 2017"));
+                                Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
+                                intent.putExtra(PacePlaceConstants.USER_INFO, userInfo);
+                                intent.putExtra(PacePlaceConstants.COURSE_LIST, mCourseList);
+                                startActivity(intent);
+                            }
+                            else{
+                                generateToastMessage(R.string.login_failed);
+                                try {
+                                    mEmailPasswordInvalidTextView.setText(receivedJSONObject.getmJsonObjectResponse().get(PacePlaceConstants.ERROR).toString());
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                                mEmailPasswordInvalidTextView.setVisibility(View.VISIBLE);
+                            }
+                        }
+                        else{
                             generateToastMessage(R.string.login_failed);
+                            mEmailPasswordInvalidTextView.setText(R.string.login_failed);
+                            mEmailPasswordInvalidTextView.setVisibility(View.VISIBLE);
+                        }
+                        // To clear the text views
+                        mEmailEditText.setText("");
+                        mPasswordEditText.setText("");
+                        mProgressDialog.dismiss();
                     }
                 });
             }
@@ -133,6 +156,26 @@ public class LoginActivity extends AppCompatActivity {
         threadA.start();
     }
 
+    private UserInfo setUserInfo(WebServiceResponse receivedJSONObject){
+        UserInfo userInfo = new UserInfo();
+        try {
+            userInfo.setmEmail(receivedJSONObject.getmJsonObjectResponse().get("email").toString());
+            userInfo.setmAccountType(receivedJSONObject.getmJsonObjectResponse().get("account_type").toString());
+            userInfo.setmDob(receivedJSONObject.getmJsonObjectResponse().get("dob").toString());
+            //userInfo.setmEndDate(receivedJSONObject.getmJsonObjectResponse().get("end_date").toString());
+            userInfo.setmFirstName(receivedJSONObject.getmJsonObjectResponse().get("firstname").toString());
+            userInfo.setmGender(receivedJSONObject.getmJsonObjectResponse().get("gender").toString());
+            userInfo.setmGraduationType(receivedJSONObject.getmJsonObjectResponse().get("graduation_type").toString());
+            userInfo.setmLastName(receivedJSONObject.getmJsonObjectResponse().get("last_name").toString());
+            userInfo.setmContact(receivedJSONObject.getmJsonObjectResponse().get("mobile").toString());
+            userInfo.setmStatus(receivedJSONObject.getmJsonObjectResponse().get("status_id").toString());
+            userInfo.setmStudentType(receivedJSONObject.getmJsonObjectResponse().get("student_type").toString());
+            userInfo.setmSubject(receivedJSONObject.getmJsonObjectResponse().get("subject").toString());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return userInfo;
+    }
     // To generate Toast message
     private void generateToastMessage(int id) {
         Toast.makeText(this, id, Toast.LENGTH_SHORT).show();

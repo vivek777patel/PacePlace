@@ -24,6 +24,17 @@
         android:layout_below="@+id/loginLogoLL"
         android:orientation="vertical">
 
+        <TextView
+            android:id="@+id/emailPasswordInvalidTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/colorWhite"
+            android:paddingTop="@dimen/login_margin_top"
+            android:gravity="center_horizontal"
+            android:layout_gravity="center_horizontal"
+            android:visibility="gone"
+            android:textSize="@dimen/text_size" />
+
         <android.support.v7.widget.AppCompatEditText
             android:id="@+id/emailEditText"
             android:layout_width="match_parent"
@@ -53,6 +64,8 @@
             android:inputType="textWebPassword"
             android:textColor="@color/colorWhite"
             android:textColorHint="@color/colorWhite" />
+
+
 
         <Button
             android:id="@+id/loginButton"

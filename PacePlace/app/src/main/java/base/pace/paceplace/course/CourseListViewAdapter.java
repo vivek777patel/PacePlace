@@ -1,4 +1,4 @@
-package base.pace.paceplace;
+package base.pace.paceplace.course;
 
 import android.content.Context;
 import android.util.Log;
@@ -9,13 +9,15 @@ import android.widget.TextView;
 
 import java.util.List;
 
+import base.pace.paceplace.R;
+
 public class CourseListViewAdapter extends BaseAdapter {
     Context mContext;
-    List<CourseList> mCourseInfoList;
+    List<CourseDetail> mCourseInfoList;
     View.OnClickListener mClickListener;
-    private static final String TAG = "TabListViewAdapter";
+    private static final String TAG = "CourseListViewAdapter";
 
-    public CourseListViewAdapter(Context context, List<CourseList> courseInfoList){
+    public CourseListViewAdapter(Context context, List<CourseDetail> courseInfoList){
         mContext = context;
         mCourseInfoList = courseInfoList;
     }
@@ -55,9 +57,7 @@ public class CourseListViewAdapter extends BaseAdapter {
         else
             viewHolder = (ViewHolder)convertView.getTag();  //reusing item/ViewHolder
 
-        CourseList courseInfo = (CourseList) getItem(position);
-        Log.i(TAG,"Name : "+courseInfo.getmCourseName());
-        Log.i(TAG,"Bio : "+courseInfo.getmCourseProfessor());
+        CourseDetail courseInfo = (CourseDetail) getItem(position);
         viewHolder.mCourseNameTextView.setText(courseInfo.getmCourseName());
         viewHolder.mCourseRatingsTextView.setText(courseInfo.mCourseRatings);
         viewHolder.mCourseProfessorTextView.setText(courseInfo.getmCourseProfessor());
@@ -68,8 +68,6 @@ public class CourseListViewAdapter extends BaseAdapter {
         viewHolder.mCourseRoomTextView.setText(courseInfo.getmCourseRoom());
         viewHolder.mCourseStartDateTextView.setText(courseInfo.getmCourseStartDate());
         viewHolder.mCourseEndDateTextView.setText(courseInfo.getmCourseEndDate());
-
-
         viewHolder.mCourseNameTextView.setTag(courseInfo);
 
         return convertView;

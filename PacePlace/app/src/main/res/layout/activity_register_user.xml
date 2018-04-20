@@ -92,7 +92,7 @@
             android:drawableLeft="@drawable/ic_key"
             android:drawablePadding="@dimen/padding_drawable"
             android:hint="@string/enter_password"
-            android:inputType="textEmailAddress"
+            android:inputType="textWebPassword"
             android:textColor="@color/colorWhite"
             android:textColorHint="@color/colorWhite" />
 
@@ -107,7 +107,7 @@
             android:drawableLeft="@drawable/ic_key"
             android:drawablePadding="@dimen/padding_drawable"
             android:hint="@string/enter_password_confirm"
-            android:inputType="textEmailAddress"
+            android:inputType="textWebPassword"
             android:textColor="@color/colorWhite"
             android:textColorHint="@color/colorWhite" />
 

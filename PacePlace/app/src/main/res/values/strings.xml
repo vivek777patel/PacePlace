@@ -6,11 +6,17 @@
     <string name="dont_have_accnt">Don\'t have an account ?</string>
 
     <string name="email_pass_required">Email and Password are mandatory fields</string>
+    <string name="email_pass_not_valid">Email or Password is incorrect</string>
     <string name="conf_pass_and_pass_required">Password and Confirmation Password are mandatory fields and must be equal</string>
 
     <string name="signup">Sign Up</string>
     <string name="login_success">Login Success</string>
     <string name="login_failed">Login Failed</string>
+
+    <string name="register_success">Register Success</string>
+    <string name="register_failed">Register Failed</string>
+    <string name="connection_failed">Connection Failed</string>
+
     <string name="please_wait">Please Wait...!!!</string>
 
     <string name="btn_register_txt">Register</string>
@@ -20,5 +26,5 @@
     <string name="enter_lastname">Last Name</string>
     <string name="enter_password_confirm">Confirm Password</string>
     <string name="enter_contact">Contact (---)--- ----</string>
-    <string name="enter_dob">DOB(MM/DD/YYYY)</string>
+    <string name="enter_dob">DOB(YYYY-MM-DD)</string>
 </resources>

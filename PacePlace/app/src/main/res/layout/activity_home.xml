@@ -20,18 +20,21 @@
         android:background="@drawable/border"
         android:layout_alignParentBottom="true">
         <ImageView
+            android:id="@+id/homeImageView"
             android:layout_width="wrap_content"
             android:layout_height="40dp"
             android:src="@mipmap/ic_home"
             android:layout_gravity="center"
             android:layout_weight="1"/>
         <ImageView
+            android:id="@+id/eventImageView"
             android:layout_width="wrap_content"
             android:layout_height="40dp"
             android:layout_gravity="center"
             android:src="@mipmap/ic_event"
             android:layout_weight="1"/>
         <ImageView
+            android:id="@+id/logoutImageView"
             android:layout_width="wrap_content"
             android:layout_height="40dp"
             android:layout_gravity="center"

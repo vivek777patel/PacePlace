@@ -1,26 +1,37 @@
 package base.pace.paceplace.singup;
 
+import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatEditText;
+import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import base.pace.paceplace.R;
-import base.pace.paceplace.login.RegistrationInfo;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
-public class SignUpActivity extends AppCompatActivity{
+import base.pace.paceplace.LoginActivity;
+import base.pace.paceplace.R;
+import base.pace.paceplace.login.UserInfo;
+import base.pace.paceplace.util.CommonWSInvoke;
+import base.pace.paceplace.util.PacePlaceConstants;
+import base.pace.paceplace.util.WebServiceResponse;
+
+public class SignUpActivity extends AppCompatActivity {
 
     public static final String TAG = "SignUpActivity";
 
-    AppCompatEditText mFirstNameEditText,mLastNameEditText,mEmailEditText, mPasswordEditText
-            ,mContactEditText,mDobEditText, mConfirmPasswordEditText;
-    Button mRegisterButton,mClearButton;
+    AppCompatEditText mFirstNameEditText, mLastNameEditText, mEmailEditText, mPasswordEditText, mContactEditText, mDobEditText, mConfirmPasswordEditText;
+    Button mRegisterButton, mClearButton;
     TextView mSignupTextView;
+    ProgressDialog mProgressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,9 +41,9 @@ public class SignUpActivity extends AppCompatActivity{
         configureClickListeners();
     }
 
-    private void configureViews(){
+    private void configureViews() {
         mEmailEditText = findViewById(R.id.emailEditText);
-        mPasswordEditText = findViewById(R.id.passwordEditText);
+        mPasswordEditText = findViewById(R.id.passEditText);
         mConfirmPasswordEditText = findViewById(R.id.confirmPassEditText);
         mFirstNameEditText = findViewById(R.id.firstNameEditText);
         mLastNameEditText = findViewById(R.id.lastNameEditText);
@@ -43,7 +54,7 @@ public class SignUpActivity extends AppCompatActivity{
         mClearButton = findViewById(R.id.clearButton);
     }
 
-    public void configureClickListeners(){
+    public void configureClickListeners() {
         mRegisterButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -59,21 +70,13 @@ public class SignUpActivity extends AppCompatActivity{
                     generateToastMessage(R.string.email_pass_required);
                     return;
                 }
-                if(confirmPassword.isEmpty() || !password.equals(confirmPassword)){
+                if (confirmPassword.isEmpty() || !password.equals(confirmPassword)) {
                     generateToastMessage(R.string.conf_pass_and_pass_required);
                     return;
                 }
 
-                RegistrationInfo registrationInfo = new RegistrationInfo(email,password,firstName,lastName,contact,dob);
+                UserInfo registrationInfo = new UserInfo(email, password, firstName, lastName, contact, dob);
                 validateAndStoreUser(registrationInfo);
-
-                mEmailEditText.setText("");
-                mPasswordEditText.setText("");
-                mConfirmPasswordEditText.setText("");
-                mFirstNameEditText.setText("");
-                mLastNameEditText.setText("");
-                mContactEditText.setText("");
-                mDobEditText.setText("");
 
                 // To hide keyboard
                 InputMethodManager imm = (InputMethodManager) getApplication().getSystemService(Context.INPUT_METHOD_SERVICE);
@@ -83,8 +86,54 @@ public class SignUpActivity extends AppCompatActivity{
         });
     }
 
-    private void validateAndStoreUser(RegistrationInfo registrationInfo){
-
+    private void validateAndStoreUser(final UserInfo registrationInfo) {
+        mProgressDialog = new ProgressDialog(this);
+        mProgressDialog.setMessage(getResources().getString(R.string.please_wait));
+        mProgressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        mProgressDialog.setIndeterminate(true);
+        mProgressDialog.show();
+        Thread threadA = new Thread() {
+            public void run() {
+                CommonWSInvoke threadB = new CommonWSInvoke(getApplicationContext());
+                WebServiceResponse jsonObject = null;
+                try {
+                    jsonObject = threadB.execute(PacePlaceConstants.URL_REGISTER, PacePlaceConstants.REGISTER,
+                            registrationInfo.getmEmail(), registrationInfo.getmPassword(), registrationInfo.getmFirstName(),
+                            registrationInfo.getmLastName(), registrationInfo.getmContact(), registrationInfo.getmDob()
+                    ).get(10, TimeUnit.SECONDS);
+                } catch (InterruptedException | ExecutionException | TimeoutException e) {
+                    e.printStackTrace();
+                }
+                final WebServiceResponse receivedJSONObject = jsonObject;
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Log.i(TAG, "Response is: " + receivedJSONObject);
+                        if (null != receivedJSONObject) {
+                            if (receivedJSONObject.getmResponse()) {
+                                generateToastMessage(R.string.register_success);
+                                Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+                                startActivity(intent);
+                            } else {
+                                generateToastMessage(R.string.register_failed);
+                            }
+                        } else {
+                            generateToastMessage(R.string.register_failed);
+                        }
+                        // To clear the text views
+                        mEmailEditText.setText("");
+                        mPasswordEditText.setText("");
+                        mConfirmPasswordEditText.setText("");
+                        mFirstNameEditText.setText("");
+                        mLastNameEditText.setText("");
+                        mContactEditText.setText("");
+                        mDobEditText.setText("");
+                        mProgressDialog.dismiss();
+                    }
+                });
+            }
+        };
+        threadA.start();
     }
 
     // To generate Toast message
