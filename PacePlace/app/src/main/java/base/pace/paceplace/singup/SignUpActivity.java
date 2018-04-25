@@ -72,7 +72,7 @@ public class SignUpActivity extends AppCompatActivity {
 
     public void configureStudentTypeSpinner(AppCompatSpinner studentTypeSpinner) {
         ArrayList<String> list = new ArrayList<String>();
-        list.add("Student Type");
+        list.add("Select Student Type");
         list.add("Local");
         list.add("International");
         ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this,
@@ -83,7 +83,7 @@ public class SignUpActivity extends AppCompatActivity {
 
     public void configureSubjectSelectSpinner(AppCompatSpinner subjectSelectSpinner) {
         ArrayList<String> list = new ArrayList<String>();
-        list.add("Select ");
+        list.add("Select Subject");
         list.add("Computer Science");
         list.add("Master in Business Adminstration");
         list.add("Information System");
@@ -96,7 +96,7 @@ public class SignUpActivity extends AppCompatActivity {
 
     public void configureAccountTypeSpinner(AppCompatSpinner accountTypeSpinner) {
         ArrayList<String> list = new ArrayList<String>();
-        list.add("Account Type");
+        list.add("Select Account Type");
         list.add("Student");
         list.add("Professor");
         ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this,
@@ -107,10 +107,10 @@ public class SignUpActivity extends AppCompatActivity {
 
     public void configureGraduationSpinner(AppCompatSpinner graduationTypeSpinner) {
         ArrayList<String> list = new ArrayList<String>();
-        list.add("Graduate Level");
+        list.add("Select Graduation");
         list.add("Bachelors");
         list.add("Masters");
-        list.add("Doctrate");
+        list.add("Doctorate");
         ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this,
                 R.layout.spinner_layout, list);
         dataAdapter.setDropDownViewResource(R.layout.spinner_layout);
@@ -119,7 +119,7 @@ public class SignUpActivity extends AppCompatActivity {
 
     public void configureGenderSpinner(AppCompatSpinner genderSelectSpinner) {
         ArrayList<String> list = new ArrayList<String>();
-        list.add("Select The Gender");
+        list.add("Select Gender");
         list.add("Female");
         list.add("Male");
         ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this,
