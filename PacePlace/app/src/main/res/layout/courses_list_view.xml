@@ -7,36 +7,29 @@
 
     <RelativeLayout
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:background="@drawable/border_bottom">
 
         <TextView
             android:id="@+id/list_item_course_name"
             android:layout_width="match_parent"
             android:layout_height="35dp"
-            android:layout_marginLeft="@dimen/login_padding"
-            android:background="@drawable/border_bottom"
+            android:layout_marginStart="@dimen/login_padding"
+            android:layout_toStartOf="@+id/list_item_course_arrow"
             android:fontFamily="serif"
-            android:layout_toLeftOf="@+id/list_item_course_arrow"
             android:gravity="center_vertical"
             android:textColor="@color/colorWhite"
             android:textSize="@dimen/btn_txt_size"
             android:textStyle="bold" />
-        <TextView
+
+        <ImageView
             android:id="@+id/list_item_course_arrow"
             android:layout_width="35dp"
             android:layout_height="35dp"
             android:layout_alignParentEnd="true"
-            android:layout_marginRight="@dimen/login_padding"
-            android:paddingLeft="@dimen/login_padding"
-            android:paddingBottom="@dimen/login_padding"
-            android:background="@drawable/border_bottom"
-            android:fontFamily="serif"
+            android:background="@drawable/ic_move_to_next"
             android:gravity="center_vertical"
-            android:textColor="@color/colorWhite"
-            android:textSize="@dimen/arrow_txt_size"
-            android:textStyle="bold"
-            android:text="@string/link_arrow"/>
-
+            android:paddingBottom="@dimen/login_padding" />
 
     </RelativeLayout>
 
@@ -44,11 +37,10 @@
         android:id="@+id/list_item_lec_course_ratings"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
         android:layout_marginLeft="@dimen/login_padding"
         android:layout_marginRight="@dimen/login_padding"
         android:fontFamily="serif"
-        android:textColor="@color/colorWhite" />
+        android:textColor="@color/colorListSmall" />
 
     <RelativeLayout
         android:layout_width="wrap_content"
@@ -59,19 +51,19 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
-            android:layout_marginLeft="@dimen/login_padding"
+            android:layout_marginStart="@dimen/login_padding"
             android:layout_toStartOf="@+id/list_item_lec_course_prof_ratings"
             android:fontFamily="serif"
-            android:textColor="@color/colorWhite" />
+            android:textColor="@color/colorListSmall" />
 
         <TextView
             android:id="@+id/list_item_lec_course_prof_ratings"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
-            android:layout_marginRight="@dimen/login_padding"
+            android:layout_marginEnd="@dimen/login_padding"
             android:fontFamily="serif"
-            android:textColor="@color/colorWhite" />
+            android:textColor="@color/colorListSmall" />
 
     </RelativeLayout>
 
@@ -83,20 +75,20 @@
             android:id="@+id/list_item_lec_course_day"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/login_padding"
             android:layout_alignParentStart="true"
+            android:layout_marginStart="@dimen/login_padding"
             android:layout_toStartOf="@+id/list_item_lec_course_time"
             android:fontFamily="serif"
-            android:textColor="@color/colorWhite" />
+            android:textColor="@color/colorListSmall" />
 
         <TextView
             android:id="@+id/list_item_lec_course_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginRight="@dimen/login_padding"
-            android:fontFamily="serif"
             android:layout_alignParentEnd="true"
-            android:textColor="@color/colorWhite" />
+            android:layout_marginEnd="@dimen/login_padding"
+            android:fontFamily="serif"
+            android:textColor="@color/colorListSmall" />
     </RelativeLayout>
 
     <RelativeLayout
@@ -108,19 +100,19 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
-            android:layout_marginLeft="@dimen/login_padding"
+            android:layout_marginStart="@dimen/login_padding"
             android:layout_toStartOf="@+id/list_item_lec_course_room"
             android:fontFamily="serif"
-            android:textColor="@color/colorWhite" />
+            android:textColor="@color/colorListSmall" />
 
         <TextView
             android:id="@+id/list_item_lec_course_room"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
-            android:layout_marginRight="@dimen/login_padding"
+            android:layout_marginEnd="@dimen/login_padding"
             android:fontFamily="serif"
-            android:textColor="@color/colorWhite" />
+            android:textColor="@color/colorListSmall" />
     </RelativeLayout>
 
     <RelativeLayout
@@ -133,65 +125,18 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
-            android:layout_marginLeft="@dimen/login_padding"
+            android:layout_marginStart="@dimen/login_padding"
             android:layout_toStartOf="@+id/list_item_lec_course_end_date"
             android:fontFamily="serif"
-            android:textColor="@color/colorWhite" />
+            android:textColor="@color/colorListSmall" />
 
         <TextView
             android:id="@+id/list_item_lec_course_end_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
-            android:layout_marginRight="@dimen/login_padding"
+            android:layout_marginEnd="@dimen/login_padding"
             android:fontFamily="serif"
-            android:textColor="@color/colorWhite" />
+            android:textColor="@color/colorListSmall" />
     </RelativeLayout>
-    <!--<RelativeLayout
-        android:background="@color/colorAccent"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/list_item_course_name"
-        android:layout_marginRight="@dimen/login_padding"
-        android:layout_marginLeft="@dimen/login_padding">
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/list_item_lec_course_professor"/>
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/list_item_lec_course_professor"
-            android:id="@+id/list_item_lec_course_day"/>
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/list_item_lec_course_time"
-            android:layout_below="@+id/list_item_lec_course_day"/>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/list_item_lec_course_address"
-            android:layout_below="@+id/list_item_lec_course_time"/>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:id="@+id/list_item_lec_course_room"
-            android:layout_toRightOf="@+id/list_item_lec_course_address"
-            android:layout_below="@+id/list_item_lec_course_time"/>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/list_item_lec_course_start_date"
-            android:layout_below="@+id/list_item_lec_course_address"/>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:id="@+id/list_item_lec_course_end_date"
-            android:layout_toRightOf="@+id/list_item_lec_course_start_date"
-            android:layout_below="@+id/list_item_lec_course_address"/>
-
-    </RelativeLayout>-->
 </LinearLayout>

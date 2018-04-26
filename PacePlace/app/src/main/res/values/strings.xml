@@ -1,5 +1,10 @@
 <resources>
     <string name="app_name">Pace Place</string>
+
+    <string name="user_registration">User Registration</string>
+    <string name="user_courses">User Courses</string>
+    <string name="events">Events</string>
+
     <string name="enter_username">Email ID</string>
     <string name="enter_password">Password</string>
     <string name="btn_login_txt">Sign In</string>
@@ -12,6 +17,7 @@
     <string name="signup">Sign Up</string>
     <string name="login_success">Login Success</string>
     <string name="login_failed">Login Failed</string>
+    <string name="logout_success">Logout Success</string>
 
     <string name="register_success">Register Success</string>
     <string name="register_failed">Register Failed</string>
