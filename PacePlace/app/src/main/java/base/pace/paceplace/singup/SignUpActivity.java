@@ -41,6 +41,7 @@ public class SignUpActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setTitle(R.string.user_registration);
         setContentView(R.layout.activity_register_user);
         configureViews();
         configureClickListeners();

@@ -33,7 +33,7 @@ def get_static_info(combo_type=''):
         for i in range(len(data)):
             if data[i][1] in STATIC_INFO:
                 STATIC_INFO[data[i][1]].append((data[i][0], data[i][2]))
-                STATIC_INFO_TYPE[data[i][1]].update({data[i][2]: data[i][1]})
+                STATIC_INFO_TYPE[data[i][1]].update({data[i][2]: data[i][0]})
             else:
                 STATIC_INFO[data[i][1]] = [(data[i][0], data[i][2])]
                 STATIC_INFO_TYPE[data[i][1]] = {data[i][2]: data[i][0]}

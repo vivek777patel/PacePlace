@@ -50,7 +50,8 @@ def get_user(query=None):
         result['subject'] = STATIC_INFO_DETAIL[int(result['subject'])]
 
 
-@ap.route('/checkUser/', methods=['GET', 'POST'])
+# @ap.route('/checkUser/', methods=['GET', 'POST'])
+@ap.route('/checkUser/', methods=['POST'])
 def check_user():
     content = request.json
     try:
@@ -86,6 +87,9 @@ def get_user_info():
         else:
             user_name = request.form['EMAIL']
             password = request.form['PASSWORD']
+
+        # print(gender)
+        # print(STATIC_INFO_TYPE['GENDER'][gender])
     except KeyError:
         print("User Name or Password is missing in POSTed JSON ")
         return jsonify({"KeyError": "user_name or password is missing"})

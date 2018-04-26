@@ -41,6 +41,12 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        Intent i  = getIntent();
+        if(i.getStringExtra(PacePlaceConstants.LOGIN_ACTIVITY_MESSAGE) != null){
+            if(i.getStringExtra(PacePlaceConstants.LOGIN_ACTIVITY_MESSAGE).toString().equalsIgnoreCase(PacePlaceConstants.LOGOUT))
+                generateToastMessage(R.string.logout_success);
+        }
+
         configureViews();
         configureClickListeners();
     }
@@ -91,15 +97,16 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void validateUserCredentials(String email, String password) {
+
+        invokeWS(email, password);
+    }
+
+    public void invokeWS(final String email, final String password) {
         mProgressDialog = new ProgressDialog(this);
         mProgressDialog.setMessage(getResources().getString(R.string.please_wait));
         mProgressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
         mProgressDialog.setIndeterminate(true);
         mProgressDialog.show();
-        invokeWS(email, password);
-    }
-
-    public void invokeWS(final String email, final String password) {
         Thread threadA = new Thread() {
             public void run() {
                 CommonWSInvoke threadB = new CommonWSInvoke(getApplicationContext());
@@ -159,6 +166,7 @@ public class LoginActivity extends AppCompatActivity {
     private UserInfo setUserInfo(WebServiceResponse receivedJSONObject){
         UserInfo userInfo = new UserInfo();
         try {
+            userInfo.setmUserId(Integer.parseInt(receivedJSONObject.getmJsonObjectResponse().get("user_id").toString()));
             userInfo.setmEmail(receivedJSONObject.getmJsonObjectResponse().get("email").toString());
             userInfo.setmAccountType(receivedJSONObject.getmJsonObjectResponse().get("account_type").toString());
             userInfo.setmDob(receivedJSONObject.getmJsonObjectResponse().get("dob").toString());

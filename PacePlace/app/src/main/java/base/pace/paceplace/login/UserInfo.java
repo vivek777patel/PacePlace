@@ -5,6 +5,7 @@ import java.util.Date;
 
 public class UserInfo implements Serializable {
 
+    private int mUserId;
     private String mFirstName, mLastName, mEmail, mPassword, mContact, mDob;
     private String mGender,mGraduationType,mStudentType,mSubject,mStatus,mAccountType;
     private int mGenderInt,mGraduationTypeInt,mStudentTypeInt,mSubjectInt,mStatusInt,mAccountTypeInt;
@@ -197,5 +198,13 @@ public class UserInfo implements Serializable {
 
     public void setmAccountTypeInt(int mAccountTypeInt) {
         this.mAccountTypeInt = mAccountTypeInt;
+    }
+
+    public int getmUserId() {
+        return mUserId;
+    }
+
+    public void setmUserId(int mUserId) {
+        this.mUserId = mUserId;
     }
 }
