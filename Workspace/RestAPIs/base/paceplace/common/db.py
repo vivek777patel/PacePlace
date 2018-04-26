@@ -1,4 +1,4 @@
-MYSQL_DATABASE_USER = 'social'
-MYSQL_DATABASE_PASSWORD = 'password'
-MYSQL_DATABASE_DB = 'socialtraveler'
+MYSQL_DATABASE_USER = 'root'
+MYSQL_DATABASE_PASSWORD = 'JamesBond$007'
+MYSQL_DATABASE_DB = 'projectAndroid'
 MYSQL_DATABASE_HOST = 'localhost'
