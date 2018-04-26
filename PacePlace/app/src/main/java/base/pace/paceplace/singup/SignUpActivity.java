@@ -15,6 +15,8 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
@@ -62,6 +64,11 @@ public class SignUpActivity extends AppCompatActivity {
 
         mRegisterButton = findViewById(R.id.registerButton);
         mClearButton = findViewById(R.id.clearButton);
+
+        // JamesBond$007
+        //J jsonString = "{'GENDER': {'Male': 1, 'Female': 2}, 'STATUS': {'Active': 3, 'Inactive': 4}, 'ACCOUNT_TYPE': {'Student': 5, 'Professor': 6}, 'GRADUATION_TYPE': {'Graduate': 7}, 'SUBJECT': {'Computer Science': 8}, 'STUDENT_TYPE': {'International': 9}}";
+
+       // jsonString.
 
         configureGenderSpinner(mGenderSelectSpinner);
         configureGraduationSpinner(mGraduationTypeSpinner);
