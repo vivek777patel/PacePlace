@@ -87,6 +87,8 @@ public class CommonWSInvoke extends AsyncTask<String, Void, WebServiceResponse> 
                 inputJsonObject.put(PacePlaceConstants.LAST_NAME, params[5]);
                 inputJsonObject.put(PacePlaceConstants.MOBILE, params[6]);
                 inputJsonObject.put(PacePlaceConstants.DOB, params[7]);
+            } else if(inputParamsFor.equalsIgnoreCase(PacePlaceConstants.COURSES)){
+                inputJsonObject.put(PacePlaceConstants.USER_ID, params[2]);
             }
         } catch (JSONException e) {
             e.printStackTrace();
