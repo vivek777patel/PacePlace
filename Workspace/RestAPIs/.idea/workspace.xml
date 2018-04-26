@@ -2,18 +2,23 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="e5b4ec4c-18f6-48fe-9286-9d602f5e7014" name="Default" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/R_User_Library.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../PacePlace/app/src/main/res/drawable-hdpi/ic_move_to_next.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../PacePlace/app/src/main/res/drawable-mdpi/ic_move_to_next.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../PacePlace/app/src/main/res/drawable-xhdpi/ic_move_to_next.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../PacePlace/app/src/main/res/drawable-xxhdpi/ic_move_to_next.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../PacePlace/app/src/main/res/drawable-xxxhdpi/ic_move_to_next.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../PacePlace/app/src/main/res/mipmap-hdpi/ic_user_profile.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../PacePlace/app/src/main/res/mipmap-mdpi/ic_user_profile.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../PacePlace/app/src/main/res/mipmap-xhdpi/ic_user_profile.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../PacePlace/app/src/main/res/mipmap-xxhdpi/ic_user_profile.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../PacePlace/app/src/main/res/mipmap-xxxhdpi/ic_user_profile.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/base/paceplace/restapi/course_info.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../PacePlace/.idea/caches/build_file_checksums.ser" beforeDir="false" afterPath="$PROJECT_DIR$/../../PacePlace/.idea/caches/build_file_checksums.ser" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../PacePlace/.idea/vcs.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../PacePlace/app/src/main/java/base/pace/paceplace/singup/SignUpActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../PacePlace/app/src/main/java/base/pace/paceplace/singup/SignUpActivity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../PacePlace/app/src/main/java/base/pace/paceplace/HomeActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../PacePlace/app/src/main/java/base/pace/paceplace/HomeActivity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../PacePlace/app/src/main/java/base/pace/paceplace/util/PacePlaceConstants.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../PacePlace/app/src/main/java/base/pace/paceplace/util/PacePlaceConstants.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../PacePlace/app/src/main/res/layout/activity_home.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../PacePlace/app/src/main/res/layout/activity_home.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../PacePlace/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/../../PacePlace/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/RestAPIs.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/RestAPIs.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/base/app.py" beforeDir="false" afterPath="$PROJECT_DIR$/base/app.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/base/paceplace/common/static_info.py" beforeDir="false" afterPath="$PROJECT_DIR$/base/paceplace/common/static_info.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/base/paceplace/restapi/user_info.py" beforeDir="false" afterPath="$PROJECT_DIR$/base/paceplace/restapi/user_info.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/base/start.py" beforeDir="false" afterPath="$PROJECT_DIR$/base/start.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -23,7 +28,7 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="CoverageDataManager">
-    <SUITE FILE_PATH="coverage/RestAPIs$app.coverage" NAME="app Coverage Results" MODIFIED="1524710138095" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/base" />
+    <SUITE FILE_PATH="coverage/RestAPIs$app.coverage" NAME="app Coverage Results" MODIFIED="1524721370750" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/base" />
   </component>
   <component name="DatabaseView">
     <option name="SHOW_INTERMEDIATE" value="true" />
@@ -53,11 +58,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="db.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="db.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/base/paceplace/common/db.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="68">
-              <caret line="4" lean-forward="true" selection-start-line="4" selection-end-line="4" />
+              <caret line="4" selection-start-line="4" selection-end-line="4" />
             </state>
           </provider>
         </entry>
@@ -77,8 +82,20 @@
       <file leaf-file-name="user_info.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/base/paceplace/restapi/user_info.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="340">
-              <caret line="25" selection-start-line="25" selection-end-line="25" />
+            <state relative-caret-position="17">
+              <caret line="19" lean-forward="true" selection-start-line="19" selection-end-line="19" />
+              <folding>
+                <element signature="e#0#20#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="course_info.py" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/base/paceplace/restapi/course_info.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="472">
+              <caret line="47" column="18" selection-start-line="47" selection-start-column="18" selection-end-line="47" selection-end-column="18" />
               <folding>
                 <element signature="e#0#20#0" expanded="true" />
               </folding>
@@ -98,7 +115,7 @@
       <file leaf-file-name="start.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/base/start.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="85">
+            <state relative-caret-position="68">
               <caret line="7" column="20" selection-start-line="7" selection-start-column="20" selection-end-line="7" selection-end-column="20" />
               <folding>
                 <element signature="e#0#32#0" expanded="true" />
@@ -187,6 +204,13 @@
               <item name="paceplace" type="462c0819:PsiDirectoryNode" />
               <item name="common" type="462c0819:PsiDirectoryNode" />
             </path>
+            <path>
+              <item name="RestAPIs" type="b2602c69:ProjectViewProjectNode" />
+              <item name="RestAPIs" type="462c0819:PsiDirectoryNode" />
+              <item name="base" type="462c0819:PsiDirectoryNode" />
+              <item name="paceplace" type="462c0819:PsiDirectoryNode" />
+              <item name="restapi" type="462c0819:PsiDirectoryNode" />
+            </path>
           </expand>
           <select />
         </subPane>
@@ -264,7 +288,14 @@
       <option name="project" value="LOCAL" />
       <updated>1524717098847</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="Merged Code">
+      <created>1524717455127</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1524717455127</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -284,15 +315,15 @@
       <window_info id="Structure" order="2" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="0" side_tool="true" />
       <window_info anchor="bottom" id="Debug" order="9" weight="0.39749607" />
+      <window_info anchor="right" id="R Packages" order="3" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="11" weight="0.4" />
-      <window_info anchor="right" id="R Graphics" order="3" />
+      <window_info anchor="right" id="Commander" order="2" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="3" weight="0.25" />
-      <window_info anchor="right" id="R Packages" order="3" />
-      <window_info anchor="bottom" id="Find" order="7" />
+      <window_info anchor="right" id="R Graphics" order="3" />
       <window_info anchor="bottom" id="Message" order="6" />
       <window_info anchor="bottom" id="Cvs" order="10" weight="0.25" />
-      <window_info anchor="right" id="Commander" order="2" weight="0.4" />
+      <window_info anchor="bottom" id="Find" order="7" />
     </layout>
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -329,7 +360,8 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Commiting to get Vivek's code" />
-    <option name="LAST_COMMIT_MESSAGE" value="Commiting to get Vivek's code" />
+    <MESSAGE value="Merged Code" />
+    <option name="LAST_COMMIT_MESSAGE" value="Merged Code" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -362,16 +394,6 @@
     </expressions>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/base/app.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret column="23" selection-start-column="23" selection-end-column="23" />
-          <folding>
-            <element signature="e#0#23#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/base/paceplace/common/static_info.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="799">
@@ -762,7 +784,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/base/start.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="85">
+        <state relative-caret-position="68">
           <caret line="7" column="20" selection-start-line="7" selection-start-column="20" selection-end-line="7" selection-end-column="20" />
           <folding>
             <element signature="e#0#32#0" expanded="true" />
@@ -787,20 +809,30 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/base/paceplace/common/db.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="68">
+          <caret line="4" selection-start-line="4" selection-end-line="4" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/base/paceplace/restapi/user_info.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="340">
-          <caret line="25" selection-start-line="25" selection-end-line="25" />
+        <state relative-caret-position="17">
+          <caret line="19" lean-forward="true" selection-start-line="19" selection-end-line="19" />
           <folding>
             <element signature="e#0#20#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/base/paceplace/common/db.py">
+    <entry file="file://$PROJECT_DIR$/base/paceplace/restapi/course_info.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="68">
-          <caret line="4" lean-forward="true" selection-start-line="4" selection-end-line="4" />
+        <state relative-caret-position="472">
+          <caret line="47" column="18" selection-start-line="47" selection-start-column="18" selection-end-line="47" selection-end-column="18" />
+          <folding>
+            <element signature="e#0#20#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

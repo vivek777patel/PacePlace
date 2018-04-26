@@ -29,7 +29,7 @@ public class HomeActivity extends AppCompatActivity {
 
     private final String TAG = "HomeActivity";
 
-    ImageView mHomeImageView, mEventImageView, mLogoutImageView;
+    ImageView mHomeImageView, mEventImageView, mUserProfileImageView, mLogoutImageView;
     private int mPrimaryColor, mWhiteColor;
     private int mSelectedMenu = 1;
     ArrayList<CourseDetail> mCourseList;
@@ -55,6 +55,9 @@ public class HomeActivity extends AppCompatActivity {
                 break;
             case 2:
                 setTitle(R.string.events);
+                break;
+            case 3:
+                setTitle(R.string.user_registration);
                 break;
         }
 
@@ -122,7 +125,7 @@ public class HomeActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (mSelectedMenu != 1) {
-                    setColorsToMenu(mPrimaryColor, mWhiteColor, mWhiteColor);
+                    setColorsToMenu(mPrimaryColor, mWhiteColor, mWhiteColor, mWhiteColor);
                     // TODO : Call the webservice to get course list
                     CourseListFragment courseListFragment = new CourseListFragment();
                     Bundle bundle = new Bundle();
@@ -137,7 +140,7 @@ public class HomeActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (mSelectedMenu != 2) {
-                    setColorsToMenu(mWhiteColor, mPrimaryColor, mWhiteColor);
+                    setColorsToMenu(mWhiteColor, mPrimaryColor, mWhiteColor, mWhiteColor);
                     // TODO : Call the webservice to get event list
                     mSelectedMenu = 2;
                 }
@@ -147,9 +150,9 @@ public class HomeActivity extends AppCompatActivity {
         mLogoutImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (mSelectedMenu != 3) {
-                    setColorsToMenu(mWhiteColor, mWhiteColor, mPrimaryColor);
-                    mSelectedMenu = 3;
+                if (mSelectedMenu != 4) {
+                    setColorsToMenu(mWhiteColor, mWhiteColor, mWhiteColor, mPrimaryColor);
+                    mSelectedMenu = 4;
                 }
                 Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
                 intent.putExtra(PacePlaceConstants.LOGIN_ACTIVITY_MESSAGE, PacePlaceConstants.LOGOUT);
@@ -158,15 +161,17 @@ public class HomeActivity extends AppCompatActivity {
         });
     }
 
-    private void setColorsToMenu(int homeColor, int eventColor, int logoutColor) {
+    private void setColorsToMenu(int homeColor, int eventColor, int userProfileColor,int logoutColor) {
         mHomeImageView.setColorFilter(homeColor);
         mEventImageView.setColorFilter(eventColor);
+        mUserProfileImageView.setColorFilter(userProfileColor);
         mLogoutImageView.setColorFilter(logoutColor);
     }
 
     private void setViews() {
         mHomeImageView = findViewById(R.id.homeImageView);
         mEventImageView = findViewById(R.id.eventImageView);
+        mUserProfileImageView = findViewById(R.id.userProfileImageView);
         mLogoutImageView = findViewById(R.id.logoutImageView);
     }
 
