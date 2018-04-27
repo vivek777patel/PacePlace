@@ -11,7 +11,10 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
+import org.json.JSONStringer;
 
 import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
@@ -32,7 +35,7 @@ public class HomeActivity extends AppCompatActivity {
     ImageView mHomeImageView, mEventImageView, mUserProfileImageView, mLogoutImageView;
     private int mPrimaryColor, mWhiteColor;
     private int mSelectedMenu = 1;
-    ArrayList<CourseDetail> mCourseList;
+    ArrayList<CourseDetail> mCourseList = new ArrayList<>();
     private UserInfo mLoggedInUserInfo;
     ProgressDialog mProgressDialog;
 
@@ -62,12 +65,10 @@ public class HomeActivity extends AppCompatActivity {
         }
 
         setViews();
-//        setFragment();
         setOnClickListeners();
     }
 
     private void setCourseDetails() {
-        /*Log.i(TAG,"SSSSS : "+mLoggedInUserInfo.getmEmail());*/
         mProgressDialog = new ProgressDialog(this);
         mProgressDialog.setMessage(getResources().getString(R.string.please_wait));
         mProgressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
@@ -87,23 +88,28 @@ public class HomeActivity extends AppCompatActivity {
                     @Override
                     public void run() {
                         Log.i(TAG, "Response is: " + receivedJSONObject);
-                        if (null != receivedJSONObject) {
+                        if (receivedJSONObject != null) {
                             if (receivedJSONObject.getmResponse()) {
-                                Log.i(TAG,"In getting response");
-                                setFragment();
-                                    /*generateToastMessage(R.string.login_success);
-                                    UserInfo userInfo = setUserInfo(receivedJSONObject);
-                                    ArrayList<CourseDetail> mCourseList = new ArrayList<>();
-                                    mCourseList.add(new CourseDetail("Algo", "Ratings:-4/4","Suzzana","Ratings:-4/4","Wenesday","6pm - 9pm",
-                                            "163 William Street", "Room:1420","Sept,6 2017","Dec,20 2017"));
-                                    mCourseList.add(new CourseDetail("Mobile Web Content","Ratings:-4/4","Haik","Ratings:-4/4","Wenesday","6pm - 9pm",
-                                            "163 William Street", "Room:1420","Sept,6 2017","Dec,20 2017"));
-                                    mCourseList.add(new CourseDetail("Project 1","Ratings:-3/4","Yuri","Ratings:-3/4","Wenesday","6pm - 9pm",
-                                            "163 William Street", "Room:1420","Sept,6 2017","Dec,20 2017"));
-                                    Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
-                                    intent.putExtra(PacePlaceConstants.USER_INFO, userInfo);
-                                    intent.putExtra(PacePlaceConstants.COURSE_LIST, mCourseList);
-                                    startActivity(intent);*/
+                                Log.i(TAG, "In getting response");
+                                // TODO : Set mCourseList variable before calling setDefaultCourseDetailFragment()
+                                try {
+                                    JSONArray courseDetailsJsonArray = receivedJSONObject.getmJsonArrayResponse();
+                                    if (courseDetailsJsonArray != null) {
+                                        for (int i = 0; i < courseDetailsJsonArray.length(); i++) {
+                                            JSONObject obj = courseDetailsJsonArray.getJSONObject(i);
+                                            //CourseDetail cd = setCourseDetailsFromResponse(obj);
+                                            mCourseList.add(setCourseDetailsFromResponse(obj));
+                                        }
+                                    } else {
+                                        // No data found
+                                        generateToastMessage(R.string.course_no_data_found);
+                                    }
+
+                                    setDefaultCourseDetailFragment();
+                                } catch (JSONException e) {
+                                    generateToastMessage(R.string.course_issue_in_response_json);
+                                    e.printStackTrace();
+                                }
                             } else {
                                 generateToastMessage(R.string.login_failed);
                             }
@@ -161,7 +167,7 @@ public class HomeActivity extends AppCompatActivity {
         });
     }
 
-    private void setColorsToMenu(int homeColor, int eventColor, int userProfileColor,int logoutColor) {
+    private void setColorsToMenu(int homeColor, int eventColor, int userProfileColor, int logoutColor) {
         mHomeImageView.setColorFilter(homeColor);
         mEventImageView.setColorFilter(eventColor);
         mUserProfileImageView.setColorFilter(userProfileColor);
@@ -175,9 +181,7 @@ public class HomeActivity extends AppCompatActivity {
         mLogoutImageView = findViewById(R.id.logoutImageView);
     }
 
-    private void setFragment() {
-        Intent intent = getIntent();
-        mCourseList = (ArrayList<CourseDetail>) intent.getSerializableExtra(PacePlaceConstants.COURSE_LIST);
+    private void setDefaultCourseDetailFragment() {
         CourseListFragment courseListFragment = new CourseListFragment();
         Bundle bundle = new Bundle();
         mHomeImageView.setColorFilter(mPrimaryColor);
@@ -185,6 +189,35 @@ public class HomeActivity extends AppCompatActivity {
         courseListFragment.setArguments(bundle);
         getFragmentManager().beginTransaction().add(R.id.home_fagement_view_RL, courseListFragment).commit();
     }
+
+    private CourseDetail setCourseDetailsFromResponse(JSONObject jsonObject){
+        return new CourseDetail(
+                jsonObject.optString("course_name"),
+                jsonObject.opt("course_rating")!=null?jsonObject.optString("course_rating"):"",
+                jsonObject.optString("firstname"),
+                "0", // Prof Rating
+                jsonObject.optString("si_cd_course_day.static_combo_value"),
+                jsonObject.optString("course_time"),
+                jsonObject.optString("location_name"),
+                "Room : 007",
+                jsonObject.optString("course_startdate"),
+                jsonObject.optString("course_enddate"),
+                jsonObject.optString("address_line1"),
+                jsonObject.optString("city"),
+                jsonObject.optString("course_desc"),
+                jsonObject.optString("email"),
+                jsonObject.optString("si_ci_graduation_type.static_combo_value"),
+                jsonObject.optString("si_ci_subject.static_combo_value"),
+                jsonObject.optString("static_combo_value"),
+
+                jsonObject.opt("course_day")!=null?jsonObject.optInt("course_day"):0,
+                jsonObject.opt("credit")!=null?jsonObject.optInt("credit"):0,
+                jsonObject.opt("number_of_raters")!=null?jsonObject.optInt("number_of_raters"):0,
+                jsonObject.opt("seat_available")!=null?jsonObject.optInt("seat_available"):0,
+                jsonObject.opt("seat_capacity")!=null?jsonObject.optInt("seat_capacity"):0
+        );
+    }
+
 
     // To generate Toast message
     private void generateToastMessage(int id) {

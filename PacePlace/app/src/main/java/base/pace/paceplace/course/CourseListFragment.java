@@ -14,12 +14,9 @@ import java.util.ArrayList;
 import base.pace.paceplace.R;
 import base.pace.paceplace.util.PacePlaceConstants;
 
-public class CourseListFragment extends Fragment{
+public class CourseListFragment extends Fragment {
 
     public static final String TAG = "CourseListFragment";
-    /*TextView mCourseNameTextView,mCourseProfessorTextView,mCourseDayTextView,
-            mCourseTimeTextView,mCourseAddressTextView,mCourseRoomTextView,
-            mCourseStartDateTextView,mCourseEndDateTextView;*/
 
     CourseListViewAdapter mAdapter;
     ArrayList<CourseDetail> mCourseLists = new ArrayList<>();
@@ -29,10 +26,8 @@ public class CourseListFragment extends Fragment{
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup vg,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.courses_fragement , vg, false);
-
+        View view = inflater.inflate(R.layout.courses_fragement, vg, false);
         mListView = view.findViewById(R.id.coursesListView);
-
         return view;
     }
 

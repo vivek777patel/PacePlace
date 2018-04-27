@@ -5,6 +5,8 @@
     <string name="user_courses">User Courses</string>
     <string name="events">Events</string>
 
+    <string name="course_no_data_found">No course data found</string>
+    <string name="course_issue_in_response_json">Issue in response JSON</string>
     <string name="enter_username">Email ID</string>
     <string name="enter_password">Password</string>
     <string name="btn_login_txt">Sign In</string>

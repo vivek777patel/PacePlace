@@ -5,48 +5,52 @@
     android:background="@color/colorAccent">
 
     <RelativeLayout
+        android:id="@+id/home_fagement_view_RL"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@+id/home_toolbar"
-        android:background="@color/colorAccent"
-        android:id="@+id/home_fagement_view_RL">
+        android:background="@color/colorAccent">
 
     </RelativeLayout>
 
     <LinearLayout
+        android:id="@+id/home_toolbar"
         android:layout_width="match_parent"
         android:layout_height="@dimen/home_toolbar_height"
-        android:id="@+id/home_toolbar"
-        android:background="@drawable/border"
-        android:layout_alignParentBottom="true">
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/border">
+
         <ImageView
             android:id="@+id/homeImageView"
             android:layout_width="wrap_content"
             android:layout_height="40dp"
-            android:src="@mipmap/ic_home"
             android:layout_gravity="center"
-            android:layout_weight="1"/>
+            android:layout_weight="1"
+            android:src="@mipmap/ic_home" />
+
         <ImageView
             android:id="@+id/eventImageView"
             android:layout_width="wrap_content"
             android:layout_height="40dp"
             android:layout_gravity="center"
-            android:src="@mipmap/ic_event"
-            android:layout_weight="1"/>
+            android:layout_weight="1"
+            android:src="@mipmap/ic_event" />
+
         <ImageView
             android:id="@+id/userProfileImageView"
             android:layout_width="wrap_content"
             android:layout_height="40dp"
             android:layout_gravity="center"
-            android:src="@mipmap/ic_user_profile"
-            android:layout_weight="1"/>
+            android:layout_weight="1"
+            android:src="@mipmap/ic_user_profile" />
+
         <ImageView
             android:id="@+id/logoutImageView"
             android:layout_width="wrap_content"
             android:layout_height="40dp"
             android:layout_gravity="center"
-            android:src="@mipmap/ic_logout"
-            android:layout_weight="1"/>
+            android:layout_weight="1"
+            android:src="@mipmap/ic_logout" />
 
     </LinearLayout>
 </RelativeLayout>

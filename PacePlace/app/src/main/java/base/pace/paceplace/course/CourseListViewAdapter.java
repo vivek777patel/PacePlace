@@ -59,9 +59,9 @@ public class CourseListViewAdapter extends BaseAdapter {
 
         CourseDetail courseInfo = (CourseDetail) getItem(position);
         viewHolder.mCourseNameTextView.setText(courseInfo.getmCourseName());
-        viewHolder.mCourseRatingsTextView.setText(courseInfo.mCourseRatings);
+        viewHolder.mCourseRatingsTextView.setText(courseInfo.getmCourseRatings());
         viewHolder.mCourseProfessorTextView.setText(courseInfo.getmCourseProfessor());
-        viewHolder.mCourseProfRatingsTextView.setText(courseInfo.mCourseProfRatings);
+        viewHolder.mCourseProfRatingsTextView.setText(courseInfo.getmCourseProfRatings());
         viewHolder.mCourseDayTextView.setText(courseInfo.getmCourseDay());
         viewHolder.mCourseTimeTextView.setText(courseInfo.getmCourseTime());
         viewHolder.mCourseAddressTextView.setText(courseInfo.getmCourseAddress());

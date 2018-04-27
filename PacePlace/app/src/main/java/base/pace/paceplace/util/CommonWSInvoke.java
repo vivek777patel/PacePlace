@@ -9,6 +9,7 @@ import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.RequestFuture;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -35,6 +36,7 @@ public class CommonWSInvoke extends AsyncTask<String, Void, WebServiceResponse> 
     @Override
     protected WebServiceResponse doInBackground(String... params) {
         JSONObject outputJsonObject, outputDataJsonObject = new JSONObject();
+        JSONArray outputDataJsonArray;
         JSONObject inputJsonObject = inputParams(params);
 
         final RequestFuture<JSONObject> futureRequest = RequestFuture.newFuture();
@@ -50,10 +52,16 @@ public class CommonWSInvoke extends AsyncTask<String, Void, WebServiceResponse> 
             Boolean outputResponse = Boolean.FALSE;
             if (outputJsonObject.length() > 0) {
                 outputResponse = (Boolean) outputJsonObject.get(PacePlaceConstants.RESPONSE);
-                if (null != outputJsonObject.get(PacePlaceConstants.DATA) && !"null".equalsIgnoreCase(outputJsonObject.get(PacePlaceConstants.DATA).toString()))
-                    outputDataJsonObject = (JSONObject) outputJsonObject.get(PacePlaceConstants.DATA);
-                else
-                    outputDataJsonObject = new JSONObject();
+                if (null != outputJsonObject.get(PacePlaceConstants.DATA) && !"null".equalsIgnoreCase(outputJsonObject.get(PacePlaceConstants.DATA).toString())) {
+                    if (outputJsonObject.get(PacePlaceConstants.DATA) instanceof JSONObject)
+                        outputDataJsonObject = (JSONObject) outputJsonObject.get(PacePlaceConstants.DATA);
+                    else {
+                        outputDataJsonArray = (JSONArray) outputJsonObject.get(PacePlaceConstants.DATA);
+                        mWsr = new WebServiceResponse(outputResponse, outputDataJsonArray);
+                        return mWsr;
+                    }
+                } /*else
+                    outputDataJsonObject = new JSONObject();*/
             }
 
             mWsr = new WebServiceResponse(outputResponse, outputDataJsonObject);
@@ -87,7 +95,7 @@ public class CommonWSInvoke extends AsyncTask<String, Void, WebServiceResponse> 
                 inputJsonObject.put(PacePlaceConstants.LAST_NAME, params[5]);
                 inputJsonObject.put(PacePlaceConstants.MOBILE, params[6]);
                 inputJsonObject.put(PacePlaceConstants.DOB, params[7]);
-            } else if(inputParamsFor.equalsIgnoreCase(PacePlaceConstants.COURSES)){
+            } else if (inputParamsFor.equalsIgnoreCase(PacePlaceConstants.COURSES)) {
                 inputJsonObject.put(PacePlaceConstants.USER_ID, params[2]);
             }
         } catch (JSONException e) {
