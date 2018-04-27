@@ -36,4 +36,14 @@
     <string name="enter_contact">Contact (---)--- ----</string>
     <string name="enter_dob">DOB(YYYY-MM-DD)</string>
     <string name="link_arrow"><![CDATA[>]]></string>
+
+    <!-- Course Details String Resources -->
+    <string name="course_rating">Course Ratings : %s/5</string>
+    <string name="course_credit">Credit : %s</string>
+    <string name="course_professor">Professor : %s</string>
+    <string name="course_professor_ratings">Professor Ratings : %s/5</string>
+    <string name="course_day">Day : %s</string>
+    <string name="course_time">Time : %s</string>
+    <string name="course_start">Start : %s</string>
+    <string name="course_end">End : %s</string>
 </resources>

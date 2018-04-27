@@ -58,16 +58,17 @@ public class CourseListViewAdapter extends BaseAdapter {
             viewHolder = (ViewHolder)convertView.getTag();  //reusing item/ViewHolder
 
         CourseDetail courseInfo = (CourseDetail) getItem(position);
+        //Log.i(TAG, "SSSSSS"+  mContext.getResources().getString(R.string.course_rating,courseInfo.getmCourseRatings()));
         viewHolder.mCourseNameTextView.setText(courseInfo.getmCourseName());
-        viewHolder.mCourseRatingsTextView.setText(courseInfo.getmCourseRatings());
-        viewHolder.mCourseProfessorTextView.setText(courseInfo.getmCourseProfessor());
-        viewHolder.mCourseProfRatingsTextView.setText(courseInfo.getmCourseProfRatings());
-        viewHolder.mCourseDayTextView.setText(courseInfo.getmCourseDay());
-        viewHolder.mCourseTimeTextView.setText(courseInfo.getmCourseTime());
+        viewHolder.mCourseRatingsTextView.setText(mContext.getResources().getString(R.string.course_rating,courseInfo.getmCourseRatings()));
+        viewHolder.mCourseProfessorTextView.setText(mContext.getResources().getString(R.string.course_professor,courseInfo.getmCourseProfessor()));
+        viewHolder.mCourseProfRatingsTextView.setText(mContext.getResources().getString(R.string.course_professor_ratings,courseInfo.getmCourseProfRatings()));
+        viewHolder.mCourseDayTextView.setText(mContext.getResources().getString(R.string.course_day,courseInfo.getmCourseDay()));
+        viewHolder.mCourseTimeTextView.setText(mContext.getResources().getString(R.string.course_time,courseInfo.getmCourseTime()));
         viewHolder.mCourseAddressTextView.setText(courseInfo.getmCourseAddress());
         viewHolder.mCourseRoomTextView.setText(courseInfo.getmCourseRoom());
-        viewHolder.mCourseStartDateTextView.setText(courseInfo.getmCourseStartDate());
-        viewHolder.mCourseEndDateTextView.setText(courseInfo.getmCourseEndDate());
+        viewHolder.mCourseStartDateTextView.setText(mContext.getResources().getString(R.string.course_start,courseInfo.getmCourseStartDate()));
+        viewHolder.mCourseEndDateTextView.setText(mContext.getResources().getString(R.string.course_end,courseInfo.getmCourseEndDate()));
         viewHolder.mCourseNameTextView.setTag(courseInfo);
 
         return convertView;
