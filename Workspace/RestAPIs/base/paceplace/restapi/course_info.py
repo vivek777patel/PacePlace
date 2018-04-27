@@ -36,7 +36,7 @@ def get_user_courses():
     response = True
 
     query = """
-        SELECT cd.course_day, cd.course_startdate, cd.course_enddate, cd.course_time,cd.seat_available,cd.seat_capacity,
+        SELECT cd.course_day, DATE_FORMAT(cd.course_startdate,'%b %d, %Y') as course_startdate, DATE_FORMAT(cd.course_enddate,'%b %d, %Y') as course_enddate, cd.course_time,cd.seat_available,cd.seat_capacity,
         ci.course_name, ci.course_desc, IFNULL(ci.course_rating,0) as course_rating, IFNULL(ci.number_of_raters,0) as number_of_raters, ci.credit,
         li.location_name, li.address_line1, li.city,
         ui.firstname, ui.email,
