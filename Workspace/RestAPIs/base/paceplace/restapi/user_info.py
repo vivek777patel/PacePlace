@@ -22,8 +22,8 @@ def get_user(query=None):
     if query is None:
         return
 
+    connection = my_connection
     try:
-        connection = my_connection
 
         with connection.cursor() as cursor:
             cursor.execute(query)
@@ -31,7 +31,6 @@ def get_user(query=None):
             result = {}
             result = cursor.fetchone()
     finally:
-        # connection.close()
         connection.cursor().close()
     if result is None:
         print('no data')
@@ -159,12 +158,15 @@ def add_user():
             cursor.execute(sql, (first_name, last_name, user_name, dob, mobile, password, status_id, gender,
                                  account_type, graduation_type, subject, student_type))
         connection.commit()
+        response = True
         # print("Executing Query 2")
     except Exception as e:
         print("Exeception occurred :{}".format(e))
         connection.cursor().close()
-        return jsonify({})
+        response = False
+        return jsonify({"RESPONSE": response, "DATA": {"DATA": "Exception in User Registration"}})
     finally:
         # connection.close()
         connection.cursor().close()
-    return jsonify({"data": "Data saved successfully"})
+    print("User Registration successful")
+    return jsonify({"RESPONSE": response, "DATA": {"DATA": "User Registered successfully"}})
