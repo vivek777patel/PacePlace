@@ -19,10 +19,12 @@
             </intent-filter>
         </activity>
         <activity android:name=".singup.SignUpActivity"
-            android:parentActivityName=".LoginActivity">
+            android:parentActivityName=".LoginActivity"
+            android:configChanges="orientation">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".LoginActivity" />
+                android:value=".LoginActivity"
+                />
 
         </activity>
         <activity android:name=".HomeActivity" />

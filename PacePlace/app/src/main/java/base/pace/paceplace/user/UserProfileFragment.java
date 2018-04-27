@@ -18,6 +18,8 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
@@ -37,11 +39,35 @@ public class UserProfileFragment extends Fragment{
     Button mRegisterButton, mClearButton;
     ProgressDialog mProgressDialog;
     AppCompatSpinner mGenderSelectSpinner,mAccountTypeSpinner, mGraduationTypeSpinner, mSubjectSelectSpinner, mStudentTypeSpinner;
-
+    Map<String,ArrayList<String>> mStaticInfo = new HashMap<>();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup vg,
                              Bundle savedInstanceState) {
+
+        ArrayList<String> gender = new ArrayList<>();
+        gender.add("Male");
+        gender.add("Female");
+        mStaticInfo.put(PacePlaceConstants.GENDER,gender);
+        ArrayList<String> gradType = new ArrayList<>();
+        gradType.add("Bachelors");
+        gradType.add("Masters");
+        gradType.add("Doctorate");
+        mStaticInfo.put(PacePlaceConstants.GRADUATION_TYPE,gradType);
+        ArrayList<String> accnt_type = new ArrayList<>();
+        accnt_type.add("Student");
+        accnt_type.add("Professor");
+        mStaticInfo.put(PacePlaceConstants.ACCOUNT_TYPE,accnt_type);
+        ArrayList<String> studntType = new ArrayList<>();
+        studntType.add("Local");
+        studntType.add("International");
+        mStaticInfo.put(PacePlaceConstants.STUDENT_TYPE,studntType);
+        ArrayList<String>  sbjct= new ArrayList<>();
+        sbjct.add("Computer Science");
+        sbjct.add("Master in Business Adminstration");
+        sbjct.add("Information System");
+        mStaticInfo.put(PacePlaceConstants.SUBJECT,sbjct);
+
         View view = inflater.inflate(R.layout.fragment_user_profile, vg, false);
         mEmailEditText = view.findViewById(R.id.emailEditText);
         mPasswordEditText = view.findViewById(R.id.passEditText);
@@ -59,72 +85,23 @@ public class UserProfileFragment extends Fragment{
         mRegisterButton = view.findViewById(R.id.registerButton);
         mClearButton = view.findViewById(R.id.clearButton);
 
-        configureGenderSpinner(mGenderSelectSpinner);
-        configureGraduationSpinner(mGraduationTypeSpinner);
-        configureAccountTypeSpinner(mAccountTypeSpinner);
-        configureSubjectSelectSpinner(mSubjectSelectSpinner);
-        configureStudentTypeSpinner(mStudentTypeSpinner);
+        configureSpinner(mGenderSelectSpinner,PacePlaceConstants.GENDER);
+        configureSpinner(mGraduationTypeSpinner,PacePlaceConstants.GRADUATION_TYPE);
+        configureSpinner(mAccountTypeSpinner,PacePlaceConstants.ACCOUNT_TYPE);
+        configureSpinner(mSubjectSelectSpinner,PacePlaceConstants.SUBJECT);
+        configureSpinner(mStudentTypeSpinner,PacePlaceConstants.STUDENT_TYPE);
 
         return view;
     }
-
-    public void configureStudentTypeSpinner(AppCompatSpinner studentTypeSpinner) {
-        ArrayList<String> list = new ArrayList<>();
-        list.add("Select Student Type");
-        list.add("Local");
-        list.add("International");
+        public void configureSpinner(AppCompatSpinner studentTypeSpinner,String typeSpinner) {
+        ArrayList<String> list = mStaticInfo.get(typeSpinner);
         ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(getActivity(),
                 R.layout.spinner_layout, list);
         dataAdapter.setDropDownViewResource(R.layout.spinner_layout);
         studentTypeSpinner.setAdapter(dataAdapter);
     }
 
-    public void configureSubjectSelectSpinner(AppCompatSpinner subjectSelectSpinner) {
-        ArrayList<String> list = new ArrayList<>();
-        list.add("Select Subject");
-        list.add("Computer Science");
-        list.add("Master in Business Adminstration");
-        list.add("Information System");
-        ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(getActivity(),
-                R.layout.spinner_layout, list);
 
-        dataAdapter.setDropDownViewResource(R.layout.spinner_layout);
-        subjectSelectSpinner.setAdapter(dataAdapter);
-    }
-
-    public void configureAccountTypeSpinner(AppCompatSpinner accountTypeSpinner) {
-        ArrayList<String> list = new ArrayList<>();
-        list.add("Select Account Type");
-        list.add("Student");
-        list.add("Professor");
-        ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(getActivity(),
-                R.layout.spinner_layout,list);
-        dataAdapter.setDropDownViewResource(R.layout.spinner_layout);
-        accountTypeSpinner.setAdapter(dataAdapter);
-    }
-
-    public void configureGraduationSpinner(AppCompatSpinner graduationTypeSpinner) {
-        ArrayList<String> list = new ArrayList<>();
-        list.add("Select Graduation");
-        list.add("Bachelors");
-        list.add("Masters");
-        list.add("Doctorate");
-        ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(getActivity(),
-                R.layout.spinner_layout, list);
-        dataAdapter.setDropDownViewResource(R.layout.spinner_layout);
-        graduationTypeSpinner.setAdapter(dataAdapter);
-    }
-
-    public void configureGenderSpinner(AppCompatSpinner genderSelectSpinner) {
-        ArrayList<String> list = new ArrayList<>();
-        list.add("Select Gender");
-        list.add("Female");
-        list.add("Male");
-        ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(getActivity(),
-                R.layout.spinner_layout, list);
-        dataAdapter.setDropDownViewResource(R.layout.spinner_layout);
-        genderSelectSpinner.setAdapter(dataAdapter);
-    }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
