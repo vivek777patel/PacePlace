@@ -39,6 +39,7 @@ public class UserProfileFragment extends Fragment{
     Button mRegisterButton, mClearButton;
     ProgressDialog mProgressDialog;
     AppCompatSpinner mGenderSelectSpinner,mAccountTypeSpinner, mGraduationTypeSpinner, mSubjectSelectSpinner, mStudentTypeSpinner;
+    //adding map for datad
     Map<String,ArrayList<String>> mStaticInfo = new HashMap<>();
 
     @Override
