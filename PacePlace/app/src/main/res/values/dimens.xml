@@ -22,5 +22,6 @@
     <dimen name="home_toolbar_height">55dp</dimen>
     <dimen name="border_width">2dp</dimen>
     <dimen name="arrow_txt_size">23sp</dimen>
+    <dimen name="course_text_size">25sp</dimen>
 
 </resources>
