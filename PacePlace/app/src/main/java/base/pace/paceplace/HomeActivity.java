@@ -214,7 +214,10 @@ public class HomeActivity extends AppCompatActivity {
                 jsonObject.opt("credit")!=null?jsonObject.optInt("credit"):0,
                 jsonObject.opt("number_of_raters")!=null?jsonObject.optInt("number_of_raters"):0,
                 jsonObject.opt("seat_available")!=null?jsonObject.optInt("seat_available"):0,
-                jsonObject.opt("seat_capacity")!=null?jsonObject.optInt("seat_capacity"):0
+                jsonObject.opt("seat_capacity")!=null?jsonObject.optInt("seat_capacity"):0,
+                0,//number_of_prof_raters
+                "0",//STUDENT_COURSE_RATINGS
+                "0"//STUDENT_PROF_COURSE_RATINGS
         );
     }
 

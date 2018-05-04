@@ -1,14 +1,20 @@
 package base.pace.paceplace.course;
 
+import android.app.ActionBar;
 import android.content.Context;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import java.util.List;
 
+import base.pace.paceplace.HomeActivity;
 import base.pace.paceplace.R;
 
 public class CourseListViewAdapter extends BaseAdapter {
@@ -17,9 +23,10 @@ public class CourseListViewAdapter extends BaseAdapter {
     View.OnClickListener mClickListener;
     private static final String TAG = "CourseListViewAdapter";
 
-    public CourseListViewAdapter(Context context, List<CourseDetail> courseInfoList){
+    public CourseListViewAdapter(Context context, List<CourseDetail> courseInfoList, View.OnClickListener itemClickListener){
         mContext = context;
         mCourseInfoList = courseInfoList;
+        mClickListener = itemClickListener;
     }
 
     @Override
@@ -52,7 +59,9 @@ public class CourseListViewAdapter extends BaseAdapter {
                     (TextView) convertView.findViewById(R.id.list_item_lec_course_room),
                     (TextView) convertView.findViewById(R.id.list_item_lec_course_start_date),
                     (TextView) convertView.findViewById(R.id.list_item_lec_course_end_date)); // creating new item/ViewHolder
+
             convertView.setTag(viewHolder);
+
         }
         else
             viewHolder = (ViewHolder)convertView.getTag();  //reusing item/ViewHolder
@@ -69,8 +78,9 @@ public class CourseListViewAdapter extends BaseAdapter {
         viewHolder.mCourseRoomTextView.setText(courseInfo.getmCourseRoom());
         viewHolder.mCourseStartDateTextView.setText(mContext.getResources().getString(R.string.course_start,courseInfo.getmCourseStartDate()));
         viewHolder.mCourseEndDateTextView.setText(mContext.getResources().getString(R.string.course_end,courseInfo.getmCourseEndDate()));
-        viewHolder.mCourseNameTextView.setTag(courseInfo);
+        viewHolder.mCourseNameTextView.setTag(position);
 
+        viewHolder.mCourseNameTextView.setOnClickListener(mClickListener);
         return convertView;
     }
 
@@ -95,4 +105,6 @@ public class CourseListViewAdapter extends BaseAdapter {
             mCourseEndDateTextView = courseEndDateTextView;
         }
     }
+
+
 }

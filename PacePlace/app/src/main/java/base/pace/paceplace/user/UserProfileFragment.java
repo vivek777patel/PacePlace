@@ -31,44 +31,43 @@ import base.pace.paceplace.util.CommonWSInvoke;
 import base.pace.paceplace.util.PacePlaceConstants;
 import base.pace.paceplace.util.WebServiceResponse;
 
-public class UserProfileFragment extends Fragment {
+public class UserProfileFragment extends Fragment{
 
     public static final String TAG = "UserProfileFragment";
 
     AppCompatEditText mFirstNameEditText, mLastNameEditText, mEmailEditText, mPasswordEditText, mContactEditText, mDobEditText, mConfirmPasswordEditText;
     Button mRegisterButton, mClearButton;
     ProgressDialog mProgressDialog;
-    AppCompatSpinner mGenderSelectSpinner, mAccountTypeSpinner, mGraduationTypeSpinner, mSubjectSelectSpinner, mStudentTypeSpinner;
+    AppCompatSpinner mGenderSelectSpinner,mAccountTypeSpinner, mGraduationTypeSpinner, mSubjectSelectSpinner, mStudentTypeSpinner;
     //adding map for datad
-    Map<String, ArrayList<String>> mStaticInfo = new HashMap<>();
+    Map<String,ArrayList<String>> mStaticInfo = new HashMap<>();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup vg,
                              Bundle savedInstanceState) {
 
-        // Hardcoded temporary basis map will be filled with a rest to static_info table
         ArrayList<String> gender = new ArrayList<>();
         gender.add("Male");
         gender.add("Female");
-        mStaticInfo.put(PacePlaceConstants.GENDER, gender);
+        mStaticInfo.put(PacePlaceConstants.GENDER,gender);
         ArrayList<String> gradType = new ArrayList<>();
         gradType.add("Bachelors");
         gradType.add("Masters");
         gradType.add("Doctorate");
-        mStaticInfo.put(PacePlaceConstants.GRADUATION_TYPE, gradType);
+        mStaticInfo.put(PacePlaceConstants.GRADUATION_TYPE,gradType);
         ArrayList<String> accnt_type = new ArrayList<>();
         accnt_type.add("Student");
         accnt_type.add("Professor");
-        mStaticInfo.put(PacePlaceConstants.ACCOUNT_TYPE, accnt_type);
+        mStaticInfo.put(PacePlaceConstants.ACCOUNT_TYPE,accnt_type);
         ArrayList<String> studntType = new ArrayList<>();
         studntType.add("Local");
         studntType.add("International");
-        mStaticInfo.put(PacePlaceConstants.STUDENT_TYPE, studntType);
-        ArrayList<String> sbjct = new ArrayList<>();
+        mStaticInfo.put(PacePlaceConstants.STUDENT_TYPE,studntType);
+        ArrayList<String>  sbjct= new ArrayList<>();
         sbjct.add("Computer Science");
         sbjct.add("Master in Business Adminstration");
         sbjct.add("Information System");
-        mStaticInfo.put(PacePlaceConstants.SUBJECT, sbjct);
+        mStaticInfo.put(PacePlaceConstants.SUBJECT,sbjct);
 
         View view = inflater.inflate(R.layout.fragment_user_profile, vg, false);
         mEmailEditText = view.findViewById(R.id.emailEditText);
@@ -79,7 +78,7 @@ public class UserProfileFragment extends Fragment {
         mContactEditText = view.findViewById(R.id.contactEditText);
         mDobEditText = view.findViewById(R.id.dobEditText);
         mGenderSelectSpinner = view.findViewById(R.id.genderSpinnerSelect);
-        mGraduationTypeSpinner = view.findViewById(R.id.graduationTypeSpinnerSelect);
+        mGraduationTypeSpinner = view.findViewById(R.id.graduationTypeSpinnerSelect) ;
         mAccountTypeSpinner = view.findViewById(R.id.accountTypeSpinnerSelect);
         mSubjectSelectSpinner = view.findViewById(R.id.subjecTypeSpinnerSelect);
         mStudentTypeSpinner = view.findViewById(R.id.studentTypeSpinnerSelect);
@@ -87,25 +86,22 @@ public class UserProfileFragment extends Fragment {
         mRegisterButton = view.findViewById(R.id.registerButton);
         mClearButton = view.findViewById(R.id.clearButton);
 
-        configureSpinner(mGenderSelectSpinner, PacePlaceConstants.GENDER);
-        configureSpinner(mGraduationTypeSpinner, PacePlaceConstants.GRADUATION_TYPE);
-        configureSpinner(mAccountTypeSpinner, PacePlaceConstants.ACCOUNT_TYPE);
-        configureSpinner(mSubjectSelectSpinner, PacePlaceConstants.SUBJECT);
-        configureSpinner(mStudentTypeSpinner, PacePlaceConstants.STUDENT_TYPE);
+        configureSpinner(mGenderSelectSpinner,PacePlaceConstants.GENDER);
+        configureSpinner(mGraduationTypeSpinner,PacePlaceConstants.GRADUATION_TYPE);
+        configureSpinner(mAccountTypeSpinner,PacePlaceConstants.ACCOUNT_TYPE);
+        configureSpinner(mSubjectSelectSpinner,PacePlaceConstants.SUBJECT);
+        configureSpinner(mStudentTypeSpinner,PacePlaceConstants.STUDENT_TYPE);
 
         return view;
     }
-
-    public void configureSpinner(AppCompatSpinner studentTypeSpinner, String typeSpinner) {
-        ArrayList<String> list = new ArrayList<>();
-        list.add(upperCaseAllFirst(typeSpinner));
-        list.addAll(mStaticInfo.get(typeSpinner));
-
+        public void configureSpinner(AppCompatSpinner studentTypeSpinner,String typeSpinner) {
+        ArrayList<String> list = mStaticInfo.get(typeSpinner);
         ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(getActivity(),
                 R.layout.spinner_layout, list);
         dataAdapter.setDropDownViewResource(R.layout.spinner_layout);
         studentTypeSpinner.setAdapter(dataAdapter);
     }
+
 
 
     @Override
@@ -140,7 +136,7 @@ public class UserProfileFragment extends Fragment {
 
                 // To hide keyboard
                 InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-                if (null != imm) {
+                if(null!=imm) {
                     imm.hideSoftInputFromWindow(mEmailEditText.getWindowToken(), 0);
                     imm.hideSoftInputFromWindow(mPasswordEditText.getWindowToken(), 0);
                 }
@@ -196,27 +192,6 @@ public class UserProfileFragment extends Fragment {
             }
         };
         threadA.start();
-    }
-
-    public String upperCaseAllFirst(String value) {
-
-        char[] array = value.toCharArray();
-        // Uppercase first letter.
-        array[0] = Character.toUpperCase(array[0]);
-
-        // Uppercase all letters that follow a whitespace character.
-        for (int i = 1; i < array.length; i++) {
-            //if (Character.isWhitespace(array[i - 1]) || array[i-1]=='_') {
-            if (array[i-1]=='_') {
-                array[i] = Character.toUpperCase(array[i]);
-                array[i-1] = ' ';
-            }else{
-                array[i] = Character.toLowerCase(array[i]);
-            }
-        }
-
-        // Result.
-        return new String(array);
     }
 
     // To generate Toast message

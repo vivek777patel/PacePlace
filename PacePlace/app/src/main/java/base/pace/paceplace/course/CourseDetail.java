@@ -5,9 +5,9 @@ import java.io.Serializable;
 public class CourseDetail implements Serializable {
     private String mCourseName, mCourseRatings, mCourseProfessor, mCourseProfRatings, mCourseDay,
             mCourseTime, mCourseAddress, mCourseRoom,
-            mCourseStartDate, mCourseEndDate;
+            mCourseStartDate, mCourseEndDate, mStudentCourseRatings, mStudentCourseProfRatings;
 
-    private int mCourseDayInt, mCredit, mNoOfCourseRater, mSeatCapacity, mSeatAvailable;
+    private int mCourseDayInt, mCredit, mNoOfCourseRater, mSeatCapacity, mSeatAvailable,mNoOfProfRater;
     //                                                   Graduate       CS or IS      In Class or online
     private String mAddressLine1, mCity, mCourseDesc, mProfEmail, mCourseLevel, mCourseMajor, mCourseType;
 
@@ -18,7 +18,8 @@ public class CourseDetail implements Serializable {
     public CourseDetail(String courseName, String courseRatings, String courseProfessor, String courseProfRatings, String courseDay,
                         String courseTime, String courseAddress, String courseRoom, String courseStartDate, String courseEndDate,
                         String addressLine1, String city, String courseDesc, String profEmail, String courseLevel, String courseMajor, String courseType,
-                        int courseDayInt, int credit, int noOfCourseRater, int seatCapacity, int seatAvailable
+                        int courseDayInt, int credit, int noOfCourseRater, int seatCapacity, int seatAvailable,int noOfProfRater,
+                        String studentCourseRatings, String studentCourseProfRatings
     ) {
         mCourseName = courseName;
         mCourseRatings = courseRatings;
@@ -45,6 +46,9 @@ public class CourseDetail implements Serializable {
         mNoOfCourseRater = noOfCourseRater;
         mSeatCapacity = seatCapacity;
         mSeatAvailable = seatAvailable;
+        mNoOfProfRater = noOfProfRater;
+        mStudentCourseRatings = studentCourseRatings;
+        mStudentCourseProfRatings = studentCourseProfRatings;
     }
 
 
@@ -169,6 +173,14 @@ public class CourseDetail implements Serializable {
         this.mNoOfCourseRater = mNoOfCourseRater;
     }
 
+    public int getmNoOfProfRater() {
+        return mNoOfProfRater;
+    }
+
+    public void setmNoOfProfRater(int mNoOfProfRater) {
+        this.mNoOfProfRater = mNoOfProfRater;
+    }
+
     public int getmSeatCapacity() {
         return mSeatCapacity;
     }
@@ -239,5 +251,17 @@ public class CourseDetail implements Serializable {
 
     public void setmCourseType(String mCourseType) {
         this.mCourseType = mCourseType;
+    }
+
+    public String getmStudentCourseRatings() {return mStudentCourseRatings;}
+
+    public void setmStudentCourseRatings(String mStudentCourseRatings) {
+        this.mStudentCourseRatings = mStudentCourseRatings;
+    }
+
+    public String getmStudentCourseProfRatings() {return mStudentCourseProfRatings;}
+
+    public void setmStudentCourseProfRatings(String mStudentCourseProfRatings) {
+        this.mStudentCourseProfRatings = mStudentCourseProfRatings;
     }
 }

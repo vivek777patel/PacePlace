@@ -45,5 +45,8 @@
     <string name="course_day">Day : %s</string>
     <string name="course_time">Time : %s</string>
     <string name="course_start">Start : %s</string>
-    <string name="course_end">End : %s</string>
+        <string name="course_end">End : %s</string>
+    <string name="course_ratings">Course Ratings</string>
+    <string name="prof_ratings">Professor Ratings</string>
+    <string name="save_ratings_text">Save Ratings</string>
 </resources>
