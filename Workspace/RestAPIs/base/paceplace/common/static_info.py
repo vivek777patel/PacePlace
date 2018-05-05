@@ -45,11 +45,17 @@ def get_static_info(combo_type=''):
                 STATIC_INFO_DETAIL[data[i][0]] = data[i][2]
         print(STATIC_INFO_TYPE)
 
-@ap.route('/static_info/')
+
+@ap.route('/static_info/', methods=['GET', 'POST'])
 @ap.route('/static_info/<string:combo_type>/')
 def static_info(combo_type=''):
     get_static_info(combo_type)
-    return jsonify(STATIC_INFO)
+    response = False
+    global STATIC_INFO
+    if STATIC_INFO:
+        response = True
+    return jsonify({"RESPONSE": response, "DATA": STATIC_INFO})
+    # return jsonify(STATIC_INFO)
 
 
 get_static_info()

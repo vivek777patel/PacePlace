@@ -10,19 +10,16 @@ ap = app.app
 USER_INFO = dict()
 result = {}
 
-my_connection = pymysql.connect(host=db.MYSQL_DATABASE_HOST,
-                                user=db.MYSQL_DATABASE_USER,
-                                password=db.MYSQL_DATABASE_PASSWORD,
-                                db=db.MYSQL_DATABASE_DB,
-                                charset='utf8mb4',
-                                cursorclass=pymysql.cursors.DictCursor)
-
-
 def get_user(query=None):
     if query is None:
         return
 
-    connection = my_connection
+    connection = pymysql.connect(host=db.MYSQL_DATABASE_HOST,
+                                 user=db.MYSQL_DATABASE_USER,
+                                 password=db.MYSQL_DATABASE_PASSWORD,
+                                 db=db.MYSQL_DATABASE_DB,
+                                 charset='utf8mb4',
+                                 cursorclass=pymysql.cursors.DictCursor)
     try:
 
         with connection.cursor() as cursor:
@@ -94,7 +91,10 @@ def get_user_info():
         return jsonify({"KeyError": "user_name or password is missing"})
         sys.exit(0)
 
-    static_combo_type_query = "SELECT * from user_info"
+    static_combo_type_query = "SELECT user_id, firstname, last_name, middle_name, email, DATE_FORMAT(dob,'%Y-%m-%d') dob," \
+                              " mobile, gender," \
+                              " password, last_login_time, status_id, start_date, end_date, graduation_date, " \
+                              " account_type, graduation_type, subject, student_type from user_info"
 
     if user_name and password:
         static_combo_type_query += " where email='" + user_name + "' and password='" + password + "'"
@@ -112,6 +112,8 @@ def add_user():
     content = request.json
     try:
         if content:
+            operation_type = content['OPERATION']
+            user_id = content['USER_ID']
             first_name = content['FIRST_NAME']
             last_name = content['LAST_NAME']
             user_name = content['EMAIL']
@@ -134,14 +136,17 @@ def add_user():
         return jsonify({"KeyError": "key fields are missing is missing in POSTed JSON "})
         sys.exit(0)
 
-    static_combo_type_query = "SELECT * from user_info"
-
-    if user_name:
-        static_combo_type_query += " where email='" + user_name + "'"
-    get_user(static_combo_type_query)
     global result
+    result = None
+    if operation_type.upper() == 'INSERT':
+        static_combo_type_query = "SELECT * from user_info"
+        if user_name:
+            static_combo_type_query += " where email='" + user_name + "'"
+        get_user(static_combo_type_query)
+
     if result is not None:
         return jsonify({"RESPONSE": False, "DATA": "User Already Registered"})
+
     try:
         connection = pymysql.connect(host=db.MYSQL_DATABASE_HOST,
                                      user=db.MYSQL_DATABASE_USER,
@@ -152,11 +157,18 @@ def add_user():
         with connection.cursor() as cursor:
             # print("Executing Query 1")
             # Read a single record
-            sql = "INSERT INTO user_info (firstname,last_name,email,dob,mobile,password,status_id, gender, " \
+            if operation_type.upper() == 'INSERT':
+                sql = "INSERT INTO user_info (firstname,last_name,email,dob,mobile,password,status_id, gender, " \
                   "account_type, graduation_type , subject, student_type) " \
                   "VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
-            cursor.execute(sql, (first_name, last_name, user_name, dob, mobile, password, status_id, gender,
-                                 account_type, graduation_type, subject, student_type))
+                cursor.execute(sql, (first_name, last_name, user_name, dob, mobile, password, status_id, gender,
+                                     account_type, graduation_type, subject, student_type))
+            else:
+                sql = "REPLACE INTO user_info (firstname,last_name,email,dob,mobile,password,status_id, gender, " \
+                      "account_type, graduation_type , subject, student_type, user_id) " \
+                      "VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
+                cursor.execute(sql, (first_name, last_name, user_name, dob, mobile, password, status_id, gender,
+                                 account_type, graduation_type, subject, student_type, user_id))
         connection.commit()
         response = True
         # print("Executing Query 2")
