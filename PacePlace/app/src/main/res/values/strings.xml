@@ -21,13 +21,18 @@
     <string name="login_failed">Login Failed</string>
     <string name="logout_success">Logout Success</string>
 
+    <string name="user_profile_updated_success">User Profile updated successfully</string>
     <string name="register_success">Register Success</string>
     <string name="register_failed">Register Failed</string>
     <string name="connection_failed">Connection Failed</string>
 
+    <string name="rating_failed">Rating update failed</string>
+    <string name="rating_successful">Rating update successful</string>
+
     <string name="please_wait">Please Wait...!!!</string>
 
     <string name="btn_register_txt">Register</string>
+    <string name="btn_save_txt">Save</string>
     <string name="btn_clear_txt">Clear</string>
 
     <string name="enter_firstname">First Name</string>

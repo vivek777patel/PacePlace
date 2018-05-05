@@ -7,7 +7,8 @@ public class CourseDetail implements Serializable {
             mCourseTime, mCourseAddress, mCourseRoom,
             mCourseStartDate, mCourseEndDate, mStudentCourseRatings, mStudentCourseProfRatings;
 
-    private int mCourseDayInt, mCredit, mNoOfCourseRater, mSeatCapacity, mSeatAvailable,mNoOfProfRater;
+    private int mCourseDayInt, mCredit, mNoOfCourseRater, mSeatCapacity, mSeatAvailable,
+            mNoOfProfRater, mCourseProfessorId, mCourseId, mStudentCourseId, mProfRateId, mProfUserId;
     //                                                   Graduate       CS or IS      In Class or online
     private String mAddressLine1, mCity, mCourseDesc, mProfEmail, mCourseLevel, mCourseMajor, mCourseType;
 
@@ -19,7 +20,8 @@ public class CourseDetail implements Serializable {
                         String courseTime, String courseAddress, String courseRoom, String courseStartDate, String courseEndDate,
                         String addressLine1, String city, String courseDesc, String profEmail, String courseLevel, String courseMajor, String courseType,
                         int courseDayInt, int credit, int noOfCourseRater, int seatCapacity, int seatAvailable,int noOfProfRater,
-                        String studentCourseRatings, String studentCourseProfRatings
+                        String studentCourseRatings, String studentCourseProfRatings, int courseProfessorId,
+                        int courseId, int studentCourseId, int profRateId
     ) {
         mCourseName = courseName;
         mCourseRatings = courseRatings;
@@ -49,6 +51,11 @@ public class CourseDetail implements Serializable {
         mNoOfProfRater = noOfProfRater;
         mStudentCourseRatings = studentCourseRatings;
         mStudentCourseProfRatings = studentCourseProfRatings;
+
+        mCourseProfessorId = courseProfessorId;
+        mCourseId = courseId;
+        mStudentCourseId = studentCourseId;
+        mProfRateId = profRateId;
     }
 
 
@@ -263,5 +270,45 @@ public class CourseDetail implements Serializable {
 
     public void setmStudentCourseProfRatings(String mStudentCourseProfRatings) {
         this.mStudentCourseProfRatings = mStudentCourseProfRatings;
+    }
+
+    public int getmCourseProfessorId() {
+        return mCourseProfessorId;
+    }
+
+    public void setmCourseProfessorId(int mCourseProfessorId) {
+        this.mCourseProfessorId = mCourseProfessorId;
+    }
+
+    public int getmCourseId() {
+        return mCourseId;
+    }
+
+    public void setmCourseId(int mCourseId) {
+        this.mCourseId = mCourseId;
+    }
+
+    public int getmStudentCourseId() {
+        return mStudentCourseId;
+    }
+
+    public void setmStudentCourseId(int mStudentCourseId) {
+        this.mStudentCourseId = mStudentCourseId;
+    }
+
+    public int getmProfRateId() {
+        return mProfRateId;
+    }
+
+    public void setmProfRateId(int mProfRateId) {
+        this.mProfRateId = mProfRateId;
+    }
+
+    public int getmProfUserId() {
+        return mProfUserId;
+    }
+
+    public void setmProfUserId(int mProfUserId) {
+        this.mProfUserId = mProfUserId;
     }
 }

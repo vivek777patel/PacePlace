@@ -125,25 +125,13 @@ public class LoginActivity extends AppCompatActivity {
                             if(receivedJSONObject.getmResponse()) {
                                 generateToastMessage(R.string.login_success);
                                 UserInfo userInfo = setUserInfo(receivedJSONObject);
-                                ArrayList<CourseDetail> mCourseList = new ArrayList<>();
-                                mCourseList.add(new CourseDetail("Algo", "Ratings:-4/4","Suzzana","Ratings:-4/4","Wenesday","6pm - 9pm",
-                                        "163 William Street", "Room:1420","Sept,6 2017","Dec,20 2017"));
-                                mCourseList.add(new CourseDetail("Mobile Web Content","Ratings:-4/4","Haik","Ratings:-4/4","Wenesday","6pm - 9pm",
-                                        "163 William Street", "Room:1420","Sept,6 2017","Dec,20 2017"));
-                                mCourseList.add(new CourseDetail("Project 1","Ratings:-3/4","Yuri","Ratings:-3/4","Wenesday","6pm - 9pm",
-                                        "163 William Street", "Room:1420","Sept,6 2017","Dec,20 2017"));
+
                                 Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
                                 intent.putExtra(PacePlaceConstants.USER_INFO, userInfo);
-                                intent.putExtra(PacePlaceConstants.COURSE_LIST, mCourseList);
                                 startActivity(intent);
                             }
                             else{
                                 generateToastMessage(R.string.login_failed);
-                                try {
-                                    mEmailPasswordInvalidTextView.setText(receivedJSONObject.getmJsonObjectResponse().get(PacePlaceConstants.ERROR).toString());
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
-                                }
                                 mEmailPasswordInvalidTextView.setVisibility(View.VISIBLE);
                             }
                         }
@@ -179,6 +167,7 @@ public class LoginActivity extends AppCompatActivity {
             userInfo.setmStatus(receivedJSONObject.getmJsonObjectResponse().get("status_id").toString());
             userInfo.setmStudentType(receivedJSONObject.getmJsonObjectResponse().get("student_type").toString());
             userInfo.setmSubject(receivedJSONObject.getmJsonObjectResponse().get("subject").toString());
+            userInfo.setmPassword(receivedJSONObject.getmJsonObjectResponse().get("password").toString());
         } catch (JSONException e) {
             e.printStackTrace();
         }

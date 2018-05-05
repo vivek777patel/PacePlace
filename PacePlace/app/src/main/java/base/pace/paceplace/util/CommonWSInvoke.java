@@ -95,8 +95,24 @@ public class CommonWSInvoke extends AsyncTask<String, Void, WebServiceResponse> 
                 inputJsonObject.put(PacePlaceConstants.LAST_NAME, params[5]);
                 inputJsonObject.put(PacePlaceConstants.MOBILE, params[6]);
                 inputJsonObject.put(PacePlaceConstants.DOB, params[7]);
+                inputJsonObject.put(PacePlaceConstants.OPERATION, params[8]);
+                inputJsonObject.put(PacePlaceConstants.USER_ID, params[9]);
             } else if (inputParamsFor.equalsIgnoreCase(PacePlaceConstants.COURSES)) {
                 inputJsonObject.put(PacePlaceConstants.USER_ID, params[2]);
+            }
+            else if (inputParamsFor.equalsIgnoreCase(PacePlaceConstants.RATINGS)) {
+                inputJsonObject.put(PacePlaceConstants.STUDENT_COURSE_RATING, params[2]);
+                inputJsonObject.put(PacePlaceConstants.OVERALL_COURSE_RATERS, params[3]);
+                inputJsonObject.put(PacePlaceConstants.OVERALL_COURSE_RATING, params[4]);
+
+                inputJsonObject.put(PacePlaceConstants.STUDENT_PROF_RATING, params[5]);
+                inputJsonObject.put(PacePlaceConstants.OVERALL_PROF_RATERS, params[6]);
+                inputJsonObject.put(PacePlaceConstants.OVERALL_PROF_RATING, params[7]);
+
+                inputJsonObject.put(PacePlaceConstants.COURSE_ID, params[8]);
+                inputJsonObject.put(PacePlaceConstants.STUDENT_COURSE_ID, params[9]);
+                inputJsonObject.put(PacePlaceConstants.PROF_RATE_ID, params[10]);
+                inputJsonObject.put(PacePlaceConstants.PROF_USER_ID, params[11]);
             }
         } catch (JSONException e) {
             e.printStackTrace();

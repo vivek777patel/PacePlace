@@ -24,6 +24,7 @@ import java.util.concurrent.TimeoutException;
 import base.pace.paceplace.course.CourseDetail;
 import base.pace.paceplace.course.CourseListFragment;
 import base.pace.paceplace.login.UserInfo;
+import base.pace.paceplace.user.UserProfileFragment;
 import base.pace.paceplace.util.CommonWSInvoke;
 import base.pace.paceplace.util.PacePlaceConstants;
 import base.pace.paceplace.util.WebServiceResponse;
@@ -97,7 +98,6 @@ public class HomeActivity extends AppCompatActivity {
                                     if (courseDetailsJsonArray != null) {
                                         for (int i = 0; i < courseDetailsJsonArray.length(); i++) {
                                             JSONObject obj = courseDetailsJsonArray.getJSONObject(i);
-                                            //CourseDetail cd = setCourseDetailsFromResponse(obj);
                                             mCourseList.add(setCourseDetailsFromResponse(obj));
                                         }
                                     } else {
@@ -133,11 +133,10 @@ public class HomeActivity extends AppCompatActivity {
                 if (mSelectedMenu != 1) {
                     setColorsToMenu(mPrimaryColor, mWhiteColor, mWhiteColor, mWhiteColor);
                     // TODO : Call the webservice to get course list
-                    CourseListFragment courseListFragment = new CourseListFragment();
-                    Bundle bundle = new Bundle();
-                    bundle.putSerializable(PacePlaceConstants.COURSE_LIST, mCourseList);
-                    courseListFragment.setArguments(bundle);
-                    getFragmentManager().beginTransaction().replace(R.id.home_fagement_view_RL, courseListFragment).commit();
+                    setTitle(R.string.user_courses);
+                    mSelectedMenu=1;
+                    setDefaultCourseDetailFragment();
+
                 }
             }
         });
@@ -149,6 +148,19 @@ public class HomeActivity extends AppCompatActivity {
                     setColorsToMenu(mWhiteColor, mPrimaryColor, mWhiteColor, mWhiteColor);
                     // TODO : Call the webservice to get event list
                     mSelectedMenu = 2;
+                    setTitle(R.string.events);
+                }
+            }
+        });
+
+        mUserProfileImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mSelectedMenu != 3) {
+                    setColorsToMenu(mWhiteColor, mWhiteColor, mPrimaryColor, mWhiteColor);
+                    setUserDetailsFragment();
+                    mSelectedMenu = 3;
+                    setTitle(R.string.user_registration);
                 }
             }
         });
@@ -187,15 +199,25 @@ public class HomeActivity extends AppCompatActivity {
         mHomeImageView.setColorFilter(mPrimaryColor);
         bundle.putSerializable(PacePlaceConstants.COURSE_LIST, mCourseList);
         courseListFragment.setArguments(bundle);
-        getFragmentManager().beginTransaction().add(R.id.home_fagement_view_RL, courseListFragment).commit();
+        getFragmentManager().beginTransaction().replace(R.id.home_fagement_view_RL, courseListFragment).commit();
     }
 
-    private CourseDetail setCourseDetailsFromResponse(JSONObject jsonObject){
+    private void setUserDetailsFragment() {
+        UserProfileFragment userProfileFragment = new UserProfileFragment();
+        mUserProfileImageView.setColorFilter(mPrimaryColor);
+        Bundle bundle = new Bundle();
+        bundle.putSerializable(PacePlaceConstants.REGISTER, PacePlaceConstants.UPDATE);
+        bundle.putSerializable(PacePlaceConstants.USER_INFO, mLoggedInUserInfo);
+        userProfileFragment.setArguments(bundle);
+        getFragmentManager().beginTransaction().replace(R.id.home_fagement_view_RL, userProfileFragment).commit();
+    }
+
+    private CourseDetail setCourseDetailsFromResponse(JSONObject jsonObject) {
         return new CourseDetail(
                 jsonObject.optString("course_name"),
-                jsonObject.opt("course_rating")!=null?jsonObject.optString("course_rating"):"",
+                jsonObject.opt("course_rating") != null ? jsonObject.optString("course_rating") : "0",
                 jsonObject.optString("firstname"),
-                "0", // Prof Rating
+                jsonObject.opt("professor_ratings") != null ? jsonObject.optString("professor_ratings") : "0", // Prof Rating
                 jsonObject.optString("si_cd_course_day.static_combo_value"),
                 jsonObject.optString("course_time"),
                 jsonObject.optString("location_name"),
@@ -210,15 +232,22 @@ public class HomeActivity extends AppCompatActivity {
                 jsonObject.optString("si_ci_subject.static_combo_value"),
                 jsonObject.optString("static_combo_value"),
 
-                jsonObject.opt("course_day")!=null?jsonObject.optInt("course_day"):0,
-                jsonObject.opt("credit")!=null?jsonObject.optInt("credit"):0,
-                jsonObject.opt("number_of_raters")!=null?jsonObject.optInt("number_of_raters"):0,
-                jsonObject.opt("seat_available")!=null?jsonObject.optInt("seat_available"):0,
-                jsonObject.opt("seat_capacity")!=null?jsonObject.optInt("seat_capacity"):0,
-                0,//number_of_prof_raters
-                "0",//STUDENT_COURSE_RATINGS
-                "0"//STUDENT_PROF_COURSE_RATINGS
+                jsonObject.opt("course_day") != null ? jsonObject.optInt("course_day") : 0,
+                jsonObject.opt("credit") != null ? jsonObject.optInt("credit") : 0,
+                jsonObject.opt("number_of_raters") != null ? jsonObject.optInt("number_of_raters") : 0,
+                jsonObject.opt("seat_available") != null ? jsonObject.optInt("seat_available") : 0,
+                jsonObject.opt("seat_capacity") != null ? jsonObject.optInt("seat_capacity") : 0,
+                jsonObject.opt("professor_raters") != null ? jsonObject.optInt("professor_raters") : 0,//number_of_prof_raters
+                jsonObject.opt("student_course_rating") != null ? jsonObject.optString("student_course_rating") : "0",//STUDENT_COURSE_RATINGS
+                jsonObject.opt("student_professor_rating") != null ? jsonObject.optString("student_professor_rating") : "0",//STUDENT_PROF_COURSE_RATINGS
+
+                jsonObject.opt("professor_user_id") != null ? jsonObject.optInt("professor_user_id") : 0,//professor user id
+
+                jsonObject.opt("course_id") != null ? jsonObject.optInt("course_id") : 0,
+                jsonObject.opt("scm_id") != null ? jsonObject.optInt("scm_id") : 0,
+                jsonObject.opt("prof_rate_id") != null ? jsonObject.optInt("prof_rate_id") : 0
         );
+
     }
 
 

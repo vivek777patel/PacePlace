@@ -4,11 +4,14 @@ public abstract class PacePlaceConstants {
 
     //public static final String URL = "http://192.168.172.1:5000/";
     //public static final String URL = "http://10.0.0.31:5000/";
-    public static final String URL = "http://10.10.151.130:5000/";
+    public static final String URL = "http://10.10.142.214:5000/";
     //public static final String URL = "http://ec2-18-218-139-175.us-east-2.compute.amazonaws.com:5000/";
     public static final String URL_LOGIN = URL + "getUserInfo/";
     public static final String URL_REGISTER = URL + "addUser/";
     public static final String URL_COURSES = URL + "getUserCourses/";
+    public static final String URL_STATIC_INFO = URL + "static_info/";
+
+    public static final String URL_SAVE_RATINGS = URL + "saveUserRatings/";
 
     public static final String RESPONSE = "RESPONSE";
     public static final String DATA = "DATA";
@@ -33,9 +36,32 @@ public abstract class PacePlaceConstants {
     public static final String LOGIN = "LOGIN";
     public static final String REGISTER = "REGISTER";
     public static final String COURSES = "COURSES";
+    public static final String STATIC_INFO = "STATIC_INFO";
+    public static final String RATINGS = "RATINGS";
+
+    public static final String STUDENT_COURSE_RATING = "STUDENT_COURSE_RATING";
+    public static final String OVERALL_COURSE_RATERS = "OVERALL_COURSE_RATERS";
+    public static final String OVERALL_COURSE_RATING = "OVERALL_COURSE_RATING";
+
+
+    public static final String STUDENT_PROF_RATING = "STUDENT_PROF_RATING";
+    public static final String OVERALL_PROF_RATERS = "OVERALL_PROF_RATERS";
+    public static final String OVERALL_PROF_RATING = "OVERALL_PROF_RATING";
+
+    public static final String COURSE_ID = "COURSE_ID";
+    public static final String STUDENT_COURSE_ID = "STUDENT_COURSE_ID";
+    public static final String PROF_RATE_ID = "PROF_RATE_ID";
+    public static final String PROF_USER_ID = "PROF_USER_ID";
+
+
+
 
     public static final String USER_INFO = "USER_INFO";
     public static final String COURSE_LIST = "COURSE_LIST";
+
+    public static final String OPERATION = "OPERATION";
+    public static final String UPDATE = "UPDATE";
+    public static final String INSERT = "INSERT";
 
     public static final String LOGIN_ACTIVITY_MESSAGE = "LOGIN_ACTIVITY_MESSAGE";
     public static final String LOGOUT = "LOGIN";
