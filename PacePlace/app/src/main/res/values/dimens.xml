@@ -24,4 +24,7 @@
     <dimen name="arrow_txt_size">23sp</dimen>
     <dimen name="course_text_size">25sp</dimen>
 
+    <dimen name="activity_padding">16dp</dimen>
+    <dimen name="placeholder_text_height">8dp</dimen>
+
 </resources>

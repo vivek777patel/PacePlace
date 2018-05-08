@@ -1,17 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_height="match_parent"
     android:layout_width="match_parent"
-    android:background="@color/colorAccent"
-    >
-    <!--commit-->
+    android:layout_height="match_parent"
+    android:background="@color/colorAccent">
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
-        android:background="@color/colorAccent"
+        android:layout_marginBottom="@dimen/logo_ll_margin_top"
         android:layout_marginTop="@dimen/logo_ll_margin_top"
-        android:layout_marginBottom="@dimen/logo_ll_margin_top">
+        android:background="@color/colorAccent">
 
 
         <LinearLayout
@@ -36,6 +35,17 @@
             android:gravity="center_vertical"
             android:orientation="vertical">
 
+            <TextView
+                android:id="@+id/mandatory_field_text_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/login_margin"
+                android:gravity="center_horizontal"
+                android:text="@string/all_fields_mandatory"
+                android:textColor="@color/colorWhite"
+                android:textSize="@dimen/btn_txt_size"
+                android:textStyle="bold" />
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -51,10 +61,10 @@
                     android:layout_marginTop="@dimen/login_margin_top"
                     android:layout_weight="1"
                     android:background="@drawable/rounded_border_edittext"
-                    android:drawableStart="@drawable/ic_avatar"
                     android:drawablePadding="@dimen/padding_drawable"
+                    android:drawableStart="@drawable/ic_avatar"
                     android:hint="@string/enter_firstname"
-                    android:inputType="textEmailAddress"
+                    android:inputType="text"
                     android:textColor="@color/colorWhite"
                     android:textColorHint="@color/colorWhite" />
 
@@ -66,10 +76,10 @@
                     android:layout_marginTop="@dimen/login_margin_top"
                     android:layout_weight="1"
                     android:background="@drawable/rounded_border_edittext"
-                    android:drawableStart="@drawable/ic_avatar"
                     android:drawablePadding="@dimen/padding_drawable"
+                    android:drawableStart="@drawable/ic_avatar"
                     android:hint="@string/enter_lastname"
-                    android:inputType="textEmailAddress"
+                    android:inputType="text"
                     android:textColor="@color/colorWhite"
                     android:textColorHint="@color/colorWhite" />
             </LinearLayout>
@@ -82,8 +92,8 @@
                 android:layout_marginRight="@dimen/login_margin"
                 android:layout_marginTop="@dimen/login_margin_top"
                 android:background="@drawable/rounded_border_edittext"
-                android:drawableStart="@drawable/ic_mail"
                 android:drawablePadding="@dimen/padding_drawable"
+                android:drawableStart="@drawable/ic_mail"
                 android:hint="@string/enter_username"
                 android:inputType="textEmailAddress"
                 android:textColor="@color/colorWhite"
@@ -97,8 +107,8 @@
                 android:layout_marginRight="@dimen/login_margin"
                 android:layout_marginTop="@dimen/login_margin_top"
                 android:background="@drawable/rounded_border_edittext"
-                android:drawableStart="@drawable/ic_key"
                 android:drawablePadding="@dimen/padding_drawable"
+                android:drawableStart="@drawable/ic_key"
                 android:hint="@string/enter_password"
                 android:inputType="textWebPassword"
                 android:textColor="@color/colorWhite"
@@ -112,8 +122,8 @@
                 android:layout_marginRight="@dimen/login_margin"
                 android:layout_marginTop="@dimen/login_margin_top"
                 android:background="@drawable/rounded_border_edittext"
-                android:drawableStart="@drawable/ic_key"
                 android:drawablePadding="@dimen/padding_drawable"
+                android:drawableStart="@drawable/ic_key"
                 android:hint="@string/enter_password_confirm"
                 android:inputType="textWebPassword"
                 android:textColor="@color/colorWhite"
@@ -127,10 +137,10 @@
                 android:layout_marginRight="@dimen/login_margin"
                 android:layout_marginTop="@dimen/login_margin_top"
                 android:background="@drawable/rounded_border_edittext"
-                android:drawableStart="@drawable/ic_telephone"
                 android:drawablePadding="@dimen/padding_drawable"
+                android:drawableStart="@drawable/ic_telephone"
                 android:hint="@string/enter_contact"
-                android:inputType="textEmailAddress"
+                android:inputType="text"
                 android:textColor="@color/colorWhite"
                 android:textColorHint="@color/colorWhite" />
 
@@ -142,10 +152,12 @@
                 android:layout_marginRight="@dimen/login_margin"
                 android:layout_marginTop="@dimen/login_margin_top"
                 android:background="@drawable/rounded_border_edittext"
-                android:drawableStart="@drawable/ic_calendar"
+                android:clickable="false"
                 android:drawablePadding="@dimen/padding_drawable"
+                android:drawableStart="@drawable/ic_calendar"
+                android:focusable="false"
                 android:hint="@string/enter_dob"
-                android:inputType="textEmailAddress"
+                android:inputType="text"
                 android:textColor="@color/colorWhite"
                 android:textColorHint="@color/colorWhite" />
 
@@ -157,9 +169,8 @@
                 android:layout_marginRight="@dimen/login_margin"
                 android:layout_marginTop="@dimen/login_margin_top"
                 android:background="@drawable/rounded_border_edittext"
-                android:drawableStart="@drawable/ic_calendar"
                 android:drawablePadding="@dimen/padding_drawable"
-                />
+                android:drawableStart="@drawable/ic_calendar" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -176,9 +187,8 @@
                     android:layout_marginTop="@dimen/login_margin_top"
                     android:layout_weight="1"
                     android:background="@drawable/rounded_border_edittext"
-                    android:drawableStart="@drawable/ic_avatar"
                     android:drawablePadding="@dimen/padding_drawable"
-                    />
+                    android:drawableStart="@drawable/ic_avatar" />
 
                 <android.support.v7.widget.AppCompatSpinner
                     android:id="@+id/accountTypeSpinnerSelect"
@@ -188,9 +198,8 @@
                     android:layout_marginTop="@dimen/login_margin_top"
                     android:layout_weight="1"
                     android:background="@drawable/rounded_border_edittext"
-                    android:drawableStart="@drawable/ic_avatar"
                     android:drawablePadding="@dimen/padding_drawable"
-                     />
+                    android:drawableStart="@drawable/ic_avatar" />
             </LinearLayout>
 
             <LinearLayout
@@ -208,9 +217,8 @@
                     android:layout_marginTop="@dimen/login_margin_top"
                     android:layout_weight="1"
                     android:background="@drawable/rounded_border_edittext"
-                    android:drawableStart="@drawable/ic_avatar"
                     android:drawablePadding="@dimen/padding_drawable"
-                     />
+                    android:drawableStart="@drawable/ic_avatar" />
 
                 <android.support.v7.widget.AppCompatSpinner
                     android:id="@+id/genderSpinnerSelect"
@@ -221,9 +229,8 @@
                     android:layout_weight="1"
 
                     android:background="@drawable/rounded_border_edittext"
-                    android:drawableStart="@drawable/ic_avatar"
                     android:drawablePadding="@dimen/padding_drawable"
-                    />
+                    android:drawableStart="@drawable/ic_avatar" />
             </LinearLayout>
 
 

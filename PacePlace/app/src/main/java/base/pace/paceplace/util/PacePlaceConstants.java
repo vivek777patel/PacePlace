@@ -3,15 +3,17 @@ package base.pace.paceplace.util;
 public abstract class PacePlaceConstants {
 
     //public static final String URL = "http://192.168.172.1:5000/";
-    //public static final String URL = "http://10.0.0.31:5000/";
-    public static final String URL = "http://10.10.142.214:5000/";
-    //public static final String URL = "http://ec2-18-218-139-175.us-east-2.compute.amazonaws.com:5000/";
+    public static final String URL = "http://10.0.0.31:5000/";
+    //public static final String URL = "http://10.10.142.214:5000/";
+    //public static final String URL = "http://ec2-18-218-215-134.us-east-2.compute.amazonaws.com:5000/";
     public static final String URL_LOGIN = URL + "getUserInfo/";
     public static final String URL_REGISTER = URL + "addUser/";
     public static final String URL_COURSES = URL + "getUserCourses/";
     public static final String URL_STATIC_INFO = URL + "static_info/";
 
     public static final String URL_SAVE_RATINGS = URL + "saveUserRatings/";
+    public static final String URL_COURSES_FOR_REGISTRATION = URL + "getCoursesForRegistration/";
+    public static final String URL_SAVE_REGISTERED_COURSES = URL + "saveRegisteredCourses/";
 
     public static final String RESPONSE = "RESPONSE";
     public static final String DATA = "DATA";
@@ -31,11 +33,18 @@ public abstract class PacePlaceConstants {
     public static final String SUBJECT = "SUBJECT";
     public static final String STUDENT_TYPE = "STUDENT_TYPE";
 
+    public static final String COURSE_DET_ID = "COURSE_DET_ID";
 
+    public static final String EVENT_NAME = "EVENT_NAME";
+    public static final String EVENT_DESCRIPTION = "EVENT_DESCRIPTION";
+    public static final String EVENT_LOCATION = "EVENT_LOCATION";
+    public static final String EVENT_POSTED_BY = "EVENT_POSTED_BY";
+    public static final String EVENT_DATE = "EVENT_DATE";
 
     public static final String LOGIN = "LOGIN";
     public static final String REGISTER = "REGISTER";
     public static final String COURSES = "COURSES";
+    public static final String COURSES_REGISTRATION = "COURSES_REGISTRATION";
     public static final String STATIC_INFO = "STATIC_INFO";
     public static final String RATINGS = "RATINGS";
 

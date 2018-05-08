@@ -1,9 +1,10 @@
 package base.pace.paceplace.course;
 
 import android.app.Fragment;
-import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -18,21 +19,23 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.JsonObject;
+import com.wang.avi.AVLoadingIndicatorView;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
 
-import base.pace.paceplace.LoginActivity;
 import base.pace.paceplace.R;
-import base.pace.paceplace.util.CommonWSInvoke;
+import base.pace.paceplace.httpclient.CourseDetailsHttpClient;
+import base.pace.paceplace.login.UserInfo;
 import base.pace.paceplace.util.PacePlaceConstants;
-import base.pace.paceplace.util.WebServiceResponse;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class CourseListFragment extends Fragment {
 
@@ -41,15 +44,16 @@ public class CourseListFragment extends Fragment {
     CourseListViewAdapter mAdapter;
     ArrayList<CourseDetail> mCourseLists = new ArrayList<>();
     ListView mListView;
-    String courseRatings, profRatings, studentCourseRatings, studentCourseProfRatings;
-    int courseOverallRaters, profOverallRaters;
-    int mOverallCourseRaters, mOverallProfRaters;
+    String mOverAllCourseRatings, mOverAllProfessorRatings, mStudentCourseRatings, mStudentCourseProfRatings;
+    int mOverAllCourseRaters, mOverAllProfRaters;
     Float mStudentProfRating, mStudentCourseRating, mOverallCourseRatings, mOverallProfRatings;
-    RatingBar prof_rates, prof_overall_rates, course_rates, course_overall_rates;
-    TextView popTitleTextView, prof_overall_num, course_overall_num, prof_rates_text_view, course_rates_text_view;
+    RatingBar mStudentProfessorRatingBar, mProfessorOverAllRatingBar, mStudentCourseRatingBar, mCourseOverAllRatingBar;
+    TextView popTitleTextView, mProfOverAllRatingTextView, mCourseOverAllRatingTextView, mStudentProfessorRatingTextView, mStudentCourseRatingTextView;
     ImageView closePopupBtn;
     Button saveAllRatings;
-
+    UserInfo mSelectedUserInfo;
+    AVLoadingIndicatorView mAVLoadingIndicatorView;
+    private Boolean mRatingUpdated = Boolean.FALSE;
     private int mSelectedPosition = 0;
 
     CourseDetail mSelectedCourseDetails;
@@ -57,6 +61,7 @@ public class CourseListFragment extends Fragment {
     DecimalFormat decimalFormat = new DecimalFormat("##.0");
 
     private static LayoutInflater mLayoutInflater;
+    private SwipeRefreshLayout mSwipeContainer;
 
 
     @Override
@@ -65,18 +70,85 @@ public class CourseListFragment extends Fragment {
         mLayoutInflater = inflater;
         View view = inflater.inflate(R.layout.courses_fragement, vg, false);
         mListView = view.findViewById(R.id.coursesListView);
+        mSwipeContainer = view.findViewById(R.id.swipeContainer);
+        mAVLoadingIndicatorView = view.findViewById(R.id.course_detail_avi);
         return view;
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        Bundle args = getArguments();
+        mSelectedUserInfo = (UserInfo) args.get(PacePlaceConstants.USER_INFO);
         configureCourseList();
+        setCourseDetails();
+        mSwipeContainer.setOnRefreshListener(
+                new SwipeRefreshLayout.OnRefreshListener() {
+                    @Override
+                    public void onRefresh() {
+                        Log.i(TAG, "onRefresh called from SwipeRefreshLayout");
+                        mCourseLists.clear();
+                        setCourseDetails();
+                    }
+                }
+        );
     }
 
+    private void setCourseDetails() {
+        mAVLoadingIndicatorView.setVisibility(View.VISIBLE);
+        mAVLoadingIndicatorView.bringToFront();
+        mAVLoadingIndicatorView.smoothToShow();
+
+        CourseDetailsHttpClient.getInstance().getUserCourseDetails(String.valueOf(mSelectedUserInfo.getmUserId()), new Callback<JsonObject>() {
+            @Override
+            public void onResponse(@NonNull Call<JsonObject> call, @NonNull Response<JsonObject> response) {
+                try {
+                    if (response.body() != null){
+                        JSONObject receivedJSONObject = new JSONObject(response.body().toString());
+                        if ((Boolean)receivedJSONObject.get(PacePlaceConstants.RESPONSE)) {
+                            try {
+                                JSONArray courseDetailsJsonArray = receivedJSONObject.getJSONArray(PacePlaceConstants.DATA);
+                                if (courseDetailsJsonArray != null) {
+                                    for (int i = 0; i < courseDetailsJsonArray.length(); i++) {
+                                        JSONObject obj = courseDetailsJsonArray.getJSONObject(i);
+                                        mCourseLists.add(setCourseDetailsFromResponse(obj));
+                                    }
+                                    mAdapter.notifyDataSetChanged();
+                                } else {
+                                    // No data found
+                                    generateToastMessage(R.string.course_no_data_found);
+                                }
+
+                            } catch (JSONException e) {
+                                generateToastMessage(R.string.course_issue_in_response_json);
+                                e.printStackTrace();
+                            }
+                        } else {
+                            generateToastMessage(R.string.course_load_fail);
+                        }
+                    }else {
+                        generateToastMessage(R.string.course_load_fail);
+                    }
+                }
+                catch (JSONException e) {
+                    generateToastMessage(R.string.course_issue_in_response_json);
+                    e.printStackTrace();
+                }
+                mAVLoadingIndicatorView.smoothToHide();
+                mSwipeContainer.setRefreshing(false);
+            }
+
+            @Override
+            public void onFailure(Call<JsonObject> call, Throwable t) {
+                t.printStackTrace();
+                generateToastMessage(R.string.course_issue_in_response_json);
+                mAVLoadingIndicatorView.smoothToHide();
+                mSwipeContainer.setRefreshing(false);
+            }
+        });
+
+    }
     private void configureCourseList() {
-        Bundle args = getArguments();
-        mCourseLists = (ArrayList<CourseDetail>) args.get(PacePlaceConstants.COURSE_LIST);
         mAdapter = new CourseListViewAdapter(getActivity(), mCourseLists, new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -98,84 +170,114 @@ public class CourseListFragment extends Fragment {
 
         View popWindow = mLayoutInflater.inflate(R.layout.course_rating_page, null);
 
-        courseRatings = courseInfo.getmCourseRatings();
-        profRatings = courseInfo.getmCourseProfRatings();
-        courseOverallRaters = courseInfo.getmNoOfCourseRater();
-        profOverallRaters = courseInfo.getmNoOfProfRater();
-        studentCourseRatings = courseInfo.getmStudentCourseRatings();
-        studentCourseProfRatings = courseInfo.getmStudentCourseProfRatings();
+        mOverAllCourseRatings = courseInfo.getmCourseRatings();
+        mOverAllProfessorRatings = courseInfo.getmCourseProfRatings();
 
+        mOverAllCourseRaters = courseInfo.getmNoOfCourseRater();
+        mOverAllProfRaters = courseInfo.getmNoOfProfRater();
+
+        mStudentCourseRatings = courseInfo.getmStudentCourseRatings();
+        mStudentCourseProfRatings = courseInfo.getmStudentCourseProfRatings();
 
         closePopupBtn = popWindow.findViewById(R.id.close_popup);
         popTitleTextView = popWindow.findViewById(R.id.course_title_bar);
-        course_overall_num = popWindow.findViewById(R.id.course_over_text_view);
-        prof_overall_num = popWindow.findViewById(R.id.prof_over_text_view);
-        course_rates_text_view = popWindow.findViewById(R.id.rating_bar_course_text_view);
-        prof_rates_text_view = popWindow.findViewById(R.id.rating_bar_prof_text_view);
-        course_rates = popWindow.findViewById(R.id.rating_bar_course);
-        prof_rates = popWindow.findViewById(R.id.rating_bar_prof);
-        prof_overall_rates = popWindow.findViewById(R.id.prof_overall_rate_bar);
-        course_overall_rates = popWindow.findViewById(R.id.course_overall_rate_bar);
+
+
+        mCourseOverAllRatingTextView = popWindow.findViewById(R.id.course_over_text_view);
+        mProfOverAllRatingTextView = popWindow.findViewById(R.id.prof_over_text_view);
+
+        mStudentCourseRatingTextView = popWindow.findViewById(R.id.rating_bar_course_text_view);
+        mStudentProfessorRatingTextView = popWindow.findViewById(R.id.rating_bar_prof_text_view);
+
+        mStudentCourseRatingBar = popWindow.findViewById(R.id.rating_bar_course);
+        mStudentProfessorRatingBar = popWindow.findViewById(R.id.rating_bar_prof);
+
+        mProfessorOverAllRatingBar = popWindow.findViewById(R.id.prof_overall_rate_bar);
+        mCourseOverAllRatingBar = popWindow.findViewById(R.id.course_overall_rate_bar);
+
         saveAllRatings = popWindow.findViewById(R.id.save_ratings);
 
         //Set Data to popup Layout
         popTitleTextView.setText(String.valueOf(courseInfo.getmCourseName()));
-        course_overall_num.setText(String.valueOf(courseRatings));
-        prof_overall_num.setText(String.valueOf(profRatings));
-        prof_overall_rates.setRating(Float.parseFloat(profRatings));
-        course_overall_rates.setRating(Float.parseFloat(courseRatings));
+        mCourseOverAllRatingTextView.setText(String.valueOf(mOverAllCourseRatings));
+        mProfOverAllRatingTextView.setText(String.valueOf(mOverAllProfessorRatings));
 
+        mProfessorOverAllRatingBar.setRating(Float.parseFloat(mOverAllProfessorRatings));
+        mCourseOverAllRatingBar.setRating(Float.parseFloat(mOverAllCourseRatings));
 
-        course_rates.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
+        // Setting the default/given rate
+        mStudentCourseRatingBar.setRating(Float.valueOf(mStudentCourseRatings));
+        mCourseOverAllRatingBar.setRating(Float.valueOf(mOverAllCourseRatings));
+        mStudentCourseRatingTextView.setText(mStudentCourseRatings);
+
+        mStudentProfessorRatingBar.setRating(Float.valueOf(mStudentCourseProfRatings));
+        mProfessorOverAllRatingBar.setRating(Float.valueOf(mOverAllProfessorRatings));
+        mStudentProfessorRatingTextView.setText(mStudentCourseProfRatings);
+
+        // Allowing to give rating only once
+        if(Float.valueOf(mStudentCourseRatings) != 0.0){
+            mStudentCourseRatingBar.setEnabled(Boolean.FALSE);
+        }
+        if(Float.valueOf(mStudentCourseProfRatings) != 0.0){
+            mStudentProfessorRatingBar.setEnabled(Boolean.FALSE);
+        }
+
+        mStudentCourseRatingBar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
             @Override
             public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
-                Log.i(TAG, String.valueOf(rating));
-                course_rates_text_view.setText(String.valueOf(rating));
+                mStudentCourseRatingTextView.setText(String.valueOf(rating));
+                mRatingUpdated = Boolean.TRUE;
+                int courseOverallRatersPlus = mOverAllCourseRaters;
+                // First time rating for overall this course
+                if (Float.parseFloat(mOverAllCourseRatings) == 0.0) {
+                    mCourseOverAllRatingBar.setRating(rating);
+                    mCourseOverAllRatingTextView.setText(String.valueOf(rating));
+                    mStudentCourseRating = rating;
+                    mOverAllCourseRaters = 1;
+                    mOverallCourseRatings = rating;
+                    return;
+                }
 
-                int courseOverallRatersPlus = courseOverallRaters;
-                if (Float.parseFloat(studentCourseProfRatings) == 0) {
+                // First time rating for user to selected course --> Increment raters only if the user is giving first time rating
+                if (Float.parseFloat(mStudentCourseProfRatings) == 0) {
                     courseOverallRatersPlus += 1;
                 }
-                if (Float.parseFloat(courseRatings) == 0.0) {
-                    course_overall_rates.setRating(rating);
-                    course_overall_num.setText(String.valueOf(rating));
-                    mStudentCourseRating = rating;
-                    mOverallCourseRaters = 1;
-                    mOverallCourseRatings = rating;
-                } else {
-                    mOverallCourseRatings = Float.parseFloat(decimalFormat.format(((Float.parseFloat(courseRatings) * courseOverallRaters) + rating) / courseOverallRatersPlus));
-                    prof_overall_rates.setRating(mOverallCourseRatings);
-                    course_overall_num.setText(String.valueOf(mOverallCourseRatings));
-                    mStudentCourseRating = rating;
-                    mOverallCourseRaters = courseOverallRatersPlus;
 
-                }
+                mOverallCourseRatings = Float.parseFloat(decimalFormat.format(((Float.parseFloat(mOverAllCourseRatings) * mOverAllCourseRaters) + rating) / courseOverallRatersPlus));
+
+                mCourseOverAllRatingBar.setRating(mOverallCourseRatings);
+                mCourseOverAllRatingTextView.setText(String.valueOf(mOverallCourseRatings));
+
+                mStudentCourseRating = rating;
+                mOverAllCourseRaters = courseOverallRatersPlus;
+
             }
         });
-        prof_rates.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
+        mStudentProfessorRatingBar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
             @Override
             public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
-                Log.i(TAG, String.valueOf(rating));
-                prof_rates_text_view.setText(String.valueOf(rating));
-
-                int profOverallRatersPlus = profOverallRaters;
-                if (Float.parseFloat(studentCourseProfRatings) == 0) {
+                mStudentProfessorRatingTextView.setText(String.valueOf(rating));
+                mRatingUpdated = Boolean.TRUE;
+                int profOverallRatersPlus = mOverAllProfRaters;
+                // First time rating for overall this course
+                if (Float.parseFloat(mOverAllProfessorRatings) == 0.0) {
+                    mProfessorOverAllRatingBar.setRating(rating);
+                    mProfOverAllRatingTextView.setText(String.valueOf(rating));
+                    mStudentProfRating = rating;
+                    mOverAllProfRaters = 1;
+                    mOverallProfRatings = rating;
+                }
+                // First time rating for user to selected course professor  --> Increment raters only if the user is giving first time rating
+                if (Float.parseFloat(mStudentCourseProfRatings) == 0) {
                     profOverallRatersPlus += 1;
                 }
-                if (Float.parseFloat(profRatings) == 0.0) {
-                    prof_overall_rates.setRating(rating);
-                    prof_overall_num.setText(String.valueOf(rating));
-                    mStudentProfRating = rating;
-                    mOverallProfRaters = 1;
-                    mOverallProfRatings = rating;
-                } else {
 
-                    mOverallProfRatings = Float.parseFloat(decimalFormat.format((Float.parseFloat(profRatings) * profOverallRaters + rating) / (profOverallRatersPlus)));
-                    prof_overall_rates.setRating(mOverallProfRatings);
-                    prof_overall_num.setText(String.valueOf(mOverallProfRatings));
-                    mStudentProfRating = rating;
-                    mOverallProfRaters = profOverallRatersPlus;
-                }
+                mOverallProfRatings = Float.parseFloat(decimalFormat.format((Float.parseFloat(mOverAllProfessorRatings) * mOverAllProfRaters + rating) / (profOverallRatersPlus)));
+                mProfessorOverAllRatingBar.setRating(mOverallProfRatings);
+                mProfOverAllRatingTextView.setText(String.valueOf(mOverallProfRatings));
+                mStudentProfRating = rating;
+                mOverAllProfRaters = profOverallRatersPlus;
+
             }
         });
 
@@ -199,10 +301,14 @@ public class CourseListFragment extends Fragment {
             @Override
             public void onClick(View v) {
 
-                Log.i(TAG, mStudentCourseRating + "-" + mOverallCourseRaters + "=" + mOverallCourseRatings);
-                Log.i(TAG, mStudentProfRating + "-" + mOverallProfRaters + "=" + mOverallProfRatings);
-                saveRatings(mStudentCourseRating, mOverallCourseRaters, mOverallCourseRatings,
-                        mStudentProfRating, mOverallProfRaters, mOverallProfRatings);
+                Log.i(TAG, mStudentCourseRating + "-" + mOverAllCourseRaters + "=" + mOverallCourseRatings);
+                Log.i(TAG, mStudentProfRating + "-" + mOverAllProfRaters + "=" + mOverallProfRatings);
+                // Hit REST only when rating is updated
+                if(mRatingUpdated)
+                    saveRatings(mStudentCourseRating, mOverAllCourseRaters, mOverallCourseRatings,
+                        mStudentProfRating, mOverAllProfRaters, mOverallProfRatings);
+                else
+                    popupWindow.dismiss();
 
             }
         });
@@ -210,50 +316,90 @@ public class CourseListFragment extends Fragment {
     }
 
     private void saveRatings(final float mStudentCourseRating, final int mOverallCourseRaters, final float mOverallCourseRatings,
-                             final float mStudentProfRating, final int mOverallProfRaters, final float mOverallProfRatings){
-
-        Thread threadA = new Thread() {
-            public void run() {
-                CommonWSInvoke threadB = new CommonWSInvoke(getActivity());
-                WebServiceResponse jsonObject = null;
+                             final float mStudentProfRating, final int mOverallProfRaters, final float mOverallProfRatings) {
+        mAVLoadingIndicatorView.smoothToShow();
+        CourseDetailsHttpClient.getInstance().saveUserRatings(
+                String.valueOf(mStudentCourseRating), String.valueOf(mOverallCourseRaters), String.valueOf(mOverallCourseRatings),
+                String.valueOf(mStudentProfRating), String.valueOf(mOverallProfRaters), String.valueOf(mOverallProfRatings),
+                String.valueOf(mSelectedCourseDetails.getmCourseId()),
+                String.valueOf(mSelectedCourseDetails.getmStudentCourseId()),
+                String.valueOf(mSelectedCourseDetails.getmProfRateId()),
+                String.valueOf(mSelectedCourseDetails.getmCourseProfessorId()), new Callback<JsonObject>() {
+            @Override
+            public void onResponse(@NonNull Call<JsonObject> call, @NonNull Response<JsonObject> response) {
                 try {
-                    jsonObject = threadB.execute(PacePlaceConstants.URL_SAVE_RATINGS, PacePlaceConstants.RATINGS,
-                            String.valueOf(mStudentCourseRating), String.valueOf(mOverallCourseRaters),String.valueOf(mOverallCourseRatings),
-                            String.valueOf(mStudentProfRating), String.valueOf(mOverallProfRaters),String.valueOf(mOverallProfRatings),
-                            String.valueOf(mSelectedCourseDetails.getmCourseId()),
-                            String.valueOf(mSelectedCourseDetails.getmStudentCourseId()),
-                            String.valueOf(mSelectedCourseDetails.getmProfRateId()),
-                            String.valueOf(mSelectedCourseDetails.getmCourseProfessorId()))
-                            .get(10, TimeUnit.SECONDS);
-                } catch (InterruptedException | ExecutionException | TimeoutException e) {
-                    e.printStackTrace();
-                }
-                final WebServiceResponse receivedJSONObject = jsonObject;
-                getActivity().runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        Log.i(TAG, "Response is: " + receivedJSONObject);
-                        if (null != receivedJSONObject) {
-                            if (receivedJSONObject.getmResponse()) {
-                                // TODO : write response code
-                                mCourseLists.get(mSelectedPosition).setmCourseRatings(String.valueOf(mOverallCourseRatings));
-                                mCourseLists.get(mSelectedPosition).setmCourseProfRatings(String.valueOf(mOverallProfRatings));
-                                mAdapter.notifyDataSetChanged();
-                            } else {
-                                generateToastMessage(R.string.rating_failed);
-                            }
+                    if (response.body() != null){
+                        JSONObject receivedJSONObject = new JSONObject(response.body().toString());
+
+                        if ((Boolean)receivedJSONObject.get(PacePlaceConstants.RESPONSE)) {
+                            mCourseLists.get(mSelectedPosition).setmCourseRatings(String.valueOf(mOverallCourseRatings));
+                            mCourseLists.get(mSelectedPosition).setmCourseProfRatings(String.valueOf(mOverallProfRatings));
+                            mAdapter.notifyDataSetChanged();
                         } else {
                             generateToastMessage(R.string.rating_failed);
                         }
-
-                        popupWindow.dismiss();
+                    }else {
+                        generateToastMessage(R.string.rating_failed);
                     }
-                });
+                    mAVLoadingIndicatorView.smoothToHide();
+                    popupWindow.dismiss();
+                }
+                catch (JSONException e) {
+                    generateToastMessage(R.string.rating_failed);
+                    e.printStackTrace();
+                }
+                mAVLoadingIndicatorView.smoothToHide();
+                mSwipeContainer.setRefreshing(false);
             }
-        };
-        threadA.start();
+
+            @Override
+            public void onFailure(Call<JsonObject> call, Throwable t) {
+                t.printStackTrace();
+                generateToastMessage(R.string.rating_failed);
+                mAVLoadingIndicatorView.smoothToHide();
+                mSwipeContainer.setRefreshing(false);
+            }
+        });
+    }
+
+    private CourseDetail setCourseDetailsFromResponse(JSONObject jsonObject) {
+        return new CourseDetail(
+                jsonObject.optString("course_name"),
+                jsonObject.opt("course_rating") != null ? jsonObject.optString("course_rating") : "0",
+                jsonObject.optString("firstname"),
+                jsonObject.opt("professor_ratings") != null ? jsonObject.optString("professor_ratings") : "0", // Prof Rating
+                jsonObject.optString("si_cd_course_day.static_combo_value"),
+                jsonObject.optString("course_time"),
+                jsonObject.optString("location_name"),
+                jsonObject.optString("address_line1"),
+                jsonObject.optString("course_startdate"),
+                jsonObject.optString("course_enddate"),
+                jsonObject.optString("address_line1"),
+                jsonObject.optString("city"),
+                jsonObject.optString("course_desc"),
+                jsonObject.optString("email"),
+                jsonObject.optString("si_ci_graduation_type.static_combo_value"),
+                jsonObject.optString("si_ci_subject.static_combo_value"),
+                jsonObject.optString("static_combo_value"),
+
+                jsonObject.opt("course_day") != null ? jsonObject.optInt("course_day") : 0,
+                jsonObject.opt("credit") != null ? jsonObject.optInt("credit") : 0,
+                jsonObject.opt("number_of_raters") != null ? jsonObject.optInt("number_of_raters") : 0,
+                jsonObject.opt("seat_available") != null ? jsonObject.optInt("seat_available") : 0,
+                jsonObject.opt("seat_capacity") != null ? jsonObject.optInt("seat_capacity") : 0,
+                jsonObject.opt("professor_raters") != null ? jsonObject.optInt("professor_raters") : 0,//number_of_prof_raters
+                jsonObject.opt("student_course_rating") != null ? jsonObject.optString("student_course_rating") : "0",//STUDENT_COURSE_RATINGS
+                jsonObject.opt("student_professor_rating") != null ? jsonObject.optString("student_professor_rating") : "0",//STUDENT_PROF_COURSE_RATINGS
+
+                jsonObject.opt("professor_user_id") != null ? jsonObject.optInt("professor_user_id") : 0,//professor user id
+
+                jsonObject.opt("course_id") != null ? jsonObject.optInt("course_id") : 0,
+                jsonObject.opt("scm_id") != null ? jsonObject.optInt("scm_id") : 0,
+                jsonObject.opt("prof_rate_id") != null ? jsonObject.optInt("prof_rate_id") : 0
+        );
 
     }
+
     // To generate Toast message
     private void generateToastMessage(int id) {
         Toast.makeText(getActivity(), id, Toast.LENGTH_SHORT).show();

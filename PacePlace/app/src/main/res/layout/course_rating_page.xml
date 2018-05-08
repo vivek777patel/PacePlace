@@ -15,12 +15,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/login_margin"
-            android:layout_marginLeft="@dimen/login_margin"
+            android:layout_marginStart="@dimen/login_margin"
             android:layout_marginTop="@dimen/login_margin"
             android:textColor="@color/colorWhite"
             android:textSize="@dimen/btn_txt_size"
-            android:textStyle="bold"
-            />
+            android:textStyle="bold" />
 
         <ImageView
             android:id="@+id/close_popup"
@@ -31,13 +30,14 @@
             android:layout_marginTop="@dimen/login_margin"
             android:src="@drawable/ic_close" />
     </RelativeLayout>
+
     <TextView
         android:id="@+id/course_description_text_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/close_popup_RL"
-        android:layout_marginTop="@dimen/login_margin"
-        />
+        android:layout_marginTop="@dimen/login_margin" />
+
     <LinearLayout
         android:id="@+id/course_rate_LL"
         android:layout_width="match_parent"
@@ -57,30 +57,32 @@
             android:textSize="@dimen/course_text_size"
 
             />
+
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
+
             <RatingBar
                 android:id="@+id/rating_bar_course"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:layout_centerVertical="true"
                 android:layout_marginTop="@dimen/login_margin"
                 android:theme="@style/CustomRatingBar" />
+
             <TextView
+                android:id="@+id/rating_bar_course_text_view"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:id="@+id/rating_bar_course_text_view"
-                android:textColor="@color/colorWhite"
-                android:gravity="center"
-                android:textStyle="bold"
-                android:layout_marginLeft="@dimen/login_margin"
+                android:layout_marginStart="@dimen/login_margin"
                 android:layout_marginTop="@dimen/login_margin"
-                android:textSize="@dimen/course_text_size"/>
+                android:gravity="center"
+                android:textColor="@color/colorWhite"
+                android:textSize="@dimen/course_text_size"
+                android:textStyle="bold" />
 
         </LinearLayout>
+
         <LinearLayout
             android:id="@+id/overall_course_ratings_ll"
             android:layout_width="fill_parent"
@@ -88,22 +90,20 @@
             android:gravity="center">
 
             <RatingBar
+                android:id="@+id/course_overall_rate_bar"
                 style="?android:attr/ratingBarStyleSmall"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:isIndicator="true"
                 android:numStars="5"
                 android:stepSize="0.1"
-                android:theme="@style/CustomRatingBar"
-                android:id="@+id/course_overall_rate_bar"/>
+                android:theme="@style/CustomRatingBar" />
 
             <TextView
                 android:id="@+id/course_over_text_view"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/getRating"
-                android:layout_toRightOf="@+id/setRating"
-                android:paddingLeft="10dp"
+                android:paddingStart="10dp"
                 android:textColor="@color/colorWhite"
                 android:textSize="@dimen/btn_txt_size" />
         </LinearLayout>
@@ -129,29 +129,31 @@
             android:textSize="@dimen/course_text_size"
 
             />
+
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
+
             <RatingBar
                 android:id="@+id/rating_bar_prof"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:layout_centerVertical="true"
                 android:layout_marginTop="@dimen/login_margin"
                 android:theme="@style/CustomRatingBar" />
+
             <TextView
+                android:id="@+id/rating_bar_prof_text_view"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:id="@+id/rating_bar_prof_text_view"
-                android:textColor="@color/colorWhite"
-                android:gravity="center"
-                android:textStyle="bold"
-                android:layout_marginLeft="@dimen/login_margin"
+                android:layout_marginStart="@dimen/login_margin"
                 android:layout_marginTop="@dimen/login_margin"
-                android:textSize="@dimen/course_text_size"/>
+                android:gravity="center"
+                android:textColor="@color/colorWhite"
+                android:textSize="@dimen/course_text_size"
+                android:textStyle="bold" />
         </LinearLayout>
+
         <LinearLayout
             android:id="@+id/overall_prof_ratings_ll"
             android:layout_width="fill_parent"
@@ -159,30 +161,30 @@
             android:gravity="center">
 
             <RatingBar
+                android:id="@+id/prof_overall_rate_bar"
                 style="?android:attr/ratingBarStyleSmall"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:isIndicator="true"
                 android:numStars="5"
                 android:stepSize="0.1"
-                android:id="@+id/prof_overall_rate_bar"
                 android:theme="@style/CustomRatingBar" />
 
             <TextView
                 android:id="@+id/prof_over_text_view"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/getRating"
-                android:layout_toRightOf="@+id/setRating"
-                android:paddingLeft="10dp"
+                android:paddingStart="10dp"
                 android:textColor="@color/colorWhite"
                 android:textSize="@dimen/btn_txt_size" />
         </LinearLayout>
     </LinearLayout>
+
     <Button
         android:id="@+id/save_ratings"
         android:layout_width="match_parent"
         android:layout_height="@dimen/login_button_height"
+        android:layout_below="@id/prof_rate_LL"
         android:layout_gravity="center"
         android:layout_margin="@dimen/login_margin"
         android:background="@drawable/rounded_button"
@@ -191,6 +193,5 @@
         android:textAllCaps="false"
         android:textColor="@color/colorWhite"
         android:textSize="@dimen/btn_txt_size"
-        android:textStyle="bold"
-        android:layout_below="@id/prof_rate_LL"/>
+        android:textStyle="bold" />
 </RelativeLayout>

@@ -5,9 +5,12 @@
     <color name="colorAccent">#303E52</color>
 
     <color name="colorWhite">#ffffff</color>
+    <color name="colorRed">#F00</color>
     <color name="colorListSmall">#D3D3D3</color>
     <color name="colorPaceBlue">#FF5353</color>
     <color name="colorBorderTop">#435672</color>
     <color name="colorEditTextBackground">#3C4D66</color>
+
+    <color name="background">#dddddd</color>
 
 </resources>

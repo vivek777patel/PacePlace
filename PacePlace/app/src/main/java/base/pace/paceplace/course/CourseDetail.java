@@ -12,9 +12,27 @@ public class CourseDetail implements Serializable {
     //                                                   Graduate       CS or IS      In Class or online
     private String mAddressLine1, mCity, mCourseDesc, mProfEmail, mCourseLevel, mCourseMajor, mCourseType;
 
+    private int mCourseDetId;
+
     public CourseDetail(String x){
         mCourseName = x;
     }
+    private Boolean mCourseSelectedIndicator;
+
+    public CourseDetail(int courseId, String courseName, String courseProfessor, String courseDay,
+                        String courseTime, String courseAddress, String courseRoom, int courseDetId) {
+        mCourseId = courseId;
+        mCourseName = courseName;
+        mCourseProfessor = courseProfessor;
+        mCourseDay = courseDay;
+        mCourseTime = courseTime;
+        mCourseAddress = courseAddress;
+        mCourseRoom = courseRoom;
+        mCourseSelectedIndicator = false;
+        mCourseDetId = courseDetId;
+    }
+
+
 
     public CourseDetail(String courseName, String courseRatings, String courseProfessor, String courseProfRatings, String courseDay,
                         String courseTime, String courseAddress, String courseRoom, String courseStartDate, String courseEndDate,
@@ -310,5 +328,21 @@ public class CourseDetail implements Serializable {
 
     public void setmProfUserId(int mProfUserId) {
         this.mProfUserId = mProfUserId;
+    }
+
+    public Boolean getmCourseSelectedIndicator() {
+        return mCourseSelectedIndicator;
+    }
+
+    public void setmCourseSelectedIndicator(Boolean mCourseSelectedIndicator) {
+        this.mCourseSelectedIndicator = mCourseSelectedIndicator;
+    }
+
+    public int getmCourseDetId() {
+        return mCourseDetId;
+    }
+
+    public void setmCourseDetId(int mCourseDetId) {
+        this.mCourseDetId = mCourseDetId;
     }
 }

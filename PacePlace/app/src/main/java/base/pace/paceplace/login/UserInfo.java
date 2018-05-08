@@ -24,6 +24,21 @@ public class UserInfo implements Serializable {
         mDob = dob;
     }
 
+    public UserInfo(String email,String password,String firstName,String lastName,String contact,String dob,
+                    String gender,String graduationType,String studentType,String subject, String accountType){
+        mEmail = email;
+        mPassword = password;
+        mFirstName = firstName;
+        mLastName = lastName;
+        mContact = contact;
+        mDob = dob;
+        mGender = gender;
+        mGraduationType = graduationType;
+        mStudentType = studentType;
+        mSubject = subject;
+        mAccountType = accountType;
+    }
+
     public String getmFirstName() {
         return mFirstName;
     }

@@ -1,9 +1,10 @@
 package base.pace.paceplace;
 
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatEditText;
 import android.util.Log;
@@ -13,19 +14,19 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.JsonObject;
+import com.wang.avi.AVLoadingIndicatorView;
+
 import org.json.JSONException;
+import org.json.JSONObject;
 
-import java.util.ArrayList;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
-
-import base.pace.paceplace.course.CourseDetail;
+import base.pace.paceplace.httpclient.UserDetailsHttpClient;
 import base.pace.paceplace.login.UserInfo;
 import base.pace.paceplace.singup.SignUpActivity;
-import base.pace.paceplace.util.CommonWSInvoke;
 import base.pace.paceplace.util.PacePlaceConstants;
-import base.pace.paceplace.util.WebServiceResponse;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -35,20 +36,22 @@ public class LoginActivity extends AppCompatActivity {
     AppCompatEditText mEmailEditText, mPasswordEditText;
     Button mLoginButton;
     TextView mSignupTextView,mEmailPasswordInvalidTextView;
-
-    ProgressDialog mProgressDialog;
+    SharedPreferences mSharedPreference;
+    AVLoadingIndicatorView mAVLoadingIndicatorView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         Intent i  = getIntent();
         if(i.getStringExtra(PacePlaceConstants.LOGIN_ACTIVITY_MESSAGE) != null){
-            if(i.getStringExtra(PacePlaceConstants.LOGIN_ACTIVITY_MESSAGE).toString().equalsIgnoreCase(PacePlaceConstants.LOGOUT))
+            if(i.getStringExtra(PacePlaceConstants.LOGIN_ACTIVITY_MESSAGE).equalsIgnoreCase(PacePlaceConstants.LOGOUT))
                 generateToastMessage(R.string.logout_success);
         }
 
         configureViews();
         configureClickListeners();
+        checkForPreferences();
+
     }
 
     private void configureViews() {
@@ -57,6 +60,18 @@ public class LoginActivity extends AppCompatActivity {
         mEmailPasswordInvalidTextView = findViewById(R.id.emailPasswordInvalidTextView);
         mLoginButton = findViewById(R.id.loginButton);
         mSignupTextView = findViewById(R.id.signupTextView);
+        mAVLoadingIndicatorView = findViewById(R.id.avi);
+        mSharedPreference = getApplicationContext().getSharedPreferences(PacePlaceConstants.LOGIN, Context.MODE_PRIVATE);
+        mAVLoadingIndicatorView.bringToFront();
+    }
+
+    private void checkForPreferences(){
+        String userId = mSharedPreference.getString(PacePlaceConstants.USER_ID, "");
+        String password = mSharedPreference.getString(PacePlaceConstants.PASSWORD, "");
+        if(!userId.isEmpty() && !password.isEmpty()){
+            validateUserCredentials(userId, password);
+        }
+
     }
 
     public void configureClickListeners() {
@@ -102,30 +117,21 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void invokeWS(final String email, final String password) {
-        mProgressDialog = new ProgressDialog(this);
-        mProgressDialog.setMessage(getResources().getString(R.string.please_wait));
-        mProgressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-        mProgressDialog.setIndeterminate(true);
-        mProgressDialog.show();
-        Thread threadA = new Thread() {
-            public void run() {
-                CommonWSInvoke threadB = new CommonWSInvoke(getApplicationContext());
-                WebServiceResponse jsonObject = null;
+        mAVLoadingIndicatorView.smoothToShow();
+        mAVLoadingIndicatorView.setVisibility(View.VISIBLE);
+        UserDetailsHttpClient.getInstance().login(email,password, new Callback<JsonObject>() {
+            @Override
+            public void onResponse(@NonNull Call<JsonObject> call, @NonNull Response<JsonObject> response) {
                 try {
-                    jsonObject = threadB.execute(PacePlaceConstants.URL_LOGIN,PacePlaceConstants.LOGIN,email,password).get(10, TimeUnit.SECONDS);
-                } catch (InterruptedException|ExecutionException|TimeoutException e) {
-                    e.printStackTrace();
-                }
-                final WebServiceResponse receivedJSONObject = jsonObject;
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        Log.i(TAG,"Response is: " + receivedJSONObject);
-                        if(null!=receivedJSONObject){
-                            if(receivedJSONObject.getmResponse()) {
-                                generateToastMessage(R.string.login_success);
-                                UserInfo userInfo = setUserInfo(receivedJSONObject);
+                    if (response.body() != null){
+                        Log.i(TAG,"Response");
+                        JSONObject receivedJSONObject = new JSONObject(response.body().toString());
 
+                        if(null!=receivedJSONObject){
+                            if ((Boolean)receivedJSONObject.get(PacePlaceConstants.RESPONSE)) {
+                                //generateToastMessage(R.string.login_success);
+                                UserInfo userInfo = setUserInfo((JSONObject)receivedJSONObject.getJSONObject(PacePlaceConstants.DATA));
+                                setSharedPreference(email, password);
                                 Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
                                 intent.putExtra(PacePlaceConstants.USER_INFO, userInfo);
                                 startActivity(intent);
@@ -143,36 +149,59 @@ public class LoginActivity extends AppCompatActivity {
                         // To clear the text views
                         mEmailEditText.setText("");
                         mPasswordEditText.setText("");
-                        mProgressDialog.dismiss();
+                        mAVLoadingIndicatorView.smoothToHide();
+                        mAVLoadingIndicatorView.setVisibility(View.GONE);
                     }
-                });
+                }
+                catch (JSONException e) {
+                    e.printStackTrace();
+                    generateToastMessage(R.string.login_issue_in_response_json);
+                }
+                mAVLoadingIndicatorView.smoothToHide();
+                mAVLoadingIndicatorView.setVisibility(View.GONE);
             }
-        };
-        threadA.start();
+
+            @Override
+            public void onFailure(Call<JsonObject> call, Throwable t) {
+                t.printStackTrace();
+                generateToastMessage(R.string.course_issue_in_response_json);
+                mAVLoadingIndicatorView.smoothToHide();
+                mAVLoadingIndicatorView.setVisibility(View.GONE);
+            }
+        });
     }
 
-    private UserInfo setUserInfo(WebServiceResponse receivedJSONObject){
+    private void setSharedPreference(String email, String password){
+        Log.i(TAG,"In Set Shared Preference");
+        SharedPreferences.Editor editor = mSharedPreference.edit();
+        editor.putString(PacePlaceConstants.USER_ID, email);
+        editor.putString(PacePlaceConstants.PASSWORD, password);
+        editor.apply();
+    }
+
+    private UserInfo setUserInfo(JSONObject receivedJSONObject){
         UserInfo userInfo = new UserInfo();
         try {
-            userInfo.setmUserId(Integer.parseInt(receivedJSONObject.getmJsonObjectResponse().get("user_id").toString()));
-            userInfo.setmEmail(receivedJSONObject.getmJsonObjectResponse().get("email").toString());
-            userInfo.setmAccountType(receivedJSONObject.getmJsonObjectResponse().get("account_type").toString());
-            userInfo.setmDob(receivedJSONObject.getmJsonObjectResponse().get("dob").toString());
-            //userInfo.setmEndDate(receivedJSONObject.getmJsonObjectResponse().get("end_date").toString());
-            userInfo.setmFirstName(receivedJSONObject.getmJsonObjectResponse().get("firstname").toString());
-            userInfo.setmGender(receivedJSONObject.getmJsonObjectResponse().get("gender").toString());
-            userInfo.setmGraduationType(receivedJSONObject.getmJsonObjectResponse().get("graduation_type").toString());
-            userInfo.setmLastName(receivedJSONObject.getmJsonObjectResponse().get("last_name").toString());
-            userInfo.setmContact(receivedJSONObject.getmJsonObjectResponse().get("mobile").toString());
-            userInfo.setmStatus(receivedJSONObject.getmJsonObjectResponse().get("status_id").toString());
-            userInfo.setmStudentType(receivedJSONObject.getmJsonObjectResponse().get("student_type").toString());
-            userInfo.setmSubject(receivedJSONObject.getmJsonObjectResponse().get("subject").toString());
-            userInfo.setmPassword(receivedJSONObject.getmJsonObjectResponse().get("password").toString());
+            userInfo.setmUserId(Integer.parseInt(receivedJSONObject.get("user_id").toString()));
+            userInfo.setmEmail(receivedJSONObject.get("email").toString());
+            userInfo.setmAccountType(receivedJSONObject.get("account_type").toString());
+            userInfo.setmDob(receivedJSONObject.get("dob").toString());
+            //userInfo.setmEndDate(receivedJSONObject.get("end_date").toString());
+            userInfo.setmFirstName(receivedJSONObject.get("firstname").toString());
+            userInfo.setmGender(receivedJSONObject.get("gender").toString());
+            userInfo.setmGraduationType(receivedJSONObject.get("graduation_type").toString());
+            userInfo.setmLastName(receivedJSONObject.get("last_name").toString());
+            userInfo.setmContact(receivedJSONObject.get("mobile").toString());
+            userInfo.setmStatus(receivedJSONObject.get("status_id").toString());
+            userInfo.setmStudentType(receivedJSONObject.get("student_type").toString());
+            userInfo.setmSubject(receivedJSONObject.get("subject").toString());
+            userInfo.setmPassword(receivedJSONObject.get("password").toString());
         } catch (JSONException e) {
             e.printStackTrace();
         }
         return userInfo;
     }
+
     // To generate Toast message
     private void generateToastMessage(int id) {
         Toast.makeText(this, id, Toast.LENGTH_SHORT).show();

@@ -18,6 +18,18 @@
 
     <style name="CustomRatingBar" parent="Theme.AppCompat">
         <item name="colorControlNormal">@color/colorPrimaryDark</item>
-
     </style>
+
+    <style name="MyTheme" parent="ThemeOverlay.AppCompat.Light">
+        <item name="colorControlNormal">@android:color/white</item>
+        <item name="android:actionButtonStyle">@style/myActionButtonStyle</item>
+        <item name="actionButtonStyle">@style/myActionButtonStyle</item>
+    </style>
+
+    <style name="myActionButtonStyle" parent="Widget.AppCompat.ActionButton">
+        <item name="android:minWidth">24dp</item>
+        <item name="android:maxWidth">40dp</item>
+        <item name="android:width">40dp</item>
+    </style>
+
 </resources>

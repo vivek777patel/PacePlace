@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorAccent">
+
+    <com.wang.avi.AVLoadingIndicatorView
+        android:id="@+id/course_registration_avi"
+        style="@style/AVLoadingIndicatorView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:indicatorColor="@color/colorPrimary"
+        android:visibility="visible"
+        app:indicatorName="BallPulseIndicator"
+        android:layout_centerInParent="true"/>
+
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/course_registration_swipe_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/bottom_button_rl">
+
+        <ListView
+            android:id="@+id/courses_registration_listview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:dividerHeight="@dimen/login_padding" />
+    </android.support.v4.widget.SwipeRefreshLayout>
+
+    <RelativeLayout
+        android:id="@+id/bottom_button_rl"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/border"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/save_registration_button"
+            android:layout_width="@dimen/login_button_width"
+            android:layout_height="@dimen/login_button_height"
+            android:layout_gravity="center"
+            android:layout_margin="@dimen/login_margin"
+            android:background="@drawable/rounded_button"
+            android:fontFamily="serif"
+            android:text="@string/save_text"
+            android:textAllCaps="false"
+            android:textColor="@color/colorWhite"
+            android:textSize="@dimen/btn_txt_size"
+            android:textStyle="bold" />
+
+        <Button
+            android:id="@+id/reset_button"
+            android:layout_width="@dimen/login_button_width"
+            android:layout_height="@dimen/login_button_height"
+            android:layout_alignParentEnd="true"
+            android:layout_margin="@dimen/login_margin"
+            android:background="@drawable/rounded_button"
+            android:fontFamily="serif"
+            android:text="@string/reset_text"
+            android:textAllCaps="false"
+            android:textColor="@color/colorWhite"
+            android:textSize="@dimen/btn_txt_size"
+            android:textStyle="bold" />
+    </RelativeLayout>
+
+
+</RelativeLayout>

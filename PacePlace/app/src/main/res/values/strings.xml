@@ -6,12 +6,18 @@
     <string name="events">Events</string>
 
     <string name="course_no_data_found">No course data found</string>
-    <string name="course_issue_in_response_json">Issue in response JSON</string>
+
+    <string name="course_register_issue_in_response_json">Issue in fetching Course Data for registration</string>
+    <string name="course_issue_in_response_json">Issue in fetching Course Data</string>
+    <string name="login_issue_in_response_json">Issue in fetching User Data</string>
+
+    <string name="data_fetch_failed">Data fetching failed</string>
     <string name="enter_username">Email ID</string>
     <string name="enter_password">Password</string>
     <string name="btn_login_txt">Sign In</string>
     <string name="dont_have_accnt">Don\'t have an account ?</string>
 
+    <string name="all_fields_required">Please provide all the mandatory fields</string>
     <string name="email_pass_required">Email and Password are mandatory fields</string>
     <string name="email_pass_not_valid">Email or Password is incorrect</string>
     <string name="conf_pass_and_pass_required">Password and Confirmation Password are mandatory fields and must be equal</string>
@@ -25,12 +31,14 @@
     <string name="register_success">Register Success</string>
     <string name="register_failed">Register Failed</string>
     <string name="connection_failed">Connection Failed</string>
-
+    <string name="course_registration_success">Course registration success</string>
     <string name="rating_failed">Rating update failed</string>
     <string name="rating_successful">Rating update successful</string>
+    <string name="all_fields_mandatory">All the fields are mandatory</string>
 
     <string name="please_wait">Please Wait...!!!</string>
 
+    <string name="action_back">Back</string>
     <string name="btn_register_txt">Register</string>
     <string name="btn_save_txt">Save</string>
     <string name="btn_clear_txt">Clear</string>
@@ -49,9 +57,21 @@
     <string name="course_professor_ratings">Professor Ratings : %s/5</string>
     <string name="course_day">Day : %s</string>
     <string name="course_time">Time : %s</string>
+    <string name="course_room">Room : %s</string>
     <string name="course_start">Start : %s</string>
-        <string name="course_end">End : %s</string>
+    <string name="course_end">End : %s</string>
     <string name="course_ratings">Course Ratings</string>
     <string name="prof_ratings">Professor Ratings</string>
     <string name="save_ratings_text">Save Ratings</string>
+
+    <string name="course_load_fail">Course Loading Failed</string>
+
+    <string name="save_text">Save</string>
+    <string name="reset_text">Reset</string>
+
+    <!-- Event Details String Resources -->
+    <string name="event_location">Room: %s , %s</string>
+    <string name="event_conducted_for">%s of %s</string>
+    <string name="events_not_found">No Event data found</string>
+    <string name="event_issue_in_response_json">Issue in fetching Event Data</string>
 </resources>

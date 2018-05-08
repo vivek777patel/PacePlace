@@ -1,43 +1,34 @@
 package base.pace.paceplace.course;
 
-import android.app.ActionBar;
 import android.content.Context;
-import android.util.Log;
-import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
-import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import java.util.List;
 
-import base.pace.paceplace.HomeActivity;
 import base.pace.paceplace.R;
 
-public class CourseListViewAdapter extends BaseAdapter {
+public class CourseRegistrationListViewAdapter extends BaseAdapter {
+
     Context mContext;
     List<CourseDetail> mCourseInfoList;
     View.OnClickListener mClickListener;
-    private static final String TAG = "CourseListViewAdapter";
+    private static final String TAG = "CourseRegistrationListViewAdapter";
 
-    public CourseListViewAdapter(Context context, List<CourseDetail> courseInfoList, View.OnClickListener itemClickListener){
+    public CourseRegistrationListViewAdapter(Context context, List<CourseDetail> courseInfoList, View.OnClickListener itemClickListener){
         mContext = context;
         mCourseInfoList = courseInfoList;
         mClickListener = itemClickListener;
     }
 
     @Override
-    public int getCount() {
-        return mCourseInfoList.size();
-    }
+    public int getCount() { return mCourseInfoList.size(); }
 
     @Override
-    public Object getItem(int position) {
-        return mCourseInfoList.get(position);
-    }
+    public Object getItem(int position) { return mCourseInfoList.get(position); }
 
     @Override
     public long getItemId(int position) {
@@ -48,17 +39,14 @@ public class CourseListViewAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         ViewHolder viewHolder;
         if (convertView == null) {
-            convertView = View.inflate(mContext, R.layout.courses_list_view, null);
+            convertView = View.inflate(mContext, R.layout.course_registration_list_view, null);
             viewHolder = new ViewHolder((TextView) convertView.findViewById(R.id.list_item_course_name),
-                    (TextView) convertView.findViewById(R.id.list_item_lec_course_ratings),
                     (TextView) convertView.findViewById(R.id.list_item_lec_course_professor),
-                    (TextView) convertView.findViewById(R.id.list_item_lec_course_prof_ratings),
                     (TextView) convertView.findViewById(R.id.list_item_lec_course_day),
                     (TextView) convertView.findViewById(R.id.list_item_lec_course_time),
                     (TextView) convertView.findViewById(R.id.list_item_lec_course_address),
                     (TextView) convertView.findViewById(R.id.list_item_lec_course_room),
-                    (TextView) convertView.findViewById(R.id.list_item_lec_course_start_date),
-                    (TextView) convertView.findViewById(R.id.list_item_lec_course_end_date)); // creating new item/ViewHolder
+                    (ImageView) convertView.findViewById(R.id.list_item_course_add_remove)); // creating new item/ViewHolder
 
             convertView.setTag(viewHolder);
 
@@ -69,42 +57,41 @@ public class CourseListViewAdapter extends BaseAdapter {
         CourseDetail courseInfo = (CourseDetail) getItem(position);
         //Log.i(TAG, "SSSSSS"+  mContext.getResources().getString(R.string.course_rating,courseInfo.getmCourseRatings()));
         viewHolder.mCourseNameTextView.setText(courseInfo.getmCourseName());
-        viewHolder.mCourseRatingsTextView.setText(mContext.getResources().getString(R.string.course_rating,courseInfo.getmCourseRatings()));
         viewHolder.mCourseProfessorTextView.setText(mContext.getResources().getString(R.string.course_professor,courseInfo.getmCourseProfessor()));
-        viewHolder.mCourseProfRatingsTextView.setText(mContext.getResources().getString(R.string.course_professor_ratings,courseInfo.getmCourseProfRatings()));
         viewHolder.mCourseDayTextView.setText(mContext.getResources().getString(R.string.course_day,courseInfo.getmCourseDay()));
         viewHolder.mCourseTimeTextView.setText(mContext.getResources().getString(R.string.course_time,courseInfo.getmCourseTime()));
         viewHolder.mCourseAddressTextView.setText(courseInfo.getmCourseAddress());
-        viewHolder.mCourseRoomTextView.setText(mContext.getResources().getString(R.string.course_room,courseInfo.getmCourseRoom()));
-        viewHolder.mCourseStartDateTextView.setText(mContext.getResources().getString(R.string.course_start,courseInfo.getmCourseStartDate()));
-        viewHolder.mCourseEndDateTextView.setText(mContext.getResources().getString(R.string.course_end,courseInfo.getmCourseEndDate()));
+        viewHolder.mCourseRoomTextView.setText(courseInfo.getmCourseRoom());
         viewHolder.mCourseNameTextView.setTag(position);
 
-        viewHolder.mCourseNameTextView.setOnClickListener(mClickListener);
+        if (courseInfo.getmCourseSelectedIndicator()){
+            viewHolder.mCourseAddRemoveImgView.setBackgroundResource(R.drawable.ic_remove);
+        }
+        else {
+            viewHolder.mCourseAddRemoveImgView.setBackgroundResource(R.drawable.ic_add);
+        }
+        viewHolder.mCourseAddRemoveImgView.setTag(position);
+        viewHolder.mCourseAddRemoveImgView.setOnClickListener(mClickListener);
         return convertView;
     }
 
+
     private class ViewHolder {
 
-        TextView mCourseNameTextView, mCourseRatingsTextView, mCourseProfessorTextView, mCourseProfRatingsTextView,mCourseDayTextView,
-                mCourseTimeTextView,mCourseAddressTextView,mCourseRoomTextView,
-                mCourseStartDateTextView,mCourseEndDateTextView;
+        TextView mCourseNameTextView, mCourseProfessorTextView, mCourseDayTextView,
+                mCourseTimeTextView,mCourseAddressTextView,mCourseRoomTextView;
+        ImageView mCourseAddRemoveImgView;
 
-        ViewHolder(TextView courseNameTextView,TextView courseRatingsTextView, TextView courseProfessorTextView, TextView courseProfRatingsTextView,TextView courseDayTextView,
+        ViewHolder(TextView courseNameTextView, TextView courseProfessorTextView,TextView courseDayTextView,
                    TextView courseTimeTextView, TextView courseAddressTextView, TextView courseRoomTextView,
-                   TextView courseStartDateTextView, TextView courseEndDateTextView) {
+                   ImageView courseAddRemoveImgView) {
             mCourseNameTextView = courseNameTextView;
-            mCourseRatingsTextView = courseRatingsTextView;
             mCourseProfessorTextView = courseProfessorTextView;
-            mCourseProfRatingsTextView = courseProfRatingsTextView;
             mCourseDayTextView = courseDayTextView;
             mCourseTimeTextView = courseTimeTextView;
             mCourseAddressTextView = courseAddressTextView;
             mCourseRoomTextView = courseRoomTextView;
-            mCourseStartDateTextView = courseStartDateTextView;
-            mCourseEndDateTextView = courseEndDateTextView;
+            mCourseAddRemoveImgView = courseAddRemoveImgView;
         }
     }
-
-
 }

@@ -2,29 +2,28 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/colorAccent">
+    android:layout_height="match_parent">
 
     <com.wang.avi.AVLoadingIndicatorView
-        android:id="@+id/course_detail_avi"
+        android:id="@+id/avi_event_details"
         style="@style/AVLoadingIndicatorView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:indicatorColor="@color/colorPrimary"
+        android:layout_centerInParent="true"
         android:visibility="gone"
-        app:indicatorName="BallPulseIndicator"
-        android:layout_centerInParent="true"/>
+        app:indicatorColor="@color/colorPrimary"
+        app:indicatorName="BallPulseIndicator" />
 
     <android.support.v4.widget.SwipeRefreshLayout
-        android:id="@+id/swipeContainer"
+        android:id="@+id/swipeContainer_event_details"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <ListView
-            android:id="@+id/coursesListView"
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/event_recycler_view"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:dividerHeight="@dimen/login_padding" />
-
+            android:layout_height="match_parent"
+            android:scrollbars="vertical" />
     </android.support.v4.widget.SwipeRefreshLayout>
+
 </RelativeLayout>
