@@ -12,16 +12,57 @@ student_ratings = dict()
 course_ratings = dict()
 professor_ratings = dict()
 
-my_connection = pymysql.connect(host=db.MYSQL_DATABASE_HOST,
-                                user=db.MYSQL_DATABASE_USER,
-                                password=db.MYSQL_DATABASE_PASSWORD,
-                                db=db.MYSQL_DATABASE_DB,
-                                charset='utf8mb4',
-                                cursorclass=pymysql.cursors.DictCursor)
+
+@ap.route('/saveRegisteredCourses/', methods=['GET', 'POST'])
+def save_registered_courses():
+    global result
+    result = {}
+    content = request.json
+    connection = pymysql.connect(host=db.MYSQL_DATABASE_HOST,
+                                 user=db.MYSQL_DATABASE_USER,
+                                 password=db.MYSQL_DATABASE_PASSWORD,
+                                 db=db.MYSQL_DATABASE_DB,
+                                 charset='utf8mb4',
+                                 cursorclass=pymysql.cursors.DictCursor)
+    response = False
+    try:
+        print(content)
+        for li in content:
+            print(li['USER_ID'])
+            user_id = li['USER_ID']
+            course_det_id = li['COURSE_DET_ID']
+            connection = pymysql.connect(host=db.MYSQL_DATABASE_HOST,
+                                         user=db.MYSQL_DATABASE_USER,
+                                         password=db.MYSQL_DATABASE_PASSWORD,
+                                         db=db.MYSQL_DATABASE_DB,
+                                         charset='utf8mb4',
+                                         cursorclass=pymysql.cursors.DictCursor)
+            with connection.cursor() as cursor:
+                sql = "insert into student_course_map (user_id, course_det_id) values (%s, %s)"
+                cursor.execute(sql, (user_id, course_det_id))
+
+            connection.commit()
+            response = True
+
+    except KeyError:
+        print("Key is missing in POSTed JSON ")
+        return jsonify([{"RESPONSE": response, "DATA": {"DATA": "Required key is missing in POSTed JSON of Course Registration"}}])
+    except Exception as e:
+        print("Exeception occurred :{}".format(e))
+        connection.cursor().close()
+        response = False
+        return jsonify([{"RESPONSE": response, "DATA": {"DATA": "Exception in Course Registration"}}])
+    finally:
+        # connection.close()
+        connection.cursor().close()
+
+    return jsonify([{"RESPONSE": response, "DATA": {"DATA": "CourseRegistered successfully"}}])
 
 
-@ap.route('/getUserCourses/', methods=['GET', 'POST'])
-def get_user_courses():
+@ap.route('/getCoursesForRegistration/', methods=['GET', 'POST'])
+def get_courses_for_registration():
+    global result
+    result = {}
     content = request.json
     try:
         if content:
@@ -30,9 +71,79 @@ def get_user_courses():
             user_id = request.form['USER_ID']
 
         print(user_id)
-        # print(STATIC_INFO_TYPE['GENDER'][gender])
+
     except KeyError:
         print("User Name or Password is missing in POSTed JSON ")
+        return jsonify({"KeyError": "user_name or password is missing"})
+
+    response = True
+
+    query = """
+        SELECT  cd.course_time,ci.course_name, ci.course_desc,
+        li.location_name, li.address_line1, li.city,
+        ui.firstname, ui.email,ui.user_id as professor_user_id,
+        si_cd_course_type.static_combo_value, si_cd_course_day.static_combo_value,si_ci_graduation_type.static_combo_value, 
+        si_ci_subject.static_combo_value,ci.course_id,cd.course_det_id
+        
+        FROM course_details cd join course_info ci on cd.course_id = ci.course_id
+        join user_info ui on cd.user_id = ui.user_id
+        join location_info li on cd.course_location = li.location_id
+        join static_info si_cd_course_type on cd.course_type = si_cd_course_type.static_info_id
+        join static_info si_cd_course_day on cd.course_day = si_cd_course_day.static_info_id
+        join static_info si_ci_graduation_type on ci.graduation_type = si_ci_graduation_type.static_info_id
+        join static_info si_ci_subject on ci.subject = si_ci_subject.static_info_id
+        where cd.course_det_id not in (Select course_det_id from student_course_map scm
+    """
+    query += " where scm.user_id = " + str(user_id) + ")"
+    print(query)
+    connection = pymysql.connect(host=db.MYSQL_DATABASE_HOST,
+                                user=db.MYSQL_DATABASE_USER,
+                                password=db.MYSQL_DATABASE_PASSWORD,
+                                db=db.MYSQL_DATABASE_DB,
+                                charset='utf8mb4',
+                                cursorclass=pymysql.cursors.DictCursor)
+    try:
+        with connection.cursor() as cursor:
+            print("Executing query to fetch student course details")
+            cursor.execute(query)
+            result = cursor.fetchall()
+            print(result)
+            response = True
+            cursor.close()
+    except Exception as e:
+        print("Exeception occurred :{}".format(e))
+        connection.cursor().close()
+        response = False
+        return jsonify({"RESPONSE": response, "DATA": {"DATA": "Exception in User Registration"}})
+    finally:
+        connection.cursor().close()
+
+    if result:
+        print("Sending response back with data")
+        return jsonify({"RESPONSE": response, "DATA": result})
+    else:
+        result = {}
+        print("Sending response back with blank data")
+        return jsonify({"RESPONSE": response, "DATA": result})
+
+
+@ap.route('/getUserCourses/', methods=['GET', 'POST'])
+def get_user_courses():
+    global result
+    result = {}
+    content = request.json
+    try:
+        if content:
+            user_id = content['USER_ID']
+            print("json")
+        else:
+            user_id = request.form['USER_ID']
+            print("form")
+
+        print(user_id)
+        # print(STATIC_INFO_TYPE['GENDER'][gender])
+    except KeyError:
+        print("USER_ID POSTed JSON ")
         return jsonify({"KeyError": "user_name or password is missing"})
 
     response = True
@@ -57,16 +168,22 @@ def get_user_courses():
         join static_info si_ci_subject on ci.subject = si_ci_subject.static_info_id
         left join professor_rater pr on ui.user_id = pr.user_id
     """
-    query += " and scm.user_id = " + str(user_id)
+    query += " where scm.user_id = " + str(user_id)
     print(query)
-    connection = my_connection
+    connection = pymysql.connect(host=db.MYSQL_DATABASE_HOST,
+                                user=db.MYSQL_DATABASE_USER,
+                                password=db.MYSQL_DATABASE_PASSWORD,
+                                db=db.MYSQL_DATABASE_DB,
+                                charset='utf8mb4',
+                                cursorclass=pymysql.cursors.DictCursor)
     try:
         with connection.cursor() as cursor:
-            print("Executing query to fetch student course_ details")
+            print("Executing query to fetch student course details")
             cursor.execute(query)
-            global result
             result = cursor.fetchall()
+            print({"RESPONSE": response, "DATA": result})
             response = True
+            cursor.close()
     except Exception as e:
         print("Exeception occurred :{}".format(e))
         connection.cursor().close()
@@ -78,6 +195,7 @@ def get_user_courses():
     if result:
         print("Sending response back with data")
         return jsonify({"RESPONSE": response, "DATA": result})
+        # return jsonify(result)
     else:
         result = {}
         print("Sending response back with blank data")
@@ -194,6 +312,19 @@ def save_user_ratings():
             student_course_id = content['STUDENT_COURSE_ID']
             prof_rate_id = content['PROF_RATE_ID']
             prof_user_id = content['PROF_USER_ID']
+        else:
+            student_course_rating = request.form['STUDENT_COURSE_RATING']
+            overall_course_raters = request.form['OVERALL_COURSE_RATERS']
+            overall_course_rating = request.form['OVERALL_COURSE_RATING']
+
+            student_prof_rating = request.form['STUDENT_PROF_RATING']
+            overall_prof_raters = request.form['OVERALL_PROF_RATERS']
+            overall_prof_rating = request.form['OVERALL_PROF_RATING']
+
+            course_id = request.form['COURSE_ID']
+            student_course_id = request.form['STUDENT_COURSE_ID']
+            prof_rate_id = request.form['PROF_RATE_ID']
+            prof_user_id = request.form['PROF_USER_ID']
 
     except KeyError:
         print("User Name or Password is missing in POSTed JSON ")

@@ -20,7 +20,7 @@ def get_static_info(combo_type=''):
     STATIC_INFO_DETAIL = dict()
 
     cursor = mysql.connect().cursor()
-    static_combo_type_query = "SELECT * from Static_info"
+    static_combo_type_query = "SELECT * from static_info"
     if combo_type:
         static_combo_type_query += " where static_combo_type='" + combo_type + "'"
     cursor.execute(static_combo_type_query)
@@ -37,12 +37,14 @@ def get_static_info(combo_type=''):
             else:
                 STATIC_INFO[data[i][1]] = [(data[i][0], data[i][2])]
                 STATIC_INFO_TYPE[data[i][1]] = {data[i][2]: data[i][0]}
+
             if data[i][0] in STATIC_INFO:
                 STATIC_INFO_DET[data[i][0]].append((data[i][1], data[i][2]))
                 STATIC_INFO_DETAIL[data[i][0]].append(data[i][2])
             else:
                 STATIC_INFO_DET[data[i][0]] = [(data[i][1], data[i][2])]
                 STATIC_INFO_DETAIL[data[i][0]] = data[i][2]
+
         print(STATIC_INFO_TYPE)
 
 

@@ -10,6 +10,7 @@ ap = app.app
 USER_INFO = dict()
 result = {}
 
+
 def get_user(query=None):
     if query is None:
         return
@@ -78,9 +79,11 @@ def get_user_info():
     content = request.json
     try:
         if content:
+            print("json")
             user_name = content['EMAIL']
             password = content['PASSWORD']
         else:
+            print("form")
             user_name = request.form['EMAIL']
             password = request.form['PASSWORD']
 
@@ -121,20 +124,29 @@ def add_user():
             mobile = content['MOBILE']
             password = content['PASSWORD']
             status_id = STATIC_INFO_TYPE['STATUS']['Active']
+            gender = STATIC_INFO_TYPE['GENDER'][content['GENDER']]
+            account_type = STATIC_INFO_TYPE['ACCOUNT_TYPE'][content['ACCOUNT_TYPE']]
+            graduation_type = STATIC_INFO_TYPE['GRADUATION_TYPE'][content['GRADUATION_TYPE']]
+            subject = STATIC_INFO_TYPE['SUBJECT'][content['SUBJECT']]
+            student_type = STATIC_INFO_TYPE['STUDENT_TYPE'][content['STUDENT_TYPE']]
+        else:
+            operation_type = request.form['OPERATION']
+            user_id = request.form['USER_ID']
+            first_name = request.form['FIRST_NAME']
+            last_name = request.form['LAST_NAME']
+            user_name = request.form['EMAIL']
+            dob = request.form['DOB']
+            mobile = request.form['MOBILE']
+            password = request.form['PASSWORD']
+            status_id = STATIC_INFO_TYPE['STATUS']['Active']
+            gender = STATIC_INFO_TYPE['GENDER'][request.form['GENDER']]
+            account_type = STATIC_INFO_TYPE['ACCOUNT_TYPE'][request.form['ACCOUNT_TYPE']]
+            graduation_type = STATIC_INFO_TYPE['GRADUATION_TYPE'][request.form['GRADUATION_TYPE']]
+            subject = STATIC_INFO_TYPE['SUBJECT'][request.form['SUBJECT']]
+            student_type = STATIC_INFO_TYPE['STUDENT_TYPE'][request.form['STUDENT_TYPE']]
 
-            # Get int value from json directly
-            # Hardcoded right now
-            gender = STATIC_INFO_TYPE['GENDER']['Male']
-            account_type = STATIC_INFO_TYPE['ACCOUNT_TYPE']['Student']
-            graduation_type = STATIC_INFO_TYPE['GRADUATION_TYPE']['Graduate']
-            subject = STATIC_INFO_TYPE['SUBJECT']['Computer Science']
-            student_type = STATIC_INFO_TYPE['STUDENT_TYPE']['International']
-        # else:
-        #     user_name = request.form['EMAIL']
-        #     password = request.form['PASSWORD']
     except KeyError:
         return jsonify({"KeyError": "key fields are missing is missing in POSTed JSON "})
-        sys.exit(0)
 
     global result
     result = None
