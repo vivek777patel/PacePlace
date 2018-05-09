@@ -16,8 +16,9 @@ api = Api(app)
 
 # importing other python files which will not be used in this file, we import them just to initialize the file data
 ### static_info has to be the first line of the import statement -- rest all will follow it
-from base.paceplace.common import static_info
 
+from base.paceplace.common import static_info
 from base.paceplace.restapi import user_info
 from base.paceplace.restapi import course_info
+from base.paceplace.restapi import event_info
 
