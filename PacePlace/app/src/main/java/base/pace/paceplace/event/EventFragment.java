@@ -8,9 +8,12 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.Toast;
 
 import com.google.gson.JsonObject;
@@ -24,8 +27,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import base.pace.paceplace.R;
+import base.pace.paceplace.course.CourseDetail;
 import base.pace.paceplace.httpclient.EventDetailsHttpClient;
 import base.pace.paceplace.util.PacePlaceConstants;
+import io.github.douglasjunior.androidSimpleTooltip.SimpleTooltip;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -37,8 +42,10 @@ public class EventFragment extends Fragment {
     private RecyclerView mRecyclerView;
     private EventListViewAdapter mAdapter;
     private List<EventDetail> mEventList = new ArrayList<>();
+
     AVLoadingIndicatorView mAVLoadingIndicatorView;
     private SwipeRefreshLayout mSwipeContainer;
+
 
     @Nullable
     @Override
@@ -53,15 +60,21 @@ public class EventFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-
         configureEventListView();
     }
 
     private void configureEventListView() {
 
         getEventList();
-
-        mAdapter = new EventListViewAdapter(getActivity(), mEventList);
+        mAVLoadingIndicatorView.bringToFront();
+        mAdapter = new EventListViewAdapter(getActivity(), mEventList, new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                int position = (int) v.getTag();
+                EventDetail selectedEventDetails = mEventList.get(position);
+                bringPopup(selectedEventDetails, v);
+            }
+        });
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         mRecyclerView.setAdapter(mAdapter);
         mSwipeContainer.setOnRefreshListener(
@@ -76,6 +89,27 @@ public class EventFragment extends Fragment {
         );
     }
 
+    private void bringPopup(EventDetail eventDetail,View v){
+        new SimpleTooltip.Builder(getActivity())
+                .anchorView(v)
+                .text(eventDetail.getmEventDescription())
+                .gravity(Gravity.BOTTOM)
+                .dismissOnOutsideTouch(true)
+                .onDismissListener(new SimpleTooltip.OnDismissListener() {
+                    @Override
+                    public void onDismiss(SimpleTooltip tooltip) {
+                        System.out.println("dismiss " + tooltip);
+                    }
+                })
+                .onShowListener(new SimpleTooltip.OnShowListener() {
+                    @Override
+                    public void onShow(SimpleTooltip tooltip) {
+                        System.out.println("show " + tooltip);
+                    }
+                })
+                .build()
+                .show();
+    }
     private void getEventList() {
         mAVLoadingIndicatorView.setVisibility(View.VISIBLE);
         mAVLoadingIndicatorView.smoothToShow();

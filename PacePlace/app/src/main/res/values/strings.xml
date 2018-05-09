@@ -93,6 +93,8 @@
     <string name="event_description">Event Description *</string>
     <string name="btn_event_post_txt">Post</string>
     <string name="event_location_place">Event Location *</string>
+    <string name="event_description_exceeds">Event Description cannot be more than 400 characters</string>
+
     <string name="mandatory_string">All the fields marked with * are mandatory</string>
     <string name="location_not_found">No Location data found</string>
     <string name="location_issue_in_response_json">Issue in fetching Location Data</string>

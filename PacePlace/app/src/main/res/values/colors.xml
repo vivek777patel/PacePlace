@@ -13,4 +13,8 @@
 
     <color name="background">#dddddd</color>
 
+    <color name="simpletooltip_background">@color/colorBorderTop</color>
+    <color name="simpletooltip_text">@color/colorWhite</color>
+    <color name="simpletooltip_arrow">@color/colorBorderTop</color>
+
 </resources>

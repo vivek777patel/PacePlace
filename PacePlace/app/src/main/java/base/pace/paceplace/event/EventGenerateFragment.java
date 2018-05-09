@@ -209,10 +209,17 @@ public class EventGenerateFragment extends Fragment {
                     if (eventDescription.isEmpty()) {
                         mEventDescriptionEditText.setHintTextColor(getResources().getColor(R.color.colorRed));
                     }
+                    if(eventDescription.length()>400){
+                        mEventDescriptionEditText.setHintTextColor(getResources().getColor(R.color.colorRed));
+                    }
                     generateToastMessage(R.string.all_fields_required);
                     return;
                 }
-
+                if(eventDescription.length()>400){
+                    mEventDescriptionEditText.setHintTextColor(getResources().getColor(R.color.colorRed));
+                    generateToastMessage(R.string.event_description_exceeds);
+                    return;
+                }
 
                 // TODO : Get user id from main fragment to get event created by
                 EventDetail newEventDetails = new EventDetail(eventName, eventDate, eventDescription,

@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.support.v7.widget.RecyclerView;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.List;
@@ -18,10 +19,12 @@ public class EventListViewAdapter extends RecyclerView.Adapter<RecyclerView.View
     List<EventDetail> mEventInfoList;
 
     private static final String TAG = "CourseListViewAdapter";
+    View.OnClickListener mClickListener;
 
-    EventListViewAdapter(Context context, List<EventDetail> eventInfoList) {
+    EventListViewAdapter(Context context, List<EventDetail> eventInfoList, View.OnClickListener itemClickListener) {
         mContext = context;
         mEventInfoList = eventInfoList;
+        mClickListener = itemClickListener;
     }
 
 
@@ -42,7 +45,13 @@ public class EventListViewAdapter extends RecyclerView.Adapter<RecyclerView.View
         viewHolder.mEventCreatedByTextView.setText(mContext.getResources().getString(R.string.event_posted_by,eventDetail.getmEventCreatedBy()));
         viewHolder.mEventForStudentTypeTextView.setText(mContext.getResources().getString(R.string.event_conducted_for, eventDetail.getmEventGradType()));
         viewHolder.mEventForSubjectLevelTextView.setText(mContext.getResources().getString(R.string.event_conducted_for_subject, eventDetail.getmEventSubjectType()));
+        viewHolder.mEventNameTextView.setOnClickListener(mClickListener);
+        viewHolder.mEventNameTextView.setTag(position);
     }
+
+    /*public Object getItem(int position) {
+        return mEventInfoList.get(position);
+    }*/
 
     @Override
     public int getItemCount() {
@@ -51,7 +60,8 @@ public class EventListViewAdapter extends RecyclerView.Adapter<RecyclerView.View
 
     private class RecyclerViewHolder extends RecyclerView.ViewHolder {
         // each data item is just a string in this case
-        TextView mEventNameTextView, mEventDateTimeTextView, mEventLocationTextView, mEventCreatedByTextView, mEventForStudentTypeTextView, mEventForSubjectLevelTextView;
+        TextView mEventNameTextView, mEventDateTimeTextView, mEventLocationTextView, mEventCreatedByTextView,
+                mEventForStudentTypeTextView, mEventForSubjectLevelTextView;
 
         RecyclerViewHolder(View view) {
             super(view);

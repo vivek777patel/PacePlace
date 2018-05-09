@@ -60,6 +60,7 @@ public class CourseListFragment extends Fragment {
 
     DecimalFormat decimalFormat = new DecimalFormat("##.0");
 
+    private static PopupWindow mPopupWindow;
     private static LayoutInflater mLayoutInflater;
     private SwipeRefreshLayout mSwipeContainer;
 
@@ -166,8 +167,6 @@ public class CourseListFragment extends Fragment {
         mListView.setItemsCanFocus(false);
 
     }
-
-    private static PopupWindow popupWindow;
 
     public void bringPopup(CourseDetail courseInfo, View v) {
 
@@ -286,17 +285,17 @@ public class CourseListFragment extends Fragment {
 
 
         //instantiate popup window
-        popupWindow = new PopupWindow(popWindow, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
+        mPopupWindow = new PopupWindow(popWindow, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
 
         //display the popup window
-        popupWindow.showAtLocation(v, Gravity.CENTER, 0, 80);
+        mPopupWindow.showAtLocation(v, Gravity.CENTER, 0, 80);
 
 
         //close the popup window on button click
         closePopupBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                popupWindow.dismiss();
+                mPopupWindow.dismiss();
             }
         });
 
@@ -311,7 +310,7 @@ public class CourseListFragment extends Fragment {
                     saveRatings(mStudentCourseRating, mOverAllCourseRaters, mOverallCourseRatings,
                             mStudentProfRating, mOverAllProfRaters, mOverallProfRatings);
                 else
-                    popupWindow.dismiss();
+                    mPopupWindow.dismiss();
 
             }
         });
@@ -345,7 +344,7 @@ public class CourseListFragment extends Fragment {
                             } else {
                                 generateToastMessage(R.string.rating_failed);
                             }
-                            popupWindow.dismiss();
+                            mPopupWindow.dismiss();
                         } catch (JSONException e) {
                             generateToastMessage(R.string.rating_failed);
                             e.printStackTrace();
