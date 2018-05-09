@@ -1,20 +1,13 @@
 package base.pace.paceplace.course;
 
-import android.app.ActionBar;
 import android.content.Context;
-import android.util.Log;
-import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.ImageView;
-import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import java.util.List;
 
-import base.pace.paceplace.HomeActivity;
 import base.pace.paceplace.R;
 
 public class CourseListViewAdapter extends BaseAdapter {
@@ -67,7 +60,6 @@ public class CourseListViewAdapter extends BaseAdapter {
             viewHolder = (ViewHolder)convertView.getTag();  //reusing item/ViewHolder
 
         CourseDetail courseInfo = (CourseDetail) getItem(position);
-        //Log.i(TAG, "SSSSSS"+  mContext.getResources().getString(R.string.course_rating,courseInfo.getmCourseRatings()));
         viewHolder.mCourseNameTextView.setText(courseInfo.getmCourseName());
         viewHolder.mCourseRatingsTextView.setText(mContext.getResources().getString(R.string.course_rating,courseInfo.getmCourseRatings()));
         viewHolder.mCourseProfessorTextView.setText(mContext.getResources().getString(R.string.course_professor,courseInfo.getmCourseProfessor()));

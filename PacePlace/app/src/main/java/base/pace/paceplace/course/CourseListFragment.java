@@ -110,6 +110,7 @@ public class CourseListFragment extends Fragment {
                             try {
                                 JSONArray courseDetailsJsonArray = receivedJSONObject.getJSONArray(PacePlaceConstants.DATA);
                                 if (courseDetailsJsonArray != null && courseDetailsJsonArray.length() > 0) {
+                                    mCourseLists.clear();
                                     for (int i = 0; i < courseDetailsJsonArray.length(); i++) {
                                         JSONObject obj = courseDetailsJsonArray.getJSONObject(i);
                                         mCourseLists.add(setCourseDetailsFromResponse(obj));
@@ -335,9 +336,13 @@ public class CourseListFragment extends Fragment {
                                 JSONObject receivedJSONObject = new JSONObject(response.body().toString());
 
                                 if ((Boolean) receivedJSONObject.get(PacePlaceConstants.RESPONSE)) {
-                                    mCourseLists.get(mSelectedPosition).setmCourseRatings(String.valueOf(mOverallCourseRatings));
+                                    // To avoid additional Rest Call
+                                    setCourseDetails();
+                                    /*mCourseLists.get(mSelectedPosition).setmCourseRatings(String.valueOf(mOverallCourseRatings));
                                     mCourseLists.get(mSelectedPosition).setmCourseProfRatings(String.valueOf(mOverallProfRatings));
-                                    mAdapter.notifyDataSetChanged();
+                                    mCourseLists.get(mSelectedPosition).setmStudentCourseRatings(String.valueOf(mStudentCourseRatings));
+                                    mCourseLists.get(mSelectedPosition).setmStudentCourseProfRatings(String.valueOf(mStudentCourseProfRatings));
+                                    mAdapter.notifyDataSetChanged();*/
                                 } else {
                                     generateToastMessage(R.string.rating_failed);
                                 }

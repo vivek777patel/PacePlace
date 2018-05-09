@@ -3,7 +3,6 @@ package base.pace.paceplace.user;
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.Fragment;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -65,7 +64,7 @@ public class UserProfileFragment extends Fragment {
     private UpdateUserInfoObject mUpdateUserInfoObject;
 
     AVLoadingIndicatorView mAVLoadingIndicatorView;
-
+    String mUserInfoString="";
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup vg,
                              Bundle savedInstanceState) {
@@ -115,9 +114,9 @@ public class UserProfileFragment extends Fragment {
 
         Bundle args = getArguments();
         if (args != null) {
-            String userInfoString = args.getString(PacePlaceConstants.REGISTER);
+            mUserInfoString = args.getString(PacePlaceConstants.REGISTER);
             mUserInfo = (UserInfo) args.getSerializable(PacePlaceConstants.USER_INFO);
-            if (userInfoString != null && mUserInfo != null) {
+            if (mUserInfoString!= null && mUserInfo != null) {
                 mEmailEditText.setEnabled(Boolean.FALSE);
                 mRegisterButton.setText(R.string.btn_save_txt);
                 mEmailEditText.setText(mUserInfo.getmEmail());
@@ -163,7 +162,7 @@ public class UserProfileFragment extends Fragment {
 
     private Boolean compareDates() {
         Calendar currentDate = Calendar.getInstance();
-        if (myCalendar.getTime().after(currentDate.getTime()))
+        if (myCalendar.getTime().before(currentDate.getTime()))
             return Boolean.TRUE;
         return Boolean.FALSE;
     }
@@ -395,13 +394,25 @@ public class UserProfileFragment extends Fragment {
 
     private void clearViews() {
         // To clear the text views
-        mEmailEditText.setText("");
+        //To check whether its edit screen or new registration screen
+        if(mUserInfoString.isEmpty())
+            mEmailEditText.setText("");
+
         mPasswordEditText.setText("");
         mConfirmPasswordEditText.setText("");
         mFirstNameEditText.setText("");
         mLastNameEditText.setText("");
         mContactEditText.setText("");
         mDobEditText.setText("");
+
+        // Change it to white in case any validation error came earlier
+        mEmailEditText.setHintTextColor(getResources().getColor(R.color.colorWhite));
+        mPasswordEditText.setHintTextColor(getResources().getColor(R.color.colorWhite));
+        mConfirmPasswordEditText.setHintTextColor(getResources().getColor(R.color.colorWhite));
+        mFirstNameEditText.setHintTextColor(getResources().getColor(R.color.colorWhite));
+        mLastNameEditText.setHintTextColor(getResources().getColor(R.color.colorWhite));
+        mContactEditText.setHintTextColor(getResources().getColor(R.color.colorWhite));
+        mDobEditText.setHintTextColor(getResources().getColor(R.color.colorWhite));
 
         configureSpinner(mGenderSelectSpinner, PacePlaceConstants.GENDER);
         configureSpinner(mGraduationTypeSpinner, PacePlaceConstants.GRADUATION_TYPE);

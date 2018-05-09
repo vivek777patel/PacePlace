@@ -2,11 +2,9 @@ package base.pace.paceplace.event;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
-import android.util.Log;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
-import android.support.v7.widget.RecyclerView;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.List;
@@ -48,10 +46,6 @@ public class EventListViewAdapter extends RecyclerView.Adapter<RecyclerView.View
         viewHolder.mEventNameTextView.setOnClickListener(mClickListener);
         viewHolder.mEventNameTextView.setTag(position);
     }
-
-    /*public Object getItem(int position) {
-        return mEventInfoList.get(position);
-    }*/
 
     @Override
     public int getItemCount() {

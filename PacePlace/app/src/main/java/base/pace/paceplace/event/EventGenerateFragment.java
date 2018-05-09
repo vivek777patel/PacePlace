@@ -286,6 +286,11 @@ public class EventGenerateFragment extends Fragment {
         mEventDescriptionEditText.setText("");
         mEventDateEditText.setText("");
 
+        // Change it to white in case any validation error came earlier
+        mEventNameEditText.setHintTextColor(getResources().getColor(R.color.colorWhite));
+        mEventDescriptionEditText.setHintTextColor(getResources().getColor(R.color.colorWhite));
+        mEventDateEditText.setHintTextColor(getResources().getColor(R.color.colorWhite));
+
         configureSpinner(mGraduationTypeSpinner, PacePlaceConstants.GRADUATION_TYPE);
         configureSpinner(mSubjectSelectSpinner, PacePlaceConstants.SUBJECT);
         configureLocationSpinner(mLocationSpinner, PacePlaceConstants.LOCATION);

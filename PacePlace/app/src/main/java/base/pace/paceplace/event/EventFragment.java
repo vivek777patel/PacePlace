@@ -12,8 +12,6 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
-import android.widget.PopupWindow;
 import android.widget.Toast;
 
 import com.google.gson.JsonObject;
@@ -27,7 +25,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import base.pace.paceplace.R;
-import base.pace.paceplace.course.CourseDetail;
 import base.pace.paceplace.httpclient.EventDetailsHttpClient;
 import base.pace.paceplace.util.PacePlaceConstants;
 import io.github.douglasjunior.androidSimpleTooltip.SimpleTooltip;
