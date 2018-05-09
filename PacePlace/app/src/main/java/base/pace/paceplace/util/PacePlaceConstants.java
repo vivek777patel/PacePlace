@@ -6,18 +6,10 @@ public abstract class PacePlaceConstants {
     public static final String URL = "http://10.0.0.31:5000/";
     //public static final String URL = "http://10.10.142.214:5000/";
     //public static final String URL = "http://ec2-18-218-215-134.us-east-2.compute.amazonaws.com:5000/";
-    public static final String URL_LOGIN = URL + "getUserInfo/";
-    public static final String URL_REGISTER = URL + "addUser/";
-    public static final String URL_COURSES = URL + "getUserCourses/";
-    public static final String URL_STATIC_INFO = URL + "static_info/";
-
-    public static final String URL_SAVE_RATINGS = URL + "saveUserRatings/";
-    public static final String URL_COURSES_FOR_REGISTRATION = URL + "getCoursesForRegistration/";
-    public static final String URL_SAVE_REGISTERED_COURSES = URL + "saveRegisteredCourses/";
 
     public static final String RESPONSE = "RESPONSE";
     public static final String DATA = "DATA";
-    public static final String ERROR = "ERROR";
+    public static final String ALL = "ALL";
 
     public static final String USER_ID = "USER_ID";
     public static final String EMAIL = "EMAIL";

@@ -32,63 +32,50 @@
 
     </RelativeLayout>
 
-    <RelativeLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
-
-        <TextView
-            android:id="@+id/list_item_event_location"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_marginStart="@dimen/login_padding"
-            android:fontFamily="serif"
-            android:textColor="@color/colorListSmall" />
-
-    </RelativeLayout>
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <TextView
-            android:id="@+id/list_item_event_date_time"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_marginStart="@dimen/login_padding"
-            android:fontFamily="serif"
-            android:textColor="@color/colorListSmall" />
-
-    </RelativeLayout>
-
-    <RelativeLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
-
-        <TextView
-            android:id="@+id/list_item__event_created_by"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_marginStart="@dimen/login_padding"
-            android:fontFamily="serif"
-            android:textColor="@color/colorListSmall" />
-    </RelativeLayout>
-
-    <RelativeLayout
+    <TextView
+        android:id="@+id/list_item_event_location"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/login_padding">
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="@dimen/login_padding"
+        android:fontFamily="serif"
+        android:textColor="@color/colorListSmall" />
 
-        <TextView
-            android:id="@+id/list_item_event_for"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_marginStart="@dimen/login_padding"
-            android:fontFamily="serif"
-            android:textColor="@color/colorListSmall" />
+    <TextView
+        android:id="@+id/list_item_event_date_time"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="@dimen/login_padding"
+        android:fontFamily="serif"
+        android:textColor="@color/colorListSmall" />
 
-    </RelativeLayout>
+    <TextView
+        android:id="@+id/list_item__event_created_by"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="@dimen/login_padding"
+        android:fontFamily="serif"
+        android:textColor="@color/colorListSmall" />
+
+    <TextView
+        android:id="@+id/list_item_event_for"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="@dimen/login_padding"
+        android:fontFamily="serif"
+        android:textColor="@color/colorListSmall" />
+
+    <TextView
+        android:id="@+id/list_item_event_for_level"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="@dimen/login_padding"
+        android:fontFamily="serif"
+        android:textColor="@color/colorListSmall" />
+
+
 </LinearLayout>

@@ -1,156 +1,172 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorAccent">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/event_margin_top"
-        android:gravity="center_vertical"
-        android:orientation="vertical">
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
 
-        <TextView
-            android:layout_width="match_parent"
+        <com.wang.avi.AVLoadingIndicatorView
+            android:id="@+id/event_generate_avi"
+            style="@style/AVLoadingIndicatorView"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="@string/mandatory_string"
-            android:textColor="@color/colorWhite" />
-
-        <android.support.v7.widget.AppCompatEditText
-            android:id="@+id/eventNameEditText"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/login_edit_height"
-            android:layout_marginLeft="@dimen/login_margin"
-            android:layout_marginRight="@dimen/login_margin"
-            android:layout_marginTop="@dimen/login_margin_top"
-            android:layout_weight="1"
-            android:background="@drawable/rounded_border_edittext"
-            android:drawablePadding="@dimen/padding_drawable"
-            android:drawableStart="@drawable/ic_event_name"
-            android:hint="@string/event_name"
-            android:inputType="text"
-            android:textColor="@color/colorWhite"
-            android:textColorHint="@color/colorWhite" />
-
-        <android.support.v7.widget.AppCompatEditText
-            android:id="@+id/eventDescEditText"
-            android:layout_width="match_parent"
-            android:layout_height="145dp"
-            android:layout_marginEnd="@dimen/login_margin"
-            android:layout_marginStart="@dimen/login_margin"
-            android:layout_marginTop="@dimen/login_margin_top"
-            android:background="@drawable/rounded_border_edittext"
-            android:gravity="top"
-            android:hint="@string/event_description"
-            android:inputType="textMultiLine"
-            android:padding="10dp"
-            android:drawablePadding="@dimen/padding_drawable"
-            android:paddingStart="@dimen/padding_drawable"
-            android:textColor="@color/colorWhite"
-            android:textColorHint="@color/colorWhite" />
-
-        <android.support.v7.widget.AppCompatEditText
-            android:id="@+id/eventDateEditText"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/login_edit_height"
-            android:layout_marginLeft="@dimen/login_margin"
-            android:layout_marginRight="@dimen/login_margin"
-            android:layout_marginTop="@dimen/login_margin_top"
-            android:background="@drawable/rounded_border_edittext"
-            android:clickable="false"
-            android:drawablePadding="@dimen/padding_drawable"
-            android:drawableStart="@drawable/ic_calendar"
-            android:focusable="false"
-            android:hint="@string/event_date"
-            android:inputType="text"
-            android:textColor="@color/colorWhite"
-            android:textColorHint="@color/colorWhite" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/login_margin"
-            android:layout_marginTop="5dp"
-            android:text="@string/event_location_place"
-            android:textColor="@color/colorWhite" />
-
-        <android.support.v7.widget.AppCompatSpinner
-            android:id="@+id/locationSpinnerSelect"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/login_edit_height"
-            android:layout_marginLeft="@dimen/login_margin"
-            android:layout_marginRight="@dimen/login_margin"
-            android:layout_marginTop="@dimen/login_margin_top"
-            android:layout_weight="1"
-            android:background="@drawable/rounded_border_edittext"
-            android:drawablePadding="@dimen/padding_drawable"
-            android:drawableStart="@drawable/ic_avatar" />
-
-
-        <android.support.v7.widget.AppCompatSpinner
-            android:id="@+id/subjecTypeEventSpinnerSelect"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/login_edit_height"
-            android:layout_marginLeft="@dimen/login_margin"
-            android:layout_marginRight="@dimen/login_margin"
-            android:layout_marginTop="@dimen/login_margin_top"
-            android:layout_weight="1"
-            android:background="@drawable/rounded_border_edittext"
-            android:drawablePadding="@dimen/padding_drawable"
-            android:drawableStart="@drawable/ic_avatar" />
-
-        <android.support.v7.widget.AppCompatSpinner
-            android:id="@+id/graduationTypeEventSpinnerSelect"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/login_edit_height"
-            android:layout_marginLeft="@dimen/login_margin"
-            android:layout_marginRight="@dimen/login_margin"
-            android:layout_marginTop="@dimen/login_margin_top"
-            android:layout_weight="1"
-            android:background="@drawable/rounded_border_edittext"
-            android:drawablePadding="@dimen/padding_drawable"
-            android:drawableStart="@drawable/ic_avatar" />
-
+            android:layout_centerInParent="true"
+            android:visibility="gone"
+            app:indicatorColor="@color/colorPrimary"
+            app:indicatorName="BallPulseIndicator" />
 
         <LinearLayout
-            android:id="@+id/linear_pace_buttons"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="30dp"
-            android:layout_marginStart="@dimen/login_margin_image"
-            android:layout_marginTop="@dimen/login_margin"
-            android:gravity="center"
-            android:orientation="horizontal">
+            android:layout_marginTop="@dimen/event_margin_top"
+            android:gravity="center_vertical"
+            android:orientation="vertical">
 
-            <Button
-                android:id="@+id/registerEventButton"
-                android:layout_width="@dimen/login_button_width"
-                android:layout_height="@dimen/login_button_height"
-                android:background="@drawable/rounded_button"
-                android:fontFamily="serif"
-                android:text="@string/btn_event_post_txt"
-                android:textAllCaps="false"
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/mandatory_string"
+                android:textColor="@color/colorWhite" />
+
+            <android.support.v7.widget.AppCompatEditText
+                android:id="@+id/eventNameEditText"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/login_edit_height"
+                android:layout_marginLeft="@dimen/login_margin"
+                android:layout_marginRight="@dimen/login_margin"
+                android:layout_marginTop="@dimen/login_margin_top"
+                android:layout_weight="1"
+                android:background="@drawable/rounded_border_edittext"
+                android:drawablePadding="@dimen/padding_drawable"
+                android:drawableStart="@drawable/ic_event_name"
+                android:hint="@string/event_name"
+                android:inputType="text"
                 android:textColor="@color/colorWhite"
-                android:textSize="@dimen/btn_txt_size"
-                android:textStyle="bold" />
+                android:textColorHint="@color/colorWhite" />
 
-            <Button
-                android:id="@+id/clearButton"
-                android:layout_width="@dimen/login_button_width"
-                android:layout_height="@dimen/login_button_height"
+            <android.support.v7.widget.AppCompatEditText
+                android:id="@+id/eventDescEditText"
+                android:layout_width="match_parent"
+                android:layout_height="145dp"
+                android:layout_marginEnd="@dimen/login_margin"
                 android:layout_marginStart="@dimen/login_margin"
-                android:background="@drawable/rounded_button"
-                android:fontFamily="serif"
-
-                android:text="@string/btn_clear_txt"
-                android:textAllCaps="false"
+                android:layout_marginTop="@dimen/login_margin_top"
+                android:background="@drawable/rounded_border_edittext"
+                android:drawablePadding="@dimen/padding_drawable"
+                android:gravity="top"
+                android:hint="@string/event_description"
+                android:inputType="textMultiLine"
+                android:padding="10dp"
+                android:paddingStart="@dimen/padding_drawable"
                 android:textColor="@color/colorWhite"
-                android:textSize="@dimen/btn_txt_size"
-                android:textStyle="bold" />
+                android:textColorHint="@color/colorWhite" />
+
+            <android.support.v7.widget.AppCompatEditText
+                android:id="@+id/eventDateEditText"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/login_edit_height"
+                android:layout_marginLeft="@dimen/login_margin"
+                android:layout_marginRight="@dimen/login_margin"
+                android:layout_marginTop="@dimen/login_margin_top"
+                android:background="@drawable/rounded_border_edittext"
+                android:clickable="false"
+                android:drawablePadding="@dimen/padding_drawable"
+                android:drawableStart="@drawable/ic_calendar"
+                android:focusable="false"
+                android:hint="@string/event_date"
+                android:inputType="text"
+                android:textColor="@color/colorWhite"
+                android:textColorHint="@color/colorWhite" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/login_margin"
+                android:layout_marginTop="5dp"
+                android:text="@string/event_location_place"
+                android:textColor="@color/colorWhite" />
+
+            <android.support.v7.widget.AppCompatSpinner
+                android:id="@+id/locationSpinnerSelect"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/login_edit_height"
+                android:layout_marginLeft="@dimen/login_margin"
+                android:layout_marginRight="@dimen/login_margin"
+                android:layout_marginTop="@dimen/login_margin_top"
+                android:layout_weight="1"
+                android:background="@drawable/rounded_border_edittext"
+                android:drawablePadding="@dimen/padding_drawable"
+                android:drawableStart="@drawable/ic_avatar" />
+
+
+            <android.support.v7.widget.AppCompatSpinner
+                android:id="@+id/subjecTypeEventSpinnerSelect"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/login_edit_height"
+                android:layout_marginLeft="@dimen/login_margin"
+                android:layout_marginRight="@dimen/login_margin"
+                android:layout_marginTop="@dimen/login_margin_top"
+                android:layout_weight="1"
+                android:background="@drawable/rounded_border_edittext"
+                android:drawablePadding="@dimen/padding_drawable"
+                android:drawableStart="@drawable/ic_avatar" />
+
+            <android.support.v7.widget.AppCompatSpinner
+                android:id="@+id/graduationTypeEventSpinnerSelect"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/login_edit_height"
+                android:layout_marginLeft="@dimen/login_margin"
+                android:layout_marginRight="@dimen/login_margin"
+                android:layout_marginTop="@dimen/login_margin_top"
+                android:layout_weight="1"
+                android:background="@drawable/rounded_border_edittext"
+                android:drawablePadding="@dimen/padding_drawable"
+                android:drawableStart="@drawable/ic_avatar" />
+
+
+            <LinearLayout
+                android:id="@+id/linear_pace_buttons"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="30dp"
+                android:layout_marginStart="@dimen/login_margin_image"
+                android:layout_marginTop="@dimen/login_margin"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/registerEventButton"
+                    android:layout_width="@dimen/login_button_width"
+                    android:layout_height="@dimen/login_button_height"
+                    android:background="@drawable/rounded_button"
+                    android:fontFamily="serif"
+                    android:text="@string/btn_event_post_txt"
+                    android:textAllCaps="false"
+                    android:textColor="@color/colorWhite"
+                    android:textSize="@dimen/btn_txt_size"
+                    android:textStyle="bold" />
+
+                <Button
+                    android:id="@+id/clearButton"
+                    android:layout_width="@dimen/login_button_width"
+                    android:layout_height="@dimen/login_button_height"
+                    android:layout_marginStart="@dimen/login_margin"
+                    android:background="@drawable/rounded_button"
+                    android:fontFamily="serif"
+
+                    android:text="@string/btn_clear_txt"
+                    android:textAllCaps="false"
+                    android:textColor="@color/colorWhite"
+                    android:textSize="@dimen/btn_txt_size"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
         </LinearLayout>
-
-    </LinearLayout>
-
+    </RelativeLayout>
 </ScrollView>

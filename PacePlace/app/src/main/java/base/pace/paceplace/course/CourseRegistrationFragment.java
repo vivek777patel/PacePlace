@@ -13,6 +13,7 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.wang.avi.AVLoadingIndicatorView;
 
@@ -23,15 +24,10 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
 
 import base.pace.paceplace.R;
 import base.pace.paceplace.httpclient.CourseDetailsHttpClient;
-import base.pace.paceplace.util.CommonWSJSONArrayInvoke;
 import base.pace.paceplace.util.PacePlaceConstants;
-import base.pace.paceplace.util.WebServiceResponse;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -64,7 +60,6 @@ public class CourseRegistrationFragment extends Fragment {
 
         Bundle b = getArguments();
         mLoggedInUserId = b.getInt(PacePlaceConstants.USER_ID);
-        mAVLoadingIndicatorView.bringToFront();
         mSwipeContainer.setOnRefreshListener(
                 new SwipeRefreshLayout.OnRefreshListener() {
                     @Override
@@ -81,6 +76,9 @@ public class CourseRegistrationFragment extends Fragment {
     }
 
     private void getCoursesForRegistration() {
+        mAVLoadingIndicatorView.setVisibility(View.VISIBLE);
+        mAVLoadingIndicatorView.bringToFront();
+
         CourseDetailsHttpClient.getInstance().getCourseForRegistration(String.valueOf(mLoggedInUserId), new Callback<JsonObject>() {
             @Override
             public void onResponse(@NonNull Call<JsonObject> call, @NonNull Response<JsonObject> response) {
@@ -93,6 +91,7 @@ public class CourseRegistrationFragment extends Fragment {
                             try {
                                 JSONArray courseDetailsJsonArray = (JSONArray) receivedJSONObject.get(PacePlaceConstants.DATA);
                                 if (courseDetailsJsonArray != null) {
+                                    mCourseLists.clear();
                                     for (int i = 0; i < courseDetailsJsonArray.length(); i++) {
                                         JSONObject obj = courseDetailsJsonArray.getJSONObject(i);
                                         mCourseLists.add(setCourseDetailsFromResponse(obj));
@@ -113,21 +112,22 @@ public class CourseRegistrationFragment extends Fragment {
                     } else {
                         generateToastMessage(R.string.course_register_issue_in_response_json);
                     }
-                    mSwipeContainer.setRefreshing(false);
-                    mAVLoadingIndicatorView.smoothToHide();
-
                 } catch (JSONException e) {
                     generateToastMessage(R.string.course_register_issue_in_response_json);
                     e.printStackTrace();
                 }
-                mAVLoadingIndicatorView.smoothToHide();
-                mSwipeContainer.setRefreshing(false);
+                finally {
+                    mAVLoadingIndicatorView.smoothToHide();
+                    mAVLoadingIndicatorView.setVisibility(View.GONE);
+                    mSwipeContainer.setRefreshing(false);
+                }
             }
 
             @Override
             public void onFailure(Call<JsonObject> call, Throwable t) {
                 t.printStackTrace();
                 generateToastMessage(R.string.course_register_issue_in_response_json);
+                mSwipeContainer.setRefreshing(false);
                 mAVLoadingIndicatorView.smoothToHide();
                 mSwipeContainer.setRefreshing(false);
             }
@@ -210,17 +210,16 @@ public class CourseRegistrationFragment extends Fragment {
         return resetCL;
     }
 
-    private JSONArray arrayListToJSONArray() {
-        JSONArray finalJSONArray = new JSONArray();
+    private JsonArray arrayListToJSONArray() {
+        JsonArray finalJSONArray = new JsonArray();
         try {
             for (Map.Entry<Integer, CourseDetail> entry : mAddedCourseDetailMap.entrySet()) {
                 CourseDetail value = entry.getValue();
-                JSONObject jo = new JSONObject();
-                jo.put(PacePlaceConstants.USER_ID, mLoggedInUserId);
-                jo.put(PacePlaceConstants.COURSE_DET_ID, value.getmCourseDetId());
-                finalJSONArray.put(jo);
+                JsonObject jo = new JsonObject();
+                jo.addProperty(PacePlaceConstants.USER_ID, mLoggedInUserId);
+                jo.addProperty(PacePlaceConstants.COURSE_DET_ID, value.getmCourseDetId());
+                finalJSONArray.add(jo);
             }
-            //ja.put();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -229,42 +228,56 @@ public class CourseRegistrationFragment extends Fragment {
     }
 
     private void saveSelectedData() {
+        mAVLoadingIndicatorView.setVisibility(View.VISIBLE);
         mAVLoadingIndicatorView.smoothToShow();
-        Thread threadA = new Thread() {
-            public void run() {
-                CommonWSJSONArrayInvoke threadB = new CommonWSJSONArrayInvoke(getActivity());
-                WebServiceResponse jsonObject = null;
+
+        CourseDetailsHttpClient.getInstance().saveCourseRegistration(String.valueOf(arrayListToJSONArray()),new Callback<String>() {
+            @Override
+            public void onResponse(Call<String> call, Response<String> response) {
                 try {
-                    jsonObject = threadB.execute(PacePlaceConstants.URL_SAVE_REGISTERED_COURSES, PacePlaceConstants.COURSES_REGISTRATION,
-                            arrayListToJSONArray()).get(30, TimeUnit.SECONDS);
-                } catch (InterruptedException | ExecutionException | TimeoutException e) {
-                    e.printStackTrace();
-                }
-                final WebServiceResponse receivedJSONObject = jsonObject;
-                getActivity().runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        Log.i(TAG, "Response is: " + receivedJSONObject);
-                        if (null != receivedJSONObject) {
-                            if (receivedJSONObject.getmResponse()) {
-                                // TODO : After data is saved remove from current list or reload the page and clear the selected list
-                                Log.i(TAG, "DATA Saved successfully");
+                    String val = response.body();
+                    JSONObject receivedJSONObject= new JSONObject(val);
+                    if ((Boolean) receivedJSONObject.get(PacePlaceConstants.RESPONSE)) {
+                        // TODO : Set mCourseList variable before calling setDefaultCourseDetailFragment()
+                        try {
+                            JSONObject resultJson = receivedJSONObject.getJSONObject(PacePlaceConstants.DATA);
+                            String data = resultJson.optString(PacePlaceConstants.DATA);
+                            if(data.equalsIgnoreCase(getResources().getString(R.string.course_registration_success))){
                                 generateToastMessage(R.string.course_registration_success);
                                 mAddedCourses.clear();
                                 mAddedCourseDetailMap.clear();
                                 getCoursesForRegistration();
-                            } else {
-                                generateToastMessage(R.string.register_failed);
                             }
-                        } else {
-                            generateToastMessage(R.string.register_failed);
+                            else{
+                                generateToastMessage(R.string.course_register_issue_in_response_json);
+                            }
                         }
-                        mAVLoadingIndicatorView.smoothToHide();
+                        catch (JSONException e) {
+                            generateToastMessage(R.string.course_register_issue_in_response_json);
+                            e.printStackTrace();
+                        }
                     }
-                });
+                    else {
+                        generateToastMessage(R.string.course_register_issue_in_response_json);
+                    }
+                } catch (Exception e) {
+                    e.getMessage();
+                    e.printStackTrace();
+                }
+                finally{
+                    mAVLoadingIndicatorView.setVisibility(View.GONE);
+                    mAVLoadingIndicatorView.smoothToHide();
+                }
             }
-        };
-        threadA.start();
+
+            @Override
+            public void onFailure(Call<String> call, Throwable t) {
+                t.printStackTrace();
+                mAVLoadingIndicatorView.setVisibility(View.GONE);
+                mAVLoadingIndicatorView.smoothToHide();
+            }
+        });
+
     }
 
     // To generate Toast message

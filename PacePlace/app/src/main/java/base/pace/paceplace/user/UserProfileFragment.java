@@ -23,6 +23,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.JsonObject;
+import com.wang.avi.AVLoadingIndicatorView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -53,7 +54,7 @@ public class UserProfileFragment extends Fragment {
     TextView mMandatoryTextView;
     AppCompatEditText mFirstNameEditText, mLastNameEditText, mEmailEditText, mPasswordEditText, mContactEditText, mDobEditText, mConfirmPasswordEditText;
     Button mRegisterButton, mClearButton;
-    ProgressDialog mProgressDialog;
+
     AppCompatSpinner mGenderSelectSpinner, mAccountTypeSpinner, mGraduationTypeSpinner, mSubjectSelectSpinner, mStudentTypeSpinner;
     //adding map for data
     Map<String, ArrayList<String>> mStaticInfo = new HashMap<>();
@@ -63,11 +64,15 @@ public class UserProfileFragment extends Fragment {
     Calendar myCalendar = Calendar.getInstance();
     private UpdateUserInfoObject mUpdateUserInfoObject;
 
+    AVLoadingIndicatorView mAVLoadingIndicatorView;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup vg,
                              Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_user_profile, vg, false);
+
+        mAVLoadingIndicatorView = view.findViewById(R.id.user_registration_avi);
 
         mMandatoryTextView = view.findViewById(R.id.mandatory_field_text_view);
         mEmailEditText = view.findViewById(R.id.emailEditText);
@@ -106,7 +111,7 @@ public class UserProfileFragment extends Fragment {
                 clearViews();
             }
         });
-
+        mAVLoadingIndicatorView.bringToFront();
 
         Bundle args = getArguments();
         if (args != null) {
@@ -150,7 +155,17 @@ public class UserProfileFragment extends Fragment {
     private void updateLabel() {
         String myFormat = "yyyy-MM-dd"; //In which you need put here
         SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
-        mDobEditText.setText(sdf.format(myCalendar.getTime()));
+        if(compareDates())
+            mDobEditText.setText(sdf.format(myCalendar.getTime()));
+        else
+            generateToastMessage(R.string.dob_validation);
+    }
+
+    private Boolean compareDates() {
+        Calendar currentDate = Calendar.getInstance();
+        if (myCalendar.getTime().after(currentDate.getTime()))
+            return Boolean.TRUE;
+        return Boolean.FALSE;
     }
 
     public void configureSpinner(AppCompatSpinner studentTypeSpinner, String typeSpinner) {
@@ -165,6 +180,9 @@ public class UserProfileFragment extends Fragment {
     }
 
     private void getStaticInfo() {
+
+        mAVLoadingIndicatorView.setVisibility(View.VISIBLE);
+        mAVLoadingIndicatorView.smoothToShow();
         UserDetailsHttpClient.getInstance().getStaticInfo(new Callback<JsonObject>() {
             @Override
             public void onResponse(@NonNull Call<JsonObject> call, @NonNull Response<JsonObject> response) {
@@ -174,8 +192,7 @@ public class UserProfileFragment extends Fragment {
                         JSONObject receivedJSONObject = new JSONObject(response.body().toString());
 
                         if ((Boolean) receivedJSONObject.get(PacePlaceConstants.RESPONSE)) {
-                            //generateToastMessage(R.string.login_success);
-                            JSONObject responseDataJSON = (JSONObject) receivedJSONObject.getJSONObject(PacePlaceConstants.DATA);
+                            JSONObject responseDataJSON = receivedJSONObject.getJSONObject(PacePlaceConstants.DATA);
                             Iterator<?> keys = responseDataJSON.keys();
                             while (keys.hasNext()) {
                                 String key = (String) keys.next();
@@ -201,23 +218,27 @@ public class UserProfileFragment extends Fragment {
                                 setSpinnerValue(mStudentTypeSpinner, mUserInfo.getmStudentType());
                             }
 
+
                         } else {
-                            generateToastMessage(R.string.login_failed);
+                            generateToastMessage(R.string.static_issue_in_response_json);
                         }
-                        /*mAVLoadingIndicatorView.smoothToHide();
-                        mAVLoadingIndicatorView.setVisibility(View.INVISIBLE);*/
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
-                    generateToastMessage(R.string.course_issue_in_response_json);
+                    generateToastMessage(R.string.static_issue_in_response_json);
+                }
+                finally {
+                    mAVLoadingIndicatorView.smoothToHide();
+                    mAVLoadingIndicatorView.setVisibility(View.GONE);
                 }
             }
 
             @Override
             public void onFailure(Call<JsonObject> call, Throwable t) {
                 t.printStackTrace();
-                generateToastMessage(R.string.course_issue_in_response_json);
-                //mAVLoadingIndicatorView.smoothToHide();
+                generateToastMessage(R.string.static_issue_in_response_json);
+                mAVLoadingIndicatorView.smoothToHide();
+                mAVLoadingIndicatorView.setVisibility(View.GONE);
             }
         });
     }
@@ -306,6 +327,9 @@ public class UserProfileFragment extends Fragment {
     }
 
     private void validateAndStoreUser(final UserInfo registrationInfo) {
+
+        mAVLoadingIndicatorView.setVisibility(View.VISIBLE);
+        mAVLoadingIndicatorView.smoothToShow();
         UserDetailsHttpClient.getInstance().registerUser(registrationInfo.getmEmail(), registrationInfo.getmPassword(), registrationInfo.getmFirstName(),registrationInfo.getmLastName(),
                 registrationInfo.getmContact(), registrationInfo.getmDob(),mOperationType, String.valueOf(mUserId),
                 registrationInfo.getmGender(), registrationInfo.getmGraduationType(), registrationInfo.getmStudentType(), registrationInfo.getmSubject(), registrationInfo.getmAccountType(), new Callback<JsonObject>() {
@@ -335,15 +359,20 @@ public class UserProfileFragment extends Fragment {
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
-                            generateToastMessage(R.string.course_issue_in_response_json);
+                            generateToastMessage(R.string.register_failed);
+                        }
+                        finally {
+                            mAVLoadingIndicatorView.setVisibility(View.GONE);
+                            mAVLoadingIndicatorView.smoothToHide();
                         }
                     }
 
                     @Override
                     public void onFailure(Call<JsonObject> call, Throwable t) {
                         t.printStackTrace();
-                        generateToastMessage(R.string.course_issue_in_response_json);
-                        //mAVLoadingIndicatorView.smoothToHide();
+                        generateToastMessage(R.string.register_failed);
+                        mAVLoadingIndicatorView.setVisibility(View.GONE);
+                        mAVLoadingIndicatorView.smoothToHide();
                     }
                 });
     }

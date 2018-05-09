@@ -149,22 +149,22 @@ public class LoginActivity extends AppCompatActivity {
                         // To clear the text views
                         mEmailEditText.setText("");
                         mPasswordEditText.setText("");
-                        mAVLoadingIndicatorView.smoothToHide();
-                        mAVLoadingIndicatorView.setVisibility(View.GONE);
                     }
                 }
                 catch (JSONException e) {
                     e.printStackTrace();
                     generateToastMessage(R.string.login_issue_in_response_json);
                 }
-                mAVLoadingIndicatorView.smoothToHide();
-                mAVLoadingIndicatorView.setVisibility(View.GONE);
+                finally {
+                    mAVLoadingIndicatorView.smoothToHide();
+                    mAVLoadingIndicatorView.setVisibility(View.GONE);
+                }
             }
 
             @Override
             public void onFailure(Call<JsonObject> call, Throwable t) {
                 t.printStackTrace();
-                generateToastMessage(R.string.course_issue_in_response_json);
+                generateToastMessage(R.string.login_issue_in_response_json);
                 mAVLoadingIndicatorView.smoothToHide();
                 mAVLoadingIndicatorView.setVisibility(View.GONE);
             }

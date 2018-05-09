@@ -103,12 +103,12 @@ public class CourseListFragment extends Fragment {
             @Override
             public void onResponse(@NonNull Call<JsonObject> call, @NonNull Response<JsonObject> response) {
                 try {
-                    if (response.body() != null){
+                    if (response.body() != null) {
                         JSONObject receivedJSONObject = new JSONObject(response.body().toString());
-                        if ((Boolean)receivedJSONObject.get(PacePlaceConstants.RESPONSE)) {
+                        if ((Boolean) receivedJSONObject.get(PacePlaceConstants.RESPONSE)) {
                             try {
                                 JSONArray courseDetailsJsonArray = receivedJSONObject.getJSONArray(PacePlaceConstants.DATA);
-                                if (courseDetailsJsonArray != null) {
+                                if (courseDetailsJsonArray != null && courseDetailsJsonArray.length() > 0) {
                                     for (int i = 0; i < courseDetailsJsonArray.length(); i++) {
                                         JSONObject obj = courseDetailsJsonArray.getJSONObject(i);
                                         mCourseLists.add(setCourseDetailsFromResponse(obj));
@@ -124,30 +124,33 @@ public class CourseListFragment extends Fragment {
                                 e.printStackTrace();
                             }
                         } else {
-                            generateToastMessage(R.string.course_load_fail);
+                            generateToastMessage(R.string.course_issue_in_response_json);
                         }
-                    }else {
-                        generateToastMessage(R.string.course_load_fail);
+                    } else {
+                        generateToastMessage(R.string.course_issue_in_response_json);
                     }
-                }
-                catch (JSONException e) {
+                } catch (JSONException e) {
                     generateToastMessage(R.string.course_issue_in_response_json);
                     e.printStackTrace();
+                } finally {
+                    mAVLoadingIndicatorView.setVisibility(View.GONE);
+                    mAVLoadingIndicatorView.smoothToHide();
+                    mSwipeContainer.setRefreshing(false);
                 }
-                mAVLoadingIndicatorView.smoothToHide();
-                mSwipeContainer.setRefreshing(false);
             }
 
             @Override
             public void onFailure(Call<JsonObject> call, Throwable t) {
                 t.printStackTrace();
                 generateToastMessage(R.string.course_issue_in_response_json);
+                mAVLoadingIndicatorView.setVisibility(View.GONE);
                 mAVLoadingIndicatorView.smoothToHide();
                 mSwipeContainer.setRefreshing(false);
             }
         });
 
     }
+
     private void configureCourseList() {
         mAdapter = new CourseListViewAdapter(getActivity(), mCourseLists, new View.OnClickListener() {
             @Override
@@ -215,10 +218,10 @@ public class CourseListFragment extends Fragment {
         mStudentProfessorRatingTextView.setText(mStudentCourseProfRatings);
 
         // Allowing to give rating only once
-        if(Float.valueOf(mStudentCourseRatings) != 0.0){
+        if (Float.valueOf(mStudentCourseRatings) != 0.0) {
             mStudentCourseRatingBar.setEnabled(Boolean.FALSE);
         }
-        if(Float.valueOf(mStudentCourseProfRatings) != 0.0){
+        if (Float.valueOf(mStudentCourseProfRatings) != 0.0) {
             mStudentProfessorRatingBar.setEnabled(Boolean.FALSE);
         }
 
@@ -304,9 +307,9 @@ public class CourseListFragment extends Fragment {
                 Log.i(TAG, mStudentCourseRating + "-" + mOverAllCourseRaters + "=" + mOverallCourseRatings);
                 Log.i(TAG, mStudentProfRating + "-" + mOverAllProfRaters + "=" + mOverallProfRatings);
                 // Hit REST only when rating is updated
-                if(mRatingUpdated)
+                if (mRatingUpdated)
                     saveRatings(mStudentCourseRating, mOverAllCourseRaters, mOverallCourseRatings,
-                        mStudentProfRating, mOverAllProfRaters, mOverallProfRatings);
+                            mStudentProfRating, mOverAllProfRaters, mOverallProfRatings);
                 else
                     popupWindow.dismiss();
 
@@ -318,6 +321,7 @@ public class CourseListFragment extends Fragment {
     private void saveRatings(final float mStudentCourseRating, final int mOverallCourseRaters, final float mOverallCourseRatings,
                              final float mStudentProfRating, final int mOverallProfRaters, final float mOverallProfRatings) {
         mAVLoadingIndicatorView.smoothToShow();
+        mAVLoadingIndicatorView.setVisibility(View.VISIBLE);
         CourseDetailsHttpClient.getInstance().saveUserRatings(
                 String.valueOf(mStudentCourseRating), String.valueOf(mOverallCourseRaters), String.valueOf(mOverallCourseRatings),
                 String.valueOf(mStudentProfRating), String.valueOf(mOverallProfRaters), String.valueOf(mOverallProfRatings),
@@ -325,41 +329,43 @@ public class CourseListFragment extends Fragment {
                 String.valueOf(mSelectedCourseDetails.getmStudentCourseId()),
                 String.valueOf(mSelectedCourseDetails.getmProfRateId()),
                 String.valueOf(mSelectedCourseDetails.getmCourseProfessorId()), new Callback<JsonObject>() {
-            @Override
-            public void onResponse(@NonNull Call<JsonObject> call, @NonNull Response<JsonObject> response) {
-                try {
-                    if (response.body() != null){
-                        JSONObject receivedJSONObject = new JSONObject(response.body().toString());
+                    @Override
+                    public void onResponse(@NonNull Call<JsonObject> call, @NonNull Response<JsonObject> response) {
+                        try {
+                            if (response.body() != null) {
+                                JSONObject receivedJSONObject = new JSONObject(response.body().toString());
 
-                        if ((Boolean)receivedJSONObject.get(PacePlaceConstants.RESPONSE)) {
-                            mCourseLists.get(mSelectedPosition).setmCourseRatings(String.valueOf(mOverallCourseRatings));
-                            mCourseLists.get(mSelectedPosition).setmCourseProfRatings(String.valueOf(mOverallProfRatings));
-                            mAdapter.notifyDataSetChanged();
-                        } else {
+                                if ((Boolean) receivedJSONObject.get(PacePlaceConstants.RESPONSE)) {
+                                    mCourseLists.get(mSelectedPosition).setmCourseRatings(String.valueOf(mOverallCourseRatings));
+                                    mCourseLists.get(mSelectedPosition).setmCourseProfRatings(String.valueOf(mOverallProfRatings));
+                                    mAdapter.notifyDataSetChanged();
+                                } else {
+                                    generateToastMessage(R.string.rating_failed);
+                                }
+                            } else {
+                                generateToastMessage(R.string.rating_failed);
+                            }
+                            popupWindow.dismiss();
+                        } catch (JSONException e) {
                             generateToastMessage(R.string.rating_failed);
+                            e.printStackTrace();
+                        } finally {
+                            mAVLoadingIndicatorView.smoothToHide();
+                            mAVLoadingIndicatorView.setVisibility(View.GONE);
+                            mSwipeContainer.setRefreshing(false);
                         }
-                    }else {
-                        generateToastMessage(R.string.rating_failed);
-                    }
-                    mAVLoadingIndicatorView.smoothToHide();
-                    popupWindow.dismiss();
-                }
-                catch (JSONException e) {
-                    generateToastMessage(R.string.rating_failed);
-                    e.printStackTrace();
-                }
-                mAVLoadingIndicatorView.smoothToHide();
-                mSwipeContainer.setRefreshing(false);
-            }
 
-            @Override
-            public void onFailure(Call<JsonObject> call, Throwable t) {
-                t.printStackTrace();
-                generateToastMessage(R.string.rating_failed);
-                mAVLoadingIndicatorView.smoothToHide();
-                mSwipeContainer.setRefreshing(false);
-            }
-        });
+                    }
+
+                    @Override
+                    public void onFailure(Call<JsonObject> call, Throwable t) {
+                        t.printStackTrace();
+                        generateToastMessage(R.string.rating_failed);
+                        mAVLoadingIndicatorView.smoothToHide();
+                        mAVLoadingIndicatorView.setVisibility(View.GONE);
+                        mSwipeContainer.setRefreshing(false);
+                    }
+                });
     }
 
     private CourseDetail setCourseDetailsFromResponse(JSONObject jsonObject) {

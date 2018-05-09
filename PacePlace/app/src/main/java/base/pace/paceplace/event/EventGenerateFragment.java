@@ -18,6 +18,7 @@ import android.widget.DatePicker;
 import android.widget.Toast;
 
 import com.google.gson.JsonObject;
+import com.wang.avi.AVLoadingIndicatorView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -52,6 +53,7 @@ public class EventGenerateFragment extends Fragment {
     Map<String, ArrayList<String>> mStaticInfo = new HashMap<>();
     Calendar myCalendar = Calendar.getInstance();
     UserInfo mUserInfo;
+    AVLoadingIndicatorView mAVLoadingIndicatorView;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
@@ -65,7 +67,7 @@ public class EventGenerateFragment extends Fragment {
         mGraduationTypeSpinner = view.findViewById(R.id.graduationTypeEventSpinnerSelect);
         mSubjectSelectSpinner = view.findViewById(R.id.subjecTypeEventSpinnerSelect);
         mLocationSpinner = view.findViewById(R.id.locationSpinnerSelect);
-
+        mAVLoadingIndicatorView = view.findViewById(R.id.event_generate_avi);
         Bundle args = getArguments();
         if (args != null) {
             mUserInfo = (UserInfo) args.getSerializable(PacePlaceConstants.USER_INFO);
@@ -109,11 +111,14 @@ public class EventGenerateFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         configureClickListeners();
+        mAVLoadingIndicatorView.bringToFront();
         getStaticInfo();
         getLocation();
     }
 
     private void getLocation(){
+        mAVLoadingIndicatorView.setVisibility(View.VISIBLE);
+        mAVLoadingIndicatorView.smoothToShow();
         EventDetailsHttpClient.getInstance().getLocationDetails(new Callback<JsonObject>() {
             @Override
             public void onResponse(@NonNull Call<JsonObject> call, @NonNull Response<JsonObject> response) {
@@ -143,6 +148,10 @@ public class EventGenerateFragment extends Fragment {
                 } catch (JSONException e) {
                     generateToastMessage(R.string.location_issue_in_response_json);
                     e.printStackTrace();
+                }
+                finally {
+                    mAVLoadingIndicatorView.setVisibility(View.GONE);
+                    mAVLoadingIndicatorView.smoothToHide();
                 }
             }
 
@@ -223,7 +232,8 @@ public class EventGenerateFragment extends Fragment {
     }
 
     private void registerEvent(EventDetail eventDetail) {
-
+        mAVLoadingIndicatorView.setVisibility(View.VISIBLE);
+        mAVLoadingIndicatorView.smoothToShow();
         EventDetailsHttpClient.getInstance().addEvent(eventDetail.getmEventName(), eventDetail.getmEventDescription(),
                 eventDetail.getmEventAddress(), String.valueOf(eventDetail.getmEventCreatedByUserId()), eventDetail.getmEventDateTime(),
                 eventDetail.getmEventSubjectType(), eventDetail.getmEventGradType()
@@ -247,13 +257,18 @@ public class EventGenerateFragment extends Fragment {
                             e.printStackTrace();
                             generateToastMessage(R.string.event_posted_failed);
                         }
+                        finally {
+                            mAVLoadingIndicatorView.setVisibility(View.GONE);
+                            mAVLoadingIndicatorView.smoothToHide();
+                        }
                     }
 
                     @Override
                     public void onFailure(Call<JsonObject> call, Throwable t) {
                         t.printStackTrace();
                         generateToastMessage(R.string.event_posted_failed);
-                        //mAVLoadingIndicatorView.smoothToHide();
+                        mAVLoadingIndicatorView.setVisibility(View.GONE);
+                        mAVLoadingIndicatorView.smoothToHide();
                     }
                 });
     }
@@ -270,6 +285,8 @@ public class EventGenerateFragment extends Fragment {
     }
 
     private void getStaticInfo() {
+        mAVLoadingIndicatorView.setVisibility(View.VISIBLE);
+        mAVLoadingIndicatorView.smoothToShow();
         UserDetailsHttpClient.getInstance().getStaticInfo(new Callback<JsonObject>() {
             @Override
             public void onResponse(@NonNull Call<JsonObject> call, @NonNull Response<JsonObject> response) {
@@ -296,12 +313,16 @@ public class EventGenerateFragment extends Fragment {
                         } else {
                             generateToastMessage(R.string.static_issue_in_response_json);
                         }
-                        /*mAVLoadingIndicatorView.smoothToHide();
-                        mAVLoadingIndicatorView.setVisibility(View.INVISIBLE);*/
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
                     generateToastMessage(R.string.static_issue_in_response_json);
+                    mAVLoadingIndicatorView.setVisibility(View.GONE);
+                    mAVLoadingIndicatorView.smoothToHide();
+                }
+                finally {
+                    mAVLoadingIndicatorView.setVisibility(View.GONE);
+                    mAVLoadingIndicatorView.smoothToHide();
                 }
             }
 
@@ -309,7 +330,8 @@ public class EventGenerateFragment extends Fragment {
             public void onFailure(Call<JsonObject> call, Throwable t) {
                 t.printStackTrace();
                 generateToastMessage(R.string.static_issue_in_response_json);
-                //mAVLoadingIndicatorView.smoothToHide();
+                mAVLoadingIndicatorView.setVisibility(View.GONE);
+                mAVLoadingIndicatorView.smoothToHide();
             }
         });
     }
@@ -324,8 +346,8 @@ public class EventGenerateFragment extends Fragment {
     }
 
     private Boolean compareDates() {
-        Calendar previousDate = Calendar.getInstance();
-        if (myCalendar.getTime().after(previousDate.getTime()))
+        Calendar currentDate = Calendar.getInstance();
+        if (myCalendar.getTime().after(currentDate.getTime()))
             return Boolean.TRUE;
         return Boolean.FALSE;
     }

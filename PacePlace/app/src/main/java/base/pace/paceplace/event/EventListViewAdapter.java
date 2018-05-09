@@ -22,7 +22,6 @@ public class EventListViewAdapter extends RecyclerView.Adapter<RecyclerView.View
     EventListViewAdapter(Context context, List<EventDetail> eventInfoList) {
         mContext = context;
         mEventInfoList = eventInfoList;
-        Log.i("alskd",""+mEventInfoList);
     }
 
 
@@ -36,14 +35,13 @@ public class EventListViewAdapter extends RecyclerView.Adapter<RecyclerView.View
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         EventDetail eventDetail = mEventInfoList.get(position);
-        Log.i("assd",""+eventDetail);
         RecyclerViewHolder viewHolder = (RecyclerViewHolder) holder;
-        Log.i(eventDetail.getmEventName(),"room");
         viewHolder.mEventNameTextView.setText(eventDetail.getmEventName());
         viewHolder.mEventLocationTextView.setText(mContext.getResources().getString(R.string.event_location, eventDetail.getmEventRoom(), eventDetail.getmEventAddress()));
         viewHolder.mEventDateTimeTextView.setText(eventDetail.getmEventDateTime());
-        viewHolder.mEventCreatedByTextView.setText(eventDetail.getmEventCreatedBy());
-        viewHolder.mEventForStudentTypeTextView.setText(mContext.getResources().getString(R.string.event_conducted_for, eventDetail.getmEventGradType(), eventDetail.getmEventSubjectType()));
+        viewHolder.mEventCreatedByTextView.setText(mContext.getResources().getString(R.string.event_posted_by,eventDetail.getmEventCreatedBy()));
+        viewHolder.mEventForStudentTypeTextView.setText(mContext.getResources().getString(R.string.event_conducted_for, eventDetail.getmEventGradType()));
+        viewHolder.mEventForSubjectLevelTextView.setText(mContext.getResources().getString(R.string.event_conducted_for_subject, eventDetail.getmEventSubjectType()));
     }
 
     @Override
@@ -53,7 +51,7 @@ public class EventListViewAdapter extends RecyclerView.Adapter<RecyclerView.View
 
     private class RecyclerViewHolder extends RecyclerView.ViewHolder {
         // each data item is just a string in this case
-        TextView mEventNameTextView, mEventDateTimeTextView, mEventLocationTextView, mEventCreatedByTextView, mEventForStudentTypeTextView;
+        TextView mEventNameTextView, mEventDateTimeTextView, mEventLocationTextView, mEventCreatedByTextView, mEventForStudentTypeTextView, mEventForSubjectLevelTextView;
 
         RecyclerViewHolder(View view) {
             super(view);
@@ -62,6 +60,7 @@ public class EventListViewAdapter extends RecyclerView.Adapter<RecyclerView.View
             mEventLocationTextView = view.findViewById(R.id.list_item_event_location);
             mEventCreatedByTextView = view.findViewById(R.id.list_item__event_created_by);
             mEventForStudentTypeTextView = view.findViewById(R.id.list_item_event_for);
+            mEventForSubjectLevelTextView = view.findViewById(R.id.list_item_event_for_level);
         }
     }
 }

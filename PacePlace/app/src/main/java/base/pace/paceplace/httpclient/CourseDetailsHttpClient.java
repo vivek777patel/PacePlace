@@ -7,8 +7,10 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
+import retrofit2.http.Body;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
+import retrofit2.http.Headers;
 import retrofit2.http.POST;
 
 
@@ -53,12 +55,22 @@ public class CourseDetailsHttpClient {
         @POST("getCoursesForRegistration/")
         @FormUrlEncoded
         Call<JsonObject> getCourseForRegistration(@Field(PacePlaceConstants.USER_ID) String params);
+
+        @Headers({
+                "Content-Type: application/json"
+        })
+        @POST("saveRegisteredCourses/")
+        Call<String> saveCourseRegistration(@Body String data);
+
     }
 
     public void getUserCourseDetails(String userId, Callback<JsonObject> cb) {
         mCourseService.getUserCourseDetails(userId).enqueue(cb);
     }
 
+    public void saveCourseRegistration(String body, Callback<String> cb) {
+        mCourseService.saveCourseRegistration(body).enqueue(cb);
+    }
 
     public void saveUserRatings(String studentCourseRating, String overallCourseRaters, String overallCourseRatings,
                                 String studentProfRating, String overallProfRaters, String overallProfRatings,

@@ -109,9 +109,11 @@ public class EventFragment extends Fragment {
                     generateToastMessage(R.string.event_issue_in_response_json);
                     e.printStackTrace();
                 }
-                mAVLoadingIndicatorView.setVisibility(View.GONE);
-                mAVLoadingIndicatorView.smoothToHide();
-                mSwipeContainer.setRefreshing(false);
+                finally {
+                    mAVLoadingIndicatorView.setVisibility(View.GONE);
+                    mAVLoadingIndicatorView.smoothToHide();
+                    mSwipeContainer.setRefreshing(false);
+                }
             }
 
             @Override
@@ -132,8 +134,8 @@ public class EventFragment extends Fragment {
                 jsonObject.optString("event_date"),
                 jsonObject.optString("location_name"),
                 jsonObject.optString("address_line1"),
-                jsonObject.optString("grad_type"),
-                jsonObject.optString("subject"),
+                jsonObject.optString("grad_type").equalsIgnoreCase("null")?PacePlaceConstants.ALL:jsonObject.optString("grad_type"),
+                jsonObject.optString("subject").equalsIgnoreCase("null")?PacePlaceConstants.ALL:jsonObject.optString("subject"),
                 jsonObject.optString("firstname"),
                 jsonObject.optString("event_desc")
                 );
