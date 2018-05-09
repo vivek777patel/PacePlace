@@ -1,6 +1,6 @@
 import pymysql.cursors
 from flask import jsonify, request
-
+import json
 from base import app
 from base.paceplace.common import db
 
@@ -27,6 +27,9 @@ def save_registered_courses():
     response = False
     try:
         print(content)
+        if type(content) is str:
+            content = json.loads(content)
+
         for li in content:
             print(li['USER_ID'])
             user_id = li['USER_ID']
@@ -46,17 +49,18 @@ def save_registered_courses():
 
     except KeyError:
         print("Key is missing in POSTed JSON ")
-        return jsonify([{"RESPONSE": response, "DATA": {"DATA": "Required key is missing in POSTed JSON of Course Registration"}}])
+        return jsonify(str({"RESPONSE": response, "DATA": {"DATA": "Required key is missing in POSTed JSON of Course Registration"}}))
     except Exception as e:
         print("Exeception occurred :{}".format(e))
         connection.cursor().close()
         response = False
-        return jsonify([{"RESPONSE": response, "DATA": {"DATA": "Exception in Course Registration"}}])
+        return jsonify(str({"RESPONSE": response, "DATA": {"DATA": "Exception in Course Registration"}}))
     finally:
         # connection.close()
         connection.cursor().close()
-
-    return jsonify([{"RESPONSE": response, "DATA": {"DATA": "CourseRegistered successfully"}}])
+    response = True
+    print(str({"RESPONSE": response, "DATA": {"DATA": "CourseRegistered successfully"}}))
+    return jsonify(str({"RESPONSE": response, "DATA": {"DATA": "CourseRegistered successfully"}}))
 
 
 @ap.route('/getCoursesForRegistration/', methods=['GET', 'POST'])
@@ -119,12 +123,12 @@ def get_courses_for_registration():
         connection.cursor().close()
 
     if result:
-        print("Sending response back with data")
+        print("Sending response back with data " + str(result))
         return jsonify({"RESPONSE": response, "DATA": result})
     else:
-        result = {}
+        result = []
         print("Sending response back with blank data")
-        return jsonify({"RESPONSE": response, "DATA": result})
+        return jsonify({"RESPONSE": response, "DATA": str(result)})
 
 
 @ap.route('/getUserCourses/', methods=['GET', 'POST'])
@@ -193,12 +197,11 @@ def get_user_courses():
         connection.cursor().close()
 
     if result:
-        print("Sending response back with data")
+        print("Sending response back with data" + str(result))
         return jsonify({"RESPONSE": response, "DATA": result})
-        # return jsonify(result)
     else:
-        result = {}
-        print("Sending response back with blank data")
+        result = []
+        print("Sending response back with blank data" + str(result))
         return jsonify({"RESPONSE": response, "DATA": result})
 
 
