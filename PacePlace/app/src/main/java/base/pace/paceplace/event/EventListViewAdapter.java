@@ -5,7 +5,6 @@ import android.support.annotation.NonNull;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.support.v7.widget.RecyclerView;
 import android.widget.TextView;
 
@@ -44,7 +43,7 @@ public class EventListViewAdapter extends RecyclerView.Adapter<RecyclerView.View
         viewHolder.mEventLocationTextView.setText(mContext.getResources().getString(R.string.event_location, eventDetail.getmEventRoom(), eventDetail.getmEventAddress()));
         viewHolder.mEventDateTimeTextView.setText(eventDetail.getmEventDateTime());
         viewHolder.mEventCreatedByTextView.setText(eventDetail.getmEventCreatedBy());
-        viewHolder.mEventForStudentTypeTextView.setText(mContext.getResources().getString(R.string.event_conducted_for, eventDetail.getmEventGradType(), eventDetail.getmEventStudentType()));
+        viewHolder.mEventForStudentTypeTextView.setText(mContext.getResources().getString(R.string.event_conducted_for, eventDetail.getmEventGradType(), eventDetail.getmEventSubjectType()));
     }
 
     @Override

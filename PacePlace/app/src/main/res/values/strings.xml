@@ -4,6 +4,7 @@
     <string name="user_registration">User Registration</string>
     <string name="user_courses">User Courses</string>
     <string name="events">Events</string>
+    <string name="post_events">Post Events</string>
 
     <string name="course_no_data_found">No course data found</string>
 
@@ -39,7 +40,8 @@
     <string name="please_wait">Please Wait...!!!</string>
 
     <string name="action_back">Back</string>
-    <string name="btn_register_txt">Register</string>
+    <string name="btn_user_register">Register</string>
+    <string name="course_register">Register</string>
     <string name="btn_save_txt">Save</string>
     <string name="btn_clear_txt">Clear</string>
 
@@ -47,7 +49,7 @@
     <string name="enter_lastname">Last Name</string>
     <string name="enter_password_confirm">Confirm Password</string>
     <string name="enter_contact">Contact (---)--- ----</string>
-    <string name="enter_dob">DOB(YYYY-MM-DD)</string>
+    <string name="enter_dob">DOB</string>
     <string name="link_arrow"><![CDATA[>]]></string>
 
     <!-- Course Details String Resources -->
@@ -70,8 +72,23 @@
     <string name="reset_text">Reset</string>
 
     <!-- Event Details String Resources -->
+    <string name="post_event">Post Event</string>
     <string name="event_location">Room: %s , %s</string>
     <string name="event_conducted_for">%s of %s</string>
     <string name="events_not_found">No Event data found</string>
     <string name="event_issue_in_response_json">Issue in fetching Event Data</string>
+    <string name="event_name_required">Event name is mandatory</string>
+    <string name="event_desc_required">Event description is mandatory</string>
+    <string name="event_date_validation">Event date must be future date</string>
+    <string name="event_posted_success">Event posted successfully</string>
+    <string name="event_posted_failed">Event post failed</string>
+    <string name="event_name">Event Name *</string>
+    <string name="event_date">Event Date *</string>
+    <string name="event_description">Event Description *</string>
+    <string name="btn_event_post_txt">Post</string>
+    <string name="event_location_place">Event Location *</string>
+    <string name="mandatory_string">All the fields marked with * are mandatory</string>
+    <string name="location_not_found">No Location data found</string>
+    <string name="location_issue_in_response_json">Issue in fetching Location Data</string>
+    <string name="static_issue_in_response_json">Issue in fetching Static Info Data</string>
 </resources>

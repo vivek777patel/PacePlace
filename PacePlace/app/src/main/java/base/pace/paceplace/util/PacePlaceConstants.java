@@ -40,6 +40,7 @@ public abstract class PacePlaceConstants {
     public static final String EVENT_LOCATION = "EVENT_LOCATION";
     public static final String EVENT_POSTED_BY = "EVENT_POSTED_BY";
     public static final String EVENT_DATE = "EVENT_DATE";
+    public static final String LOCATION = "LOCATION";
 
     public static final String LOGIN = "LOGIN";
     public static final String REGISTER = "REGISTER";

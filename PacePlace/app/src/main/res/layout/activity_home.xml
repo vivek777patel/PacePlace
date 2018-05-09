@@ -4,11 +4,50 @@
     android:layout_height="match_parent"
     android:background="@color/colorAccent">
 
+    <LinearLayout
+        android:id="@+id/RegisterButton_LL"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:layout_alignParentTop="true"
+        android:weightSum="2"
+        android:paddingBottom="7dp"
+        android:background="@color/colorPrimary">
+
+        <TextView
+            android:id="@+id/register_course_text_view"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:gravity="center_horizontal"
+            android:paddingTop="6dp"
+            android:textColor="@color/colorListSmall"
+            android:textSize="@dimen/btn_txt_size"
+            android:layout_weight="1"
+            android:text="@string/course_register"/>
+        <TextView
+            android:layout_width="0.5dp"
+            android:layout_height="match_parent"
+            android:background="@color/colorListSmall"
+            android:paddingTop="5dp"/>
+
+        <TextView
+            android:id="@+id/register_event_text_view"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:gravity="center_horizontal"
+            android:paddingTop="8dp"
+            android:textColor="@color/colorListSmall"
+            android:textSize="@dimen/btn_txt_size"
+            android:layout_weight="1"
+            android:text="@string/post_event"/>
+
+    </LinearLayout>
+
     <RelativeLayout
         android:id="@+id/home_fagement_view_RL"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_above="@+id/home_toolbar"
+        android:layout_below="@+id/RegisterButton_LL"
         android:background="@color/colorAccent">
 
     </RelativeLayout>

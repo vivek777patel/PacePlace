@@ -134,7 +134,8 @@ public class EventFragment extends Fragment {
                 jsonObject.optString("address_line1"),
                 jsonObject.optString("grad_type"),
                 jsonObject.optString("subject"),
-                jsonObject.optString("firstname")
+                jsonObject.optString("firstname"),
+                jsonObject.optString("event_desc")
                 );
     }
 

@@ -42,6 +42,9 @@ public class EventDetailsHttpClient {
                                          @Field(PacePlaceConstants.GRADUATION_TYPE) String graduationType);
         @POST("getEventDetails/")
         Call<JsonObject> getEventDetails();
+
+        @POST("getLocation/")
+        Call<JsonObject> getLocationDetails();
     }
 
     public void addEvent(String eventName,String eventDesc,String eventLocation,
@@ -54,4 +57,7 @@ public class EventDetailsHttpClient {
         mEventService.getEventDetails().enqueue(cb);
     }
 
+    public void getLocationDetails(Callback<JsonObject> cb) {
+        mEventService.getLocationDetails().enqueue(cb);
+    }
 }

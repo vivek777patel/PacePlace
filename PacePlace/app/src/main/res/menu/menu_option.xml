@@ -5,13 +5,13 @@
         android:id="@+id/register_courses"
         android:icon="@drawable/ic_register_courses"
         android:theme="@style/MyTheme"
-        android:title="@string/btn_register_txt"
+        android:title="@string/course_register"
         app:popupTheme="@style/MyTheme"
         app:showAsAction="ifRoom"/>
     <item
         android:id="@+id/add_event"
         android:icon="@drawable/ic_icon_add_event"
-        android:title="@string/btn_register_txt"
+        android:title="@string/post_event"
         app:showAsAction="ifRoom" />
 
 </menu>

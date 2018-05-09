@@ -7,9 +7,9 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical"
+        android:layout_gravity="center_horizontal"
         android:layout_marginBottom="@dimen/logo_ll_margin_top"
-        android:layout_marginTop="@dimen/logo_ll_margin_top"
+
         android:background="@color/colorAccent">
 
 
@@ -250,7 +250,7 @@
                     android:layout_marginStart="@dimen/login_margin"
                     android:background="@drawable/rounded_button"
                     android:fontFamily="serif"
-                    android:text="@string/btn_register_txt"
+                    android:text="@string/btn_user_register"
                     android:textAllCaps="false"
                     android:textColor="@color/colorWhite"
                     android:textSize="@dimen/btn_txt_size"

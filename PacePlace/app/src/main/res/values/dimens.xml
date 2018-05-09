@@ -5,6 +5,7 @@
     <dimen name="login_margin">15dp</dimen>
     <dimen name="login_margin_top">10dp</dimen>
     <dimen name="logo_ll_margin_top">40dp</dimen>
+    <dimen name="event_margin_top">20dp</dimen>
 
     <dimen name="padding_drawable">5dp</dimen>
 

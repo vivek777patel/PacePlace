@@ -12,11 +12,13 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import base.pace.paceplace.course.CourseListFragment;
 import base.pace.paceplace.course.CourseRegistrationFragment;
 import base.pace.paceplace.event.EventFragment;
+import base.pace.paceplace.event.EventGenerateFragment;
 import base.pace.paceplace.login.UserInfo;
 import base.pace.paceplace.user.UserProfileFragment;
 import base.pace.paceplace.util.PacePlaceConstants;
@@ -30,6 +32,7 @@ public class HomeActivity extends AppCompatActivity implements UserProfileFragme
     private int mSelectedMenu = 1;
     private UserInfo mLoggedInUserInfo;
     SharedPreferences mSharedPreference;
+    TextView mRegisterCourseTextView, mPostEventTextView;
 
     @SuppressLint("ResourceType")
     @Override
@@ -42,7 +45,7 @@ public class HomeActivity extends AppCompatActivity implements UserProfileFragme
 
         Intent intent = getIntent();
         mLoggedInUserInfo = (UserInfo) intent.getSerializableExtra(PacePlaceConstants.USER_INFO);
-
+        getSupportActionBar().setElevation(0);
         setViews();
         setOnClickListeners();
 
@@ -68,6 +71,7 @@ public class HomeActivity extends AppCompatActivity implements UserProfileFragme
             public void onClick(View v) {
                 mSelectedMenu = 1;
                 setTitle(R.string.user_courses);
+                setColorToRegistrationMenu();
                 setColorsToMenu(mPrimaryColor, mWhiteColor, mWhiteColor, mWhiteColor);
                 setDefaultCourseDetailFragment();
             }
@@ -78,6 +82,7 @@ public class HomeActivity extends AppCompatActivity implements UserProfileFragme
             public void onClick(View v) {
                 mSelectedMenu = 2;
                 setTitle(R.string.events);
+                setColorToRegistrationMenu();
                 setColorsToMenu(mWhiteColor, mPrimaryColor, mWhiteColor, mWhiteColor);
                 // TODO : Call the webservice to get event list
                 setEventFragment();
@@ -90,6 +95,7 @@ public class HomeActivity extends AppCompatActivity implements UserProfileFragme
             public void onClick(View v) {
                 mSelectedMenu = 3;
                 setTitle(R.string.user_registration);
+                setColorToRegistrationMenu();
                 setColorsToMenu(mWhiteColor, mWhiteColor, mPrimaryColor, mWhiteColor);
                 setUserDetailsFragment();
             }
@@ -100,10 +106,37 @@ public class HomeActivity extends AppCompatActivity implements UserProfileFragme
             public void onClick(View v) {
                 mSelectedMenu = 4;
                 setColorsToMenu(mWhiteColor, mWhiteColor, mWhiteColor, mPrimaryColor);
+                setColorToRegistrationMenu();
                 clearPreferenceValue();
                 Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
                 intent.putExtra(PacePlaceConstants.LOGIN_ACTIVITY_MESSAGE, PacePlaceConstants.LOGOUT);
                 startActivity(intent);
+            }
+        });
+        mPostEventTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setColorsToMenu(mWhiteColor, mWhiteColor, mWhiteColor, mWhiteColor);
+                setColorToRegistrationMenu();
+                EventGenerateFragment eventGenerateFragment = new EventGenerateFragment();
+                Bundle bundle = new Bundle();
+                mPostEventTextView.setTextColor(getResources().getColor(R.color.colorWhite));
+                bundle.putSerializable(PacePlaceConstants.USER_INFO, mLoggedInUserInfo);
+                eventGenerateFragment.setArguments(bundle);
+                getFragmentManager().beginTransaction().replace(R.id.home_fagement_view_RL, eventGenerateFragment).commit();
+            }
+        });
+        mRegisterCourseTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setColorsToMenu(mWhiteColor, mWhiteColor, mWhiteColor, mWhiteColor);
+                setColorToRegistrationMenu();
+                CourseRegistrationFragment courseRegistrationFragment = new CourseRegistrationFragment();
+                Bundle b = new Bundle();
+                mRegisterCourseTextView.setTextColor(getResources().getColor(R.color.colorWhite));
+                b.putInt(PacePlaceConstants.USER_ID, mLoggedInUserInfo.getmUserId());
+                courseRegistrationFragment.setArguments(b);
+                getFragmentManager().beginTransaction().replace(R.id.home_fagement_view_RL, courseRegistrationFragment).commit();
             }
         });
     }
@@ -122,7 +155,14 @@ public class HomeActivity extends AppCompatActivity implements UserProfileFragme
         mLogoutImageView.setColorFilter(logoutColor);
     }
 
+    private void setColorToRegistrationMenu(){
+        mRegisterCourseTextView.setTextColor(getResources().getColor(R.color.colorListSmall));
+        mPostEventTextView.setTextColor(getResources().getColor(R.color.colorListSmall));
+
+    }
     private void setViews() {
+        mPostEventTextView = findViewById(R.id.register_event_text_view);
+        mRegisterCourseTextView = findViewById(R.id.register_course_text_view);
         mHomeImageView = findViewById(R.id.homeImageView);
         mEventImageView = findViewById(R.id.eventImageView);
         mUserProfileImageView = findViewById(R.id.userProfileImageView);
@@ -153,32 +193,6 @@ public class HomeActivity extends AppCompatActivity implements UserProfileFragme
         bundle.putSerializable(PacePlaceConstants.USER_INFO, mLoggedInUserInfo);
         userProfileFragment.setArguments(bundle);
         getFragmentManager().beginTransaction().replace(R.id.home_fagement_view_RL, userProfileFragment).commit();
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_option, menu);//Menu Resource, Menu
-        MenuItem registerMenu = menu.findItem(R.id.register_courses);
-        /*MenuItem backMenu = menu.findItem(R.id.action_back);
-        backMenu.setOnMenuItemClickListener(goToCourseDetailMenu());*/
-        registerMenu.setOnMenuItemClickListener(goToRegistrationPage());
-        return true;
-    }
-
-    private MenuItem.OnMenuItemClickListener goToRegistrationPage() {
-        return new MenuItem.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                CourseRegistrationFragment courseRegistrationFragement = new CourseRegistrationFragment();
-                Bundle b = new Bundle();
-                b.putInt(PacePlaceConstants.USER_ID, mLoggedInUserInfo.getmUserId());
-                courseRegistrationFragement.setArguments(b);
-                getFragmentManager().beginTransaction().replace(R.id.home_fagement_view_RL, courseRegistrationFragement).commit();
-                return false;
-            }
-        };
-
     }
 
     // To generate Toast message
