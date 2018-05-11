@@ -163,6 +163,10 @@ public class CourseRegistrationFragment extends Fragment {
                     mAddedCourseDetailMap.remove(courseId);
                     displayCourseInfo.setmCourseSelectedIndicator(false);
                 } else {
+                    if(checkForAlreadySelectedCourse(displayCourseInfo)){
+                        generateToastMessage(R.string.multiple_course_with_same_name);
+                        return;
+                    }
                     mAddedCourses.add(courseId);
                     mAddedCourseDetailMap.put(courseId, displayCourseInfo);
                     displayCourseInfo.setmCourseSelectedIndicator(true);
@@ -174,6 +178,16 @@ public class CourseRegistrationFragment extends Fragment {
 
         mListView.setAdapter(mAdapter);
         mListView.setItemsCanFocus(false);
+    }
+
+    private Boolean checkForAlreadySelectedCourse(CourseDetail courseDetail){
+        for (Map.Entry<Integer, CourseDetail> entry : mAddedCourseDetailMap.entrySet()) {
+            CourseDetail value = entry.getValue();
+            if(courseDetail.getmCourseName().equalsIgnoreCase(value.getmCourseName())){
+                return Boolean.TRUE;
+            }
+        }
+        return Boolean.FALSE;
     }
 
     private View.OnClickListener resetRegistrationData() {

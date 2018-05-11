@@ -71,6 +71,7 @@
     <string name="save_ratings_text">Save Ratings</string>
 
     <string name="course_load_fail">Course Loading Failed</string>
+    <string name="multiple_course_with_same_name">Can\'t select same course again</string>
 
     <string name="save_text">Save</string>
     <string name="reset_text">Reset</string>

@@ -149,7 +149,7 @@
                 android:drawablePadding="@dimen/padding_drawable"
                 android:drawableStart="@drawable/ic_telephone"
                 android:hint="@string/enter_contact"
-                android:inputType="text"
+                android:inputType="phone"
                 android:textColor="@color/colorWhite"
                 android:textColorHint="@color/colorWhite" />
 
