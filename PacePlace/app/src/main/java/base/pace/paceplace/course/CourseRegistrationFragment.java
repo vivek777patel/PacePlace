@@ -87,24 +87,17 @@ public class CourseRegistrationFragment extends Fragment {
                         JSONObject receivedJSONObject = new JSONObject(response.body().toString());
 
                         if ((Boolean) receivedJSONObject.get(PacePlaceConstants.RESPONSE)) {
-                            // TODO : Set mCourseList variable before calling setDefaultCourseDetailFragment()
-                            try {
-                                JSONArray courseDetailsJsonArray = (JSONArray) receivedJSONObject.get(PacePlaceConstants.DATA);
-                                if (courseDetailsJsonArray != null) {
-                                    mCourseLists.clear();
-                                    for (int i = 0; i < courseDetailsJsonArray.length(); i++) {
-                                        JSONObject obj = courseDetailsJsonArray.getJSONObject(i);
-                                        mCourseLists.add(setCourseDetailsFromResponse(obj));
-                                    }
-                                    mAdapter.notifyDataSetChanged();
-                                } else {
-                                    // No data found
-                                    generateToastMessage(R.string.course_no_data_found);
+                            JSONArray courseDetailsJsonArray = (JSONArray) receivedJSONObject.get(PacePlaceConstants.DATA);
+                            if (courseDetailsJsonArray != null) {
+                                mCourseLists.clear();
+                                for (int i = 0; i < courseDetailsJsonArray.length(); i++) {
+                                    JSONObject obj = courseDetailsJsonArray.getJSONObject(i);
+                                    mCourseLists.add(setCourseDetailsFromResponse(obj));
                                 }
-
-                            } catch (JSONException e) {
-                                generateToastMessage(R.string.course_register_issue_in_response_json);
-                                e.printStackTrace();
+                                mAdapter.notifyDataSetChanged();
+                            } else {
+                                // No data found
+                                generateToastMessage(R.string.course_no_data_found);
                             }
                         } else {
                             generateToastMessage(R.string.course_register_issue_in_response_json);
@@ -115,8 +108,7 @@ public class CourseRegistrationFragment extends Fragment {
                 } catch (JSONException e) {
                     generateToastMessage(R.string.course_register_issue_in_response_json);
                     e.printStackTrace();
-                }
-                finally {
+                } finally {
                     mAVLoadingIndicatorView.smoothToHide();
                     mAVLoadingIndicatorView.setVisibility(View.GONE);
                     mSwipeContainer.setRefreshing(false);
@@ -231,40 +223,30 @@ public class CourseRegistrationFragment extends Fragment {
         mAVLoadingIndicatorView.setVisibility(View.VISIBLE);
         mAVLoadingIndicatorView.smoothToShow();
 
-        CourseDetailsHttpClient.getInstance().saveCourseRegistration(String.valueOf(arrayListToJSONArray()),new Callback<String>() {
+        CourseDetailsHttpClient.getInstance().saveCourseRegistration(String.valueOf(arrayListToJSONArray()), new Callback<String>() {
             @Override
             public void onResponse(Call<String> call, Response<String> response) {
                 try {
                     String val = response.body();
-                    JSONObject receivedJSONObject= new JSONObject(val);
+                    JSONObject receivedJSONObject = new JSONObject(val);
                     if ((Boolean) receivedJSONObject.get(PacePlaceConstants.RESPONSE)) {
-                        // TODO : Set mCourseList variable before calling setDefaultCourseDetailFragment()
-                        try {
-                            JSONObject resultJson = receivedJSONObject.getJSONObject(PacePlaceConstants.DATA);
-                            String data = resultJson.optString(PacePlaceConstants.DATA);
-                            if(data.equalsIgnoreCase(getResources().getString(R.string.course_registration_success))){
-                                generateToastMessage(R.string.course_registration_success);
-                                mAddedCourses.clear();
-                                mAddedCourseDetailMap.clear();
-                                getCoursesForRegistration();
-                            }
-                            else{
-                                generateToastMessage(R.string.course_register_issue_in_response_json);
-                            }
-                        }
-                        catch (JSONException e) {
+                        JSONObject resultJson = receivedJSONObject.getJSONObject(PacePlaceConstants.DATA);
+                        String data = resultJson.optString(PacePlaceConstants.DATA);
+                        if (data.equalsIgnoreCase(getResources().getString(R.string.course_registration_success))) {
+                            generateToastMessage(R.string.course_registration_success);
+                            mAddedCourses.clear();
+                            mAddedCourseDetailMap.clear();
+                            getCoursesForRegistration();
+                        } else {
                             generateToastMessage(R.string.course_register_issue_in_response_json);
-                            e.printStackTrace();
                         }
-                    }
-                    else {
+                    } else {
                         generateToastMessage(R.string.course_register_issue_in_response_json);
                     }
-                } catch (Exception e) {
-                    e.getMessage();
+                } catch (JSONException e) {
                     e.printStackTrace();
-                }
-                finally{
+                    generateToastMessage(R.string.course_register_issue_in_response_json);
+                } finally {
                     mAVLoadingIndicatorView.setVisibility(View.GONE);
                     mAVLoadingIndicatorView.smoothToHide();
                 }
@@ -273,6 +255,7 @@ public class CourseRegistrationFragment extends Fragment {
             @Override
             public void onFailure(Call<String> call, Throwable t) {
                 t.printStackTrace();
+                generateToastMessage(R.string.course_register_issue_in_response_json);
                 mAVLoadingIndicatorView.setVisibility(View.GONE);
                 mAVLoadingIndicatorView.smoothToHide();
             }

@@ -193,14 +193,8 @@ public class HomeActivity extends AppCompatActivity implements UserProfileFragme
         getFragmentManager().beginTransaction().replace(R.id.home_fagement_view_RL, userProfileFragment).commit();
     }
 
-    // To generate Toast message
-    private void generateToastMessage(int id) {
-        Toast.makeText(this, id, Toast.LENGTH_SHORT).show();
-    }
-
     @Override
     public void getUserInfo(UserInfo userInfo) {
-        Log.i(TAG, "Getting User Info");
         mLoggedInUserInfo = userInfo;
     }
 }

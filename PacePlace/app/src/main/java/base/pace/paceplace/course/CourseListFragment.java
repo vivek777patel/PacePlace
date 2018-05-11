@@ -107,23 +107,17 @@ public class CourseListFragment extends Fragment {
                     if (response.body() != null) {
                         JSONObject receivedJSONObject = new JSONObject(response.body().toString());
                         if ((Boolean) receivedJSONObject.get(PacePlaceConstants.RESPONSE)) {
-                            try {
-                                JSONArray courseDetailsJsonArray = receivedJSONObject.getJSONArray(PacePlaceConstants.DATA);
-                                if (courseDetailsJsonArray != null && courseDetailsJsonArray.length() > 0) {
-                                    mCourseLists.clear();
-                                    for (int i = 0; i < courseDetailsJsonArray.length(); i++) {
-                                        JSONObject obj = courseDetailsJsonArray.getJSONObject(i);
-                                        mCourseLists.add(setCourseDetailsFromResponse(obj));
-                                    }
-                                    mAdapter.notifyDataSetChanged();
-                                } else {
-                                    // No data found
-                                    generateToastMessage(R.string.course_no_data_found);
+                            JSONArray courseDetailsJsonArray = receivedJSONObject.getJSONArray(PacePlaceConstants.DATA);
+                            if (courseDetailsJsonArray != null && courseDetailsJsonArray.length() > 0) {
+                                mCourseLists.clear();
+                                for (int i = 0; i < courseDetailsJsonArray.length(); i++) {
+                                    JSONObject obj = courseDetailsJsonArray.getJSONObject(i);
+                                    mCourseLists.add(setCourseDetailsFromResponse(obj));
                                 }
-
-                            } catch (JSONException e) {
-                                generateToastMessage(R.string.course_issue_in_response_json);
-                                e.printStackTrace();
+                                mAdapter.notifyDataSetChanged();
+                            } else {
+                                // No data found
+                                generateToastMessage(R.string.course_no_data_found);
                             }
                         } else {
                             generateToastMessage(R.string.course_issue_in_response_json);
@@ -334,15 +328,8 @@ public class CourseListFragment extends Fragment {
                         try {
                             if (response.body() != null) {
                                 JSONObject receivedJSONObject = new JSONObject(response.body().toString());
-
                                 if ((Boolean) receivedJSONObject.get(PacePlaceConstants.RESPONSE)) {
-                                    // To avoid additional Rest Call
                                     setCourseDetails();
-                                    /*mCourseLists.get(mSelectedPosition).setmCourseRatings(String.valueOf(mOverallCourseRatings));
-                                    mCourseLists.get(mSelectedPosition).setmCourseProfRatings(String.valueOf(mOverallProfRatings));
-                                    mCourseLists.get(mSelectedPosition).setmStudentCourseRatings(String.valueOf(mStudentCourseRatings));
-                                    mCourseLists.get(mSelectedPosition).setmStudentCourseProfRatings(String.valueOf(mStudentCourseProfRatings));
-                                    mAdapter.notifyDataSetChanged();*/
                                 } else {
                                     generateToastMessage(R.string.rating_failed);
                                 }
