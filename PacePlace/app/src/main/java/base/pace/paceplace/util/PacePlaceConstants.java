@@ -36,10 +36,6 @@ public abstract class PacePlaceConstants {
 
     public static final String LOGIN = "LOGIN";
     public static final String REGISTER = "REGISTER";
-    public static final String COURSES = "COURSES";
-    public static final String COURSES_REGISTRATION = "COURSES_REGISTRATION";
-    public static final String STATIC_INFO = "STATIC_INFO";
-    public static final String RATINGS = "RATINGS";
 
     public static final String STUDENT_COURSE_RATING = "STUDENT_COURSE_RATING";
     public static final String OVERALL_COURSE_RATERS = "OVERALL_COURSE_RATERS";
@@ -56,10 +52,7 @@ public abstract class PacePlaceConstants {
     public static final String PROF_USER_ID = "PROF_USER_ID";
 
 
-
-
     public static final String USER_INFO = "USER_INFO";
-    public static final String COURSE_LIST = "COURSE_LIST";
 
     public static final String OPERATION = "OPERATION";
     public static final String UPDATE = "UPDATE";
