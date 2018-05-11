@@ -98,7 +98,9 @@ def get_courses_for_registration():
         join static_info si_ci_subject on ci.subject = si_ci_subject.static_info_id
         where cd.course_det_id not in (Select course_det_id from student_course_map scm
     """
-    query += " where scm.user_id = " + str(user_id) + ")"
+    query += " where scm.user_id = " + str(user_id) + ") " \
+             "and ci.course_id not in (Select cd1.course_id from student_course_map scm1," \
+             " course_details cd1 where scm1.user_id = " + str(user_id) + " and cd1.course_det_id=scm1.course_det_id) "
     print(query)
     connection = pymysql.connect(host=db.MYSQL_DATABASE_HOST,
                                 user=db.MYSQL_DATABASE_USER,
