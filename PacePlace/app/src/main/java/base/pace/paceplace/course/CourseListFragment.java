@@ -45,8 +45,8 @@ public class CourseListFragment extends Fragment {
     ArrayList<CourseDetail> mCourseLists = new ArrayList<>();
     ListView mListView;
     String mOverAllCourseRatings, mOverAllProfessorRatings, mStudentCourseRatings, mStudentCourseProfRatings;
-    int mOverAllCourseRaters, mOverAllProfRaters;
-    Float mStudentProfRating, mStudentCourseRating, mOverallCourseRatings, mOverallProfRatings;
+    int mOverAllCourseRaters,mOverAllCourseRatersPrev, mOverAllProfRaters,mOverAllProfRatersPrev;
+    Float mStudentProfRating = 0f, mStudentCourseRating = 0f, mOverallCourseRatings = 0f, mOverallProfRatings = 0f;
     RatingBar mStudentProfessorRatingBar, mProfessorOverAllRatingBar, mStudentCourseRatingBar, mCourseOverAllRatingBar;
     TextView popTitleTextView, mProfOverAllRatingTextView, mCourseOverAllRatingTextView, mStudentProfessorRatingTextView, mStudentCourseRatingTextView;
     ImageView closePopupBtn;
@@ -169,9 +169,17 @@ public class CourseListFragment extends Fragment {
 
         mOverAllCourseRatings = courseInfo.getmCourseRatings();
         mOverAllProfessorRatings = courseInfo.getmCourseProfRatings();
+        mOverallCourseRatings = Float.valueOf(courseInfo.getmCourseRatings());
+        mOverallProfRatings = Float.valueOf(courseInfo.getmCourseProfRatings());
 
         mOverAllCourseRaters = courseInfo.getmNoOfCourseRater();
         mOverAllProfRaters = courseInfo.getmNoOfProfRater();
+
+        mOverAllCourseRatersPrev = courseInfo.getmNoOfCourseRater();
+        mOverAllProfRatersPrev = courseInfo.getmNoOfProfRater();
+
+        mStudentProfRating = 0f;
+        mStudentCourseRating = 0f;
 
         mStudentCourseRatings = courseInfo.getmStudentCourseRatings();
         mStudentCourseProfRatings = courseInfo.getmStudentCourseProfRatings();
@@ -236,18 +244,18 @@ public class CourseListFragment extends Fragment {
                 }
 
                 // First time rating for user to selected course --> Increment raters only if the user is giving first time rating
-                if (Float.parseFloat(mStudentCourseProfRatings) == 0) {
+                if (Float.parseFloat(mStudentCourseRatings) == 0) {
                     courseOverallRatersPlus += 1;
                 }
 
-                mOverallCourseRatings = Float.parseFloat(decimalFormat.format(((Float.parseFloat(mOverAllCourseRatings) * mOverAllCourseRaters) + rating) / courseOverallRatersPlus));
+                mOverallCourseRatings = Float.parseFloat(decimalFormat.format(((Float.parseFloat(mOverAllCourseRatings) * mOverAllCourseRatersPrev) + rating) / courseOverallRatersPlus));
 
                 mCourseOverAllRatingBar.setRating(mOverallCourseRatings);
                 mCourseOverAllRatingTextView.setText(String.valueOf(mOverallCourseRatings));
 
                 mStudentCourseRating = rating;
                 mOverAllCourseRaters = courseOverallRatersPlus;
-
+                mStudentCourseRatings = "1";
             }
         });
         mStudentProfessorRatingBar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
@@ -263,18 +271,19 @@ public class CourseListFragment extends Fragment {
                     mStudentProfRating = rating;
                     mOverAllProfRaters = 1;
                     mOverallProfRatings = rating;
+                    return;
                 }
                 // First time rating for user to selected course professor  --> Increment raters only if the user is giving first time rating
                 if (Float.parseFloat(mStudentCourseProfRatings) == 0) {
                     profOverallRatersPlus += 1;
                 }
 
-                mOverallProfRatings = Float.parseFloat(decimalFormat.format((Float.parseFloat(mOverAllProfessorRatings) * mOverAllProfRaters + rating) / (profOverallRatersPlus)));
+                mOverallProfRatings = Float.parseFloat(decimalFormat.format((Float.parseFloat(mOverAllProfessorRatings) * mOverAllProfRatersPrev + rating) / (profOverallRatersPlus)));
                 mProfessorOverAllRatingBar.setRating(mOverallProfRatings);
                 mProfOverAllRatingTextView.setText(String.valueOf(mOverallProfRatings));
                 mStudentProfRating = rating;
                 mOverAllProfRaters = profOverallRatersPlus;
-
+                mStudentCourseProfRatings = "1";
             }
         });
 
@@ -328,7 +337,9 @@ public class CourseListFragment extends Fragment {
                         try {
                             if (response.body() != null) {
                                 JSONObject receivedJSONObject = new JSONObject(response.body().toString());
+
                                 if ((Boolean) receivedJSONObject.get(PacePlaceConstants.RESPONSE)) {
+                                    // To avoid additional Rest Call
                                     setCourseDetails();
                                 } else {
                                     generateToastMessage(R.string.rating_failed);
