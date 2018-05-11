@@ -145,7 +145,7 @@ def get_event_details():
         join location_info li on ei.event_location = li.location_id
         left join static_info si_ci_graduation_type on ei.event_for_gt = si_ci_graduation_type.static_info_id
         left join static_info si_ci_subject on ei.event_for_sub = si_ci_subject.static_info_id
-        where ei.event_date >= CURDATE()
+        where ei.event_date >= CURDATE() order by ei.event_Date, ei.event_name
     """
     print(query)
     connection = pymysql.connect(host=db.MYSQL_DATABASE_HOST,
